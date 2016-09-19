@@ -67,7 +67,7 @@ public class SideMenu extends DrawerLayout {
     }
 
     private void createSideMenu(SideMenuParams sideMenuParams) {
-        sideMenuView = new ContentView(getContext(), sideMenuParams.screenId, sideMenuParams.navigationParams);
+        sideMenuView = new ContentView(getContext(), sideMenuParams.screenId, sideMenuParams.navigationParams, null);
         LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
         lp.gravity = Gravity.START;
         addView(sideMenuView, lp);

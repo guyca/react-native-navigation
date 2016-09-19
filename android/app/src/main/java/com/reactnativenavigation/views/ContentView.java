@@ -8,6 +8,8 @@ import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.params.NavigationParams;
 import com.reactnativenavigation.screens.SingleScreen;
 import com.reactnativenavigation.utils.ViewUtils;
+import com.reactnativenavigation.views.collapsingToolbar.ScrollListener;
+import com.reactnativenavigation.views.collapsingToolbar.ScrollViewDelegate;
 
 public class ContentView extends ReactRootView {
 
@@ -16,12 +18,19 @@ public class ContentView extends ReactRootView {
 
     boolean isContentVisible = false;
     private SingleScreen.OnDisplayListener onDisplayListener;
+    private ScrollViewDelegate scrollViewDelegate;
 
     public ContentView(Context context, String screenId, NavigationParams navigationParams) {
+        this(context, screenId, navigationParams, null);
+    }
+
+    public ContentView(Context context, String screenId, NavigationParams navigationParams, TopBar topBar) {
         super(context);
         this.screenId = screenId;
         this.navigationParams = navigationParams;
         attachToJS();
+        scrollViewDelegate = new ScrollViewDelegate();
+        scrollViewDelegate.setListener(new ScrollListener(topBar));
     }
 
     public String getNavigatorEventId() {
@@ -36,6 +45,7 @@ public class ContentView extends ReactRootView {
     public void onViewAdded(final View child) {
         super.onViewAdded(child);
         detectContentViewVisible(child);
+        scrollViewDelegate.onViewAdded(child);
     }
 
     private void detectContentViewVisible(View child) {

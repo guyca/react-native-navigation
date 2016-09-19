@@ -3,16 +3,19 @@ package com.reactnativenavigation.views;
 import android.content.Context;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
+import android.view.ViewGroup;
 
 import com.reactnativenavigation.params.StyleParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
 import com.reactnativenavigation.utils.ViewUtils;
+import com.reactnativenavigation.views.collapsingToolbar.CollapsingToolBar;
 
 import java.util.List;
 
 public class TopBar extends AppBarLayout {
 
+    private CollapsingToolBar collapsingToolBar;
     private TitleBar titleBar;
     private TopTabs topTabs;
 
@@ -26,10 +29,17 @@ public class TopBar extends AppBarLayout {
                                          TitleBarLeftButtonParams leftButton,
                                          LeftButtonOnClickListener leftButtonOnClickListener,
                                          String navigatorEventId, boolean overrideBackPressInJs) {
+        createCollapsingTopBar();
         titleBar = new TitleBar(getContext());
-        addView(titleBar);
+        collapsingToolBar.addView(titleBar, 1);
         titleBar.setRightButtons(rightButtons, navigatorEventId);
         titleBar.setLeftButton(leftButton, leftButtonOnClickListener, navigatorEventId, overrideBackPressInJs);
+    }
+
+    private void createCollapsingTopBar() {
+        collapsingToolBar = new CollapsingToolBar(getContext());
+        ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) CollapsingToolBar.MAX_HEIGHT);
+        addView(collapsingToolBar, lp);
     }
 
     public void setTitle(String title) {
@@ -74,5 +84,13 @@ public class TopBar extends AppBarLayout {
 
         topTabs.setTopTabsTextColor(style);
         topTabs.setSelectedTabIndicatorStyle(style);
+    }
+
+    public TitleBar getTitleBar() {
+        return titleBar;
+    }
+
+    public CollapsingToolBar getCollapsingToolBar() {
+        return collapsingToolBar;
     }
 }
