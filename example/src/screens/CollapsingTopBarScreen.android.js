@@ -4,7 +4,7 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
-  StyleSheet
+  StyleSheet,
 } from 'react-native';
 
 export default class ThirdTabScreen extends Component {
@@ -19,8 +19,7 @@ export default class ThirdTabScreen extends Component {
   }
   render() {
     return (
-      <View style={styles.container}>
-
+      <ScrollView style={styles.container}>
         <TouchableOpacity onPress={ this.onPushPress.bind(this) }>
           <Text style={styles.button}>Push Plain Screen</Text>
         </TouchableOpacity>
@@ -40,8 +39,7 @@ export default class ThirdTabScreen extends Component {
         <TouchableOpacity onPress={ this.onToggleNavBarPressed.bind(this) }>
           <Text style={styles.button}>Toggle Navigation Bar</Text>
         </TouchableOpacity>
-
-      </View>
+      </ScrollView>
     );
   }
   onPushPress() {
@@ -95,7 +93,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 18,
     marginBottom: 10,
-    marginTop:10,
+    marginTop:30,
     color: 'blue'
   }
 });

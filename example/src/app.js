@@ -8,6 +8,12 @@ registerScreens();
 Navigation.startTabBasedApp({
   tabs: [
     {
+      label: 'Collapsing',
+      screen: 'example.CollapsingTopBarScreen',
+      icon: require('../img/one.png'),
+      title: 'Collapsing TopBar example',
+    },
+    {
       label: 'One',
       screen: 'example.FirstTabScreen',
       icon: require('../img/one.png'),
@@ -32,9 +38,17 @@ Navigation.startTabBasedApp({
       title: 'Screen Two',
       navigatorStyle: {
         tabBarBackgroundColor: '#4dbce9',
+        tabBarButtonColor: '#ffffff',
+        tabBarSelectedButtonColor: '#ffff00'
       }
     }
-  ]
+  ],
+  appStyle: {
+    tabBarBackgroundColor: '#0f2362',
+    tabBarButtonColor: '#ffffff',
+    tabBarSelectedButtonColor: '#63d7cc'
+
+  }
 });
 // Navigation.startSingleScreenApp({
 //   screen: {
