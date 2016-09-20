@@ -18,11 +18,8 @@ public class ScrollViewDelegate implements View.OnTouchListener {
         void onScrollViewAdded(ScrollView scrollView);
 
         boolean didInterceptTouchEvent(MotionEvent ev);
-
-        boolean hasReachedMinimum();
     }
 
-    private ScrollView scrollView;
     private JSTouchDispatcher jsTouchDispatcher;
     private OnScrollListener listener;
     private Boolean didInterceptLastTouchEvent = null;
@@ -36,7 +33,7 @@ public class ScrollViewDelegate implements View.OnTouchListener {
 
     public void onViewAdded(View child) {
         if (child instanceof ScrollView) {
-            scrollView = (ScrollView) child;
+            ScrollView scrollView = (ScrollView) child;
             scrollView.setScrollbarFadingEnabled(false);
             listener.onScrollViewAdded(scrollView);
         }

@@ -129,17 +129,6 @@ public class ScrollListener implements ScrollViewDelegate.OnScrollListener {
 
     @Override
     public boolean didInterceptTouchEvent(MotionEvent ev) {
-        Log.i("didIntercept", "isCollapsing: " + isCollapsing + " hasReachedMinimum: " + hasReachedMinimum);
-        if (isCollapsing && !hasReachedMinimum) {
-            Log.d("GUYGUY", "true");
-            return true;
-        }
-        Log.w("GUYGUY", "false");
-        return false;
-    }
-
-    @Override
-    public boolean hasReachedMinimum() {
-        return hasReachedMinimum;
+        return isCollapsing && !hasReachedMinimum && !hasReachedMaximum;
     }
 }
