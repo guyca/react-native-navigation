@@ -1,14 +1,18 @@
 package com.reactnativenavigation.views.collapsingToolbar;
 
-import android.os.Build;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.ScrollView;
 
-public class ScrollViewDelegate implements ViewTreeObserver.OnScrollChangedListener {
+import com.reactnativenavigation.views.ContentView;
 
+public class ScrollViewDelegate implements View.OnTouchListener {
     public interface OnScrollListener {
-        void onScroll(ScrollView scrollView);
+        boolean onTouch(ContentView contentView, MotionEvent event);
+
+        void onScrollViewAdded(ScrollView scrollView);
+
+        boolean didInterceptTouchEvent(MotionEvent ev);
     }
 
     private ScrollView scrollView;
@@ -19,29 +23,8 @@ public class ScrollViewDelegate implements ViewTreeObserver.OnScrollChangedListe
 
     public void onViewAdded(View child) {
         if (child instanceof ScrollView) {
-            detach();
             scrollView = (ScrollView) child;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                scrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-                    @Override
-                    public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                        ScrollViewDelegate.this.onScrollChanged();
-                    }
-                });
-            } else {
-                scrollView.getViewTreeObserver().addOnScrollChangedListener(this);
-            }
-        }
-    }
-
-    private void detach() {
-        if (scrollView != null) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                scrollView.setOnScrollChangeListener(null);
-            } else {
-                scrollView.getViewTreeObserver().removeOnScrollChangedListener(this);
-            }
-            scrollView = null;
+            listener.onScrollViewAdded(scrollView);
         }
     }
 
@@ -49,10 +32,12 @@ public class ScrollViewDelegate implements ViewTreeObserver.OnScrollChangedListe
         this.listener = listener;
     }
 
+    public boolean didInterceptTouchEvent(MotionEvent ev) {
+        return listener.didInterceptTouchEvent(ev);
+    }
+
     @Override
-    public void onScrollChanged() {
-        if (this.listener != null) {
-            this.listener.onScroll(scrollView);
-        }
+    public boolean onTouch(View contentView, MotionEvent event) {
+        return this.listener.onTouch((ContentView) contentView, event);
     }
 }

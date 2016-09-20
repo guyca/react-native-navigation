@@ -26,4 +26,8 @@ public class CollapsingToolBar extends CollapsingToolbarLayout {
         image.setScaleType(ImageView.ScaleType.CENTER_CROP);
         addView(image, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
     }
+
+    public boolean isBackDropImageVisible() {
+        return image.getY() >= 0;
+    }
 }

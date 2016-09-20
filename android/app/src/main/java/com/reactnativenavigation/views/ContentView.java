@@ -1,6 +1,7 @@
 package com.reactnativenavigation.views;
 
 import android.content.Context;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.facebook.react.ReactRootView;
@@ -12,13 +13,17 @@ import com.reactnativenavigation.views.collapsingToolbar.ScrollListener;
 import com.reactnativenavigation.views.collapsingToolbar.ScrollViewDelegate;
 
 public class ContentView extends ReactRootView {
-
+    private static final String TAG = "ContentView";
     private final String screenId;
     private final NavigationParams navigationParams;
 
     boolean isContentVisible = false;
     private SingleScreen.OnDisplayListener onDisplayListener;
     private ScrollViewDelegate scrollViewDelegate;
+
+    public void setOnDisplayListener(SingleScreen.OnDisplayListener onDisplayListener) {
+        this.onDisplayListener = onDisplayListener;
+    }
 
     public ContentView(Context context, String screenId, NavigationParams navigationParams) {
         this(context, screenId, navigationParams, null);
@@ -30,7 +35,12 @@ public class ContentView extends ReactRootView {
         this.navigationParams = navigationParams;
         attachToJS();
         scrollViewDelegate = new ScrollViewDelegate();
-        scrollViewDelegate.setListener(new ScrollListener(topBar));
+        scrollViewDelegate.setListener(new ScrollListener(topBar, this));
+    }
+
+    private void attachToJS() {
+        startReactApplication(NavigationApplication.instance.getReactGateway().getReactInstanceManager(), screenId,
+                navigationParams.toBundle());
     }
 
     public String getNavigatorEventId() {
@@ -39,6 +49,19 @@ public class ContentView extends ReactRootView {
 
     public void unmountReactView() {
         unmountReactApplication();
+    }
+
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+//        Log.d(TAG, "onInterceptTouchEvent() called with: " + "ev = [" + ev + "]");
+        return scrollViewDelegate.didInterceptTouchEvent(ev) || super.onInterceptTouchEvent(ev);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent ev) {
+//        return super.onTouchEvent(ev);
+//        Log.d(TAG, "onTouchEvent() called with: " + "ev = [" + ev + "]");
+        return scrollViewDelegate.onTouch(this, ev);
     }
 
     @Override
@@ -61,14 +84,5 @@ public class ContentView extends ReactRootView {
                 }
             });
         }
-    }
-
-    private void attachToJS() {
-        startReactApplication(NavigationApplication.instance.getReactGateway().getReactInstanceManager(), screenId,
-                navigationParams.toBundle());
-    }
-
-    public void setOnDisplayListener(SingleScreen.OnDisplayListener onDisplayListener) {
-        this.onDisplayListener = onDisplayListener;
     }
 }
