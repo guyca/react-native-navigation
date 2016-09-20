@@ -44,12 +44,12 @@ public class ScrollViewDelegate implements View.OnTouchListener {
     }
 
     public boolean didInterceptTouchEvent(MotionEvent ev) {
-        boolean shouldIntercept = listener.didInterceptTouchEvent(ev);
-        if (!shouldIntercept && !touchDownReported && wasLastTouchIntercepted()) {
+        boolean didInterceptTouchEvent = listener.didInterceptTouchEvent(ev);
+        if (!touchDownReported && wasLastTouchIntercepted()) {
             sendDownEventBeforePassingTouchEventsToScrollView(ev);
             return false;
         }
-        didInterceptLastTouchEvent = shouldIntercept;
+        didInterceptLastTouchEvent = didInterceptTouchEvent;
         return true;
     }
 

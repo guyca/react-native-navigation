@@ -17,7 +17,7 @@ public class ScrollListener implements ScrollViewDelegate.OnScrollListener {
     private ScrollView scrollView;
     private boolean hasReachedMinimum;
     private boolean hasReachedMaximum = true;
-    private boolean isCollapsing = true;
+    private boolean isCollapsing = false;
     private boolean isDragging = false;
     private int delta;
     private int previousDelta = 0;
@@ -72,26 +72,30 @@ public class ScrollListener implements ScrollViewDelegate.OnScrollListener {
         }
 
         delta = (int) (y - yTouchDown + previousDelta);
+        checkCollapseLimits();
         ScrollDirection.Direction direction = getScrollDirection(y);
         Log.v("Delta", "delta: " + delta);
-
-        int currentTopBarTranslation = delta;
-        int minTranslation = -topBar.getTitleBar().getHeight();
-        int maxTranslation = 0;
         Log.w(TAG, "direction: " + direction);
-        hasReachedMinimum = calculateHasReachedMinimum(currentTopBarTranslation, minTranslation, direction);
-        hasReachedMaximum = calculateHasReachedMaximum(currentTopBarTranslation, maxTranslation, direction);
-
 
         if (canCollapse(direction)) {
             setTopBarTranslationY();
             setContentViewTranslationY();
             previousY = y;
+            isCollapsing = true;
             return true;
         } else {
+            isCollapsing = false;
             Log.e(TAG, "Not handling scroll");
-            return true;
+            return false;
         }
+    }
+
+    private void checkCollapseLimits() {
+        int currentTopBarTranslation = delta;
+        int minTranslation = -topBar.getTitleBar().getHeight();
+        int maxTranslation = 0;
+        hasReachedMinimum = calculateHasReachedMinimum(currentTopBarTranslation, minTranslation);
+        hasReachedMaximum = calculateHasReachedMaximum(currentTopBarTranslation, maxTranslation);
     }
 
     private boolean canCollapse(ScrollDirection.Direction direction) {
@@ -100,11 +104,11 @@ public class ScrollListener implements ScrollViewDelegate.OnScrollListener {
                (hasReachedMaximum && direction == ScrollDirection.Direction.Up)) || (!hasReachedMaximum && !hasReachedMinimum));
     }
 
-    private boolean calculateHasReachedMaximum(int currentTopBarTranslation, int maxTranslation, ScrollDirection.Direction direction) {
+    private boolean calculateHasReachedMaximum(int currentTopBarTranslation, int maxTranslation) {
         return currentTopBarTranslation >= maxTranslation;
     }
 
-    private boolean calculateHasReachedMinimum(int currentTopBarTranslation, int minTranslation, ScrollDirection.Direction direction) {
+    private boolean calculateHasReachedMinimum(int currentTopBarTranslation, int minTranslation) {
         return currentTopBarTranslation <= minTranslation;
     }
 
