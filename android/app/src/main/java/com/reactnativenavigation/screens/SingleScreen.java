@@ -3,6 +3,7 @@ package com.reactnativenavigation.screens;
 import android.support.v7.app.AppCompatActivity;
 
 import com.reactnativenavigation.params.ScreenParams;
+import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.views.ContentView;
 import com.reactnativenavigation.views.LeftButtonOnClickListener;
 
@@ -20,7 +21,7 @@ public class SingleScreen extends Screen {
     @Override
     protected void createContent() {
         contentView = new ContentView(getContext(), screenParams.screenId, screenParams.navigationParams, topBar);
-        LayoutParams params = new LayoutParams(MATCH_PARENT, MATCH_PARENT);
+        LayoutParams params = new LayoutParams(MATCH_PARENT, (int) ViewUtils.getScreenHeight());
         if (screenParams.styleParams.drawScreenBelowTopBar) {
             params.addRule(BELOW, topBar.getId());
         }

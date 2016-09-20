@@ -13,6 +13,7 @@ public class ScrollListener implements ScrollViewDelegate.OnScrollListener {
     private ContentView contentView;
     CollapsingToolBar collapsingToolBar;
     private float yTouchDown = -1;
+    private float previousY = -1;
     private ScrollView scrollView;
     private boolean hasReachedMinimum;
     private boolean hasReachedMaximum;
@@ -30,9 +31,9 @@ public class ScrollListener implements ScrollViewDelegate.OnScrollListener {
     private ScrollDirection scrollDirectionComputer;
 
     @Override
-    public boolean onTouch(ContentView contentView, MotionEvent event) {
+    public boolean onTouch(MotionEvent event) {
         updateInitialTouchY(event);
-        return handleTouch(scrollView, contentView, event);
+        return handleTouch(scrollView, event);
     }
 
     @Override
@@ -64,35 +65,40 @@ public class ScrollListener implements ScrollViewDelegate.OnScrollListener {
         isDragging = false;
     }
 
-    private boolean handleTouch(ScrollView scrollView, ContentView contentView, MotionEvent event) {
-//        Log.i("collapse", "handleTouch");
+    private boolean handleTouch(ScrollView scrollView, MotionEvent event) {
         if (scrollDirectionComputer == null) {
             scrollDirectionComputer = new ScrollDirection(scrollView);
         }
 
-        int currentTopBarTranslation = (int) topBar.getTranslationY();
-
-        int minTranslation = -topBar.getTitleBar().getHeight();
-        int maxTranslation = 0;
-
-//        ScrollDirection.Direction direction = scrollDirectionComputer.getScrollDirection();
-        ScrollDirection.Direction direction = getScrollDirection(event);
-
-        hasReachedMinimum =
-                direction == ScrollDirection.Direction.Up && currentTopBarTranslation <= minTranslation;
-        hasReachedMaximum =
-                direction == ScrollDirection.Direction.Down && currentTopBarTranslation >= maxTranslation;
-
         delta = (int) (event.getRawY() - yTouchDown + previousDelta);
+        ScrollDirection.Direction direction = getScrollDirection(event);
         Log.v("Delta", "delta: " + delta);
 
-        if (isDragging) {
+        int currentTopBarTranslation = delta;
+        int minTranslation = -topBar.getTitleBar().getHeight();
+        int maxTranslation = 0;
+        Log.w(TAG, "direction: " + direction);
+        hasReachedMinimum = calculateHasReachedMinimum(currentTopBarTranslation, minTranslation, direction);
+        hasReachedMaximum = calculateHasReachedMaximum(currentTopBarTranslation, maxTranslation, direction);
+
+        previousY = event.getRawY();
+
+        if (isDragging && !hasReachedMinimum && !hasReachedMaximum && direction != ScrollDirection.Direction.None) {
             setTopBarTranslationY();
             setContentViewTranslationY();
             return true;
         } else {
-            return false;
+            Log.e(TAG, "Not handling scroll");
+            return true;
         }
+    }
+
+    private boolean calculateHasReachedMaximum(int currentTopBarTranslation, int maxTranslation, ScrollDirection.Direction direction) {
+        return currentTopBarTranslation >= maxTranslation;
+    }
+
+    private boolean calculateHasReachedMinimum(int currentTopBarTranslation, int minTranslation, ScrollDirection.Direction direction) {
+        return currentTopBarTranslation <= minTranslation;
     }
 
     private void setTopBarTranslationY() {
@@ -104,27 +110,10 @@ public class ScrollListener implements ScrollViewDelegate.OnScrollListener {
     }
 
     private ScrollDirection.Direction  getScrollDirection(MotionEvent event) {
-        if (event.getY() == yTouchDown) {
+        if (event.getRawY() == (previousY == -1 ? yTouchDown : previousY)) {
             return ScrollDirection.Direction.None;
         }
-        return event.getY() < yTouchDown ? ScrollDirection.Direction.Down : ScrollDirection.Direction.Up;
-    }
-
-    private boolean hasReachedCollapseBounds(ScrollDirection.Direction direction, boolean reachedMinimum, boolean reachedMaximum) {
-        if (reachedMinimum && delta != 0) {
-            Log.i("collapse", "hasReachedMinimum");
-            return true;
-        }
-        if (reachedMaximum && delta != 0) {
-            Log.w("collapse", "hasReachedMaximum");
-            return true;
-        }
-        if (direction == ScrollDirection.Direction.None) {
-            Log.v("collapse", "direction == ScrollDirection.Direction.None");
-            return true;
-        }
-        return false;
-//        return direction == ScrollDirection.Direction.None || reachedMinimum || reachedMaximum;
+        return event.getRawY() < previousY ? ScrollDirection.Direction.Up : ScrollDirection.Direction.Down;
     }
 
     @Override
@@ -136,5 +125,10 @@ public class ScrollListener implements ScrollViewDelegate.OnScrollListener {
         }
         Log.w("GUYGUY", "false");
         return false;
+    }
+
+    @Override
+    public boolean hasReachedMinimum() {
+        return hasReachedMinimum;
     }
 }

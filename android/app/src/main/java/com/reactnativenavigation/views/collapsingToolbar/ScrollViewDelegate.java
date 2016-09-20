@@ -4,26 +4,40 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ScrollView;
 
-import com.reactnativenavigation.views.ContentView;
+import com.facebook.react.uimanager.JSTouchDispatcher;
+import com.facebook.react.uimanager.UIManagerModule;
+import com.facebook.react.uimanager.events.EventDispatcher;
+import com.reactnativenavigation.NavigationApplication;
 
 public class ScrollViewDelegate implements View.OnTouchListener {
+    private final EventDispatcher eventDispatcher;
+
     public interface OnScrollListener {
-        boolean onTouch(ContentView contentView, MotionEvent event);
+        boolean onTouch(MotionEvent event);
 
         void onScrollViewAdded(ScrollView scrollView);
 
         boolean didInterceptTouchEvent(MotionEvent ev);
+
+        boolean hasReachedMinimum();
     }
 
     private ScrollView scrollView;
+    private JSTouchDispatcher jsTouchDispatcher;
     private OnScrollListener listener;
+    private Boolean didInterceptLastTouchEvent = null;
+    private boolean touchDownReported = false;
 
-    public ScrollViewDelegate() {
+    public ScrollViewDelegate(JSTouchDispatcher jsTouchDispatcher) {
+        this.jsTouchDispatcher = jsTouchDispatcher;
+        eventDispatcher = NavigationApplication.instance.getReactGateway().getReactContext().
+                getNativeModule(UIManagerModule.class).getEventDispatcher();
     }
 
     public void onViewAdded(View child) {
         if (child instanceof ScrollView) {
             scrollView = (ScrollView) child;
+            scrollView.setScrollbarFadingEnabled(false);
             listener.onScrollViewAdded(scrollView);
         }
     }
@@ -33,11 +47,28 @@ public class ScrollViewDelegate implements View.OnTouchListener {
     }
 
     public boolean didInterceptTouchEvent(MotionEvent ev) {
-        return listener.didInterceptTouchEvent(ev);
+        boolean shouldIntercept = listener.didInterceptTouchEvent(ev);
+        if (!shouldIntercept && !touchDownReported && wasLastTouchIntercepted()) {
+            sendDownEventBeforePassingTouchEventsToScrollView(ev);
+            return false;
+        }
+        didInterceptLastTouchEvent = shouldIntercept;
+        return true;
+    }
+
+    private void sendDownEventBeforePassingTouchEventsToScrollView(MotionEvent ev) {
+        MotionEvent simulatedDownEvent = MotionEvent.obtain(ev);
+        simulatedDownEvent.setAction(MotionEvent.ACTION_DOWN);
+        jsTouchDispatcher.handleTouchEvent(simulatedDownEvent, eventDispatcher);
+        touchDownReported = true;
+    }
+
+    private boolean wasLastTouchIntercepted() {
+        return didInterceptLastTouchEvent != null && didInterceptLastTouchEvent;
     }
 
     @Override
-    public boolean onTouch(View contentView, MotionEvent event) {
-        return this.listener.onTouch((ContentView) contentView, event);
+    public boolean onTouch(View view, MotionEvent event) {
+        return this.listener.onTouch(event);
     }
 }
