@@ -1,10 +1,12 @@
 package com.reactnativenavigation.views;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.view.ViewGroup;
 
+import com.reactnativenavigation.R;
 import com.reactnativenavigation.params.StyleParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
@@ -33,7 +35,7 @@ public class TopBar extends AppBarLayout {
         titleBar = new TitleBar(getContext());
         titleBar.setRightButtons(rightButtons, navigatorEventId);
         titleBar.setLeftButton(leftButton, leftButtonOnClickListener, navigatorEventId, overrideBackPressInJs);
-        collapsingToolBar.addView(titleBar, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        collapsingToolBar.addView(titleBar, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
     }
 
     private void createCollapsingTopBar() {
@@ -98,5 +100,13 @@ public class TopBar extends AppBarLayout {
     public void setTranslationY(float translationY) {
         titleBar.setTranslationY(-translationY);
         super.setTranslationY(translationY);
+    }
+
+    public int getCollapsedTopBarHeight() {
+        int[] attrs = new int[] {R.attr.actionBarSize};
+        TypedArray ta = getContext().obtainStyledAttributes(attrs);
+        int topBarHeight = ta.getDimensionPixelSize(0, -1);
+        ta.recycle();
+        return topBarHeight;
     }
 }

@@ -35,8 +35,7 @@ public class ScrollListener implements ScrollViewDelegate.OnScrollListener {
         ViewUtils.runOnPreDraw(topBar, new Runnable() {
             @Override
             public void run() {
-                finalCollapsedTranslation = -(topBar.getHeight() - topBar.getTitleBar().getHeight());
-
+                finalCollapsedTranslation = -(topBar.getHeight() - topBar.getCollapsedTopBarHeight());
             }
         });
     }
