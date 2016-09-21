@@ -4,6 +4,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.ScrollView;
 
+import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.views.ContentView;
 import com.reactnativenavigation.views.TopBar;
 
@@ -15,17 +16,28 @@ public class ScrollListener implements ScrollViewDelegate.OnScrollListener {
     private float yTouchDown = -1;
     private float previousY = -1;
     private ScrollView scrollView;
-    private boolean hasReachedMinimum;
-    private boolean hasReachedMaximum = true;
+    private boolean isExpended;
+    private boolean isCollapsed = true;
+    private boolean canCollapse = true;
+    protected boolean canExpend = false;
     private boolean isCollapsing = false;
     private boolean isDragging = false;
     private int delta;
     private int previousDelta = 0;
+    private int finalCollapsedTranslation;
+    private final int finalExpendedTranslation;
 
-    public ScrollListener(TopBar topBar, ContentView contentView) {
+    public ScrollListener(final TopBar topBar, ContentView contentView) {
         this.topBar = topBar;
         this.contentView = contentView;
         collapsingToolBar = topBar.getCollapsingToolBar();
+        finalExpendedTranslation = 0;
+        ViewUtils.runOnPreDraw(topBar, new Runnable() {
+            @Override
+            public void run() {
+                finalCollapsedTranslation = -topBar.getTitleBar().getHeight();
+            }
+        });
     }
 
     private ScrollDirection scrollDirectionComputer;
@@ -51,7 +63,8 @@ public class ScrollListener implements ScrollViewDelegate.OnScrollListener {
 
     private void saveInitialTouchYIfNeeded(MotionEvent event) {
         if (yTouchDown < 0) {
-            yTouchDown = event.getRawY() + previousDelta;
+            yTouchDown = event.getRawY();
+            previousY = yTouchDown;
             isDragging = true;
             Log.i(TAG, "Saving initial touch: " + yTouchDown);
         }
@@ -79,7 +92,7 @@ public class ScrollListener implements ScrollViewDelegate.OnScrollListener {
         Log.v("Delta", "delta: " + delta);
         Log.w(TAG, "direction: " + direction);
 
-        if (canCollapse(direction)) {
+        if (shouldTranslateTopBarAndScrollView(direction)) {
             setTopBarTranslationY();
             setContentViewTranslationY();
             previousY = y;
@@ -94,38 +107,63 @@ public class ScrollListener implements ScrollViewDelegate.OnScrollListener {
     }
 
     private void checkCollapseLimits() {
-        int currentTopBarTranslation = delta;
-        int minTranslation = -topBar.getTitleBar().getHeight();
-        int maxTranslation = 0;
-        hasReachedMinimum = calculateHasReachedMinimum(currentTopBarTranslation, minTranslation);
-        hasReachedMaximum = calculateHasReachedMaximum(currentTopBarTranslation, maxTranslation);
+        int currentTopBarTranslation = (int) topBar.getTranslationY();
+        isExpended = isExpended(currentTopBarTranslation, finalExpendedTranslation);
+        isCollapsed = isCollapsed(currentTopBarTranslation, finalCollapsedTranslation);
+        canCollapse = calculateCanCollapse(currentTopBarTranslation, finalExpendedTranslation, finalCollapsedTranslation);
+        canExpend = calculateCanExpend(currentTopBarTranslation, finalExpendedTranslation, finalCollapsedTranslation);
+        Log.v("checkCollapseLimits", "canExpend: " + canExpend + " canCollapse: " + canCollapse);
     }
 
-    private boolean canCollapse(ScrollDirection.Direction direction) {
-        Log.v("canCollapse", "direction: " + direction + "" +
-                             "   a: " + ((hasReachedMinimum && direction == ScrollDirection.Direction.Down) ||
-                                      (hasReachedMaximum && direction == ScrollDirection.Direction.Up)) + "" +
-                             "   b: " + (!hasReachedMaximum && !hasReachedMinimum));
+    private boolean calculateCanCollapse(int currentTopBarTranslation, int finalExpendedTranslation, int finalCollapsedTranslation) {
+        return currentTopBarTranslation > finalCollapsedTranslation && currentTopBarTranslation <= finalExpendedTranslation;
+    }
+
+    private boolean calculateCanExpend(int currentTopBarTranslation, int finalExpendedTranslation, int finalCollapsedTranslation) {
+        return currentTopBarTranslation >= finalCollapsedTranslation && currentTopBarTranslation < finalExpendedTranslation;
+    }
+
+    private boolean shouldTranslateTopBarAndScrollView(ScrollDirection.Direction direction) {
+        Log.i("shouldTranslate", "isExpended: " + isExpended + " isCollapsed: " + isCollapsed + " direction: " + direction);
         return isDragging &&
-               (((hasReachedMinimum && direction == ScrollDirection.Direction.Down) ||
-               (hasReachedMaximum && direction == ScrollDirection.Direction.Up)) || (!hasReachedMaximum && !hasReachedMinimum));
+               (isNotFullyCollapsedOrExpended() ||
+                (isExpended && direction == ScrollDirection.Direction.Up) ||
+                (isCollapsed && direction == ScrollDirection.Direction.Down));
     }
 
-    private boolean calculateHasReachedMaximum(int currentTopBarTranslation, int maxTranslation) {
-        Log.w("canCollapse", "calculateHasReachedMaximum " + (currentTopBarTranslation >= maxTranslation));
-        return currentTopBarTranslation >= maxTranslation;
+    private boolean isNotFullyCollapsedOrExpended() {
+        Log.d("NotCollapsedOrExpended", "canExpend: " + canExpend + " canCollapse: " + canCollapse);
+        return canExpend && canCollapse;
     }
 
-    private boolean calculateHasReachedMinimum(int currentTopBarTranslation, int minTranslation) {
-        return currentTopBarTranslation <= minTranslation;
+    private boolean isCollapsed(int currentTopBarTranslation, int finalCollapsedTranslation) {
+        return currentTopBarTranslation == finalCollapsedTranslation;
+    }
+
+    private boolean isExpended(int currentTopBarTranslation, int finalExpendedTranslation) {
+        return currentTopBarTranslation == finalExpendedTranslation;
     }
 
     private void setTopBarTranslationY() {
-        topBar.setTranslationY(delta);
+        float translation = delta;
+        if (translation < finalCollapsedTranslation) {
+            translation = finalCollapsedTranslation;
+        }
+        if (translation > finalExpendedTranslation) {
+            translation = finalExpendedTranslation;
+        }
+        topBar.setTranslationY(translation);
     }
 
     private void setContentViewTranslationY() {
-        contentView.setTranslationY(delta);
+        float translation = delta;
+        if (translation < finalCollapsedTranslation) {
+            translation = finalCollapsedTranslation;
+        }
+        if (translation > finalExpendedTranslation) {
+            translation = finalExpendedTranslation;
+        }
+        contentView.setTranslationY(translation);
     }
 
     private ScrollDirection.Direction getScrollDirection(float y) {
@@ -133,7 +171,6 @@ public class ScrollListener implements ScrollViewDelegate.OnScrollListener {
             return ScrollDirection.Direction.None;
         }
         ScrollDirection.Direction ret = y < previousY ? ScrollDirection.Direction.Up : ScrollDirection.Direction.Down;
-        Log.i("canScroll", y + " < " + previousY + "  -->  " + ret);
         return ret;
     }
 
@@ -143,6 +180,6 @@ public class ScrollListener implements ScrollViewDelegate.OnScrollListener {
 
     @Override
     public boolean didInterceptTouchEvent(MotionEvent ev) {
-        return isCollapsing && !hasReachedMinimum && !hasReachedMaximum;
+        return isCollapsing && !isExpended && !isCollapsed;
     }
 }
