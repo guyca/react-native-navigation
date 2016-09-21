@@ -51,7 +51,7 @@ public class ScrollListener implements ScrollViewDelegate.OnScrollListener {
 
     private void saveInitialTouchYIfNeeded(MotionEvent event) {
         if (yTouchDown < 0) {
-            yTouchDown = event.getRawY();
+            yTouchDown = event.getRawY() + previousDelta;
             isDragging = true;
             Log.i(TAG, "Saving initial touch: " + yTouchDown);
         }
@@ -67,11 +67,13 @@ public class ScrollListener implements ScrollViewDelegate.OnScrollListener {
     }
 
     private boolean handleTouch(ScrollView scrollView, float y) {
+        Log.v(TAG, "handleTouch");
         if (scrollDirectionComputer == null) {
             scrollDirectionComputer = new ScrollDirection(scrollView);
         }
 
         delta = (int) (y - yTouchDown + previousDelta);
+//        delta = (int) (y - yTouchDown);
         checkCollapseLimits();
         ScrollDirection.Direction direction = getScrollDirection(y);
         Log.v("Delta", "delta: " + delta);
@@ -85,6 +87,7 @@ public class ScrollListener implements ScrollViewDelegate.OnScrollListener {
             return true;
         } else {
             isCollapsing = false;
+//            previousY = y;
             Log.e(TAG, "Not handling scroll");
             return false;
         }
@@ -99,12 +102,17 @@ public class ScrollListener implements ScrollViewDelegate.OnScrollListener {
     }
 
     private boolean canCollapse(ScrollDirection.Direction direction) {
+        Log.v("canCollapse", "direction: " + direction + "" +
+                             "   a: " + ((hasReachedMinimum && direction == ScrollDirection.Direction.Down) ||
+                                      (hasReachedMaximum && direction == ScrollDirection.Direction.Up)) + "" +
+                             "   b: " + (!hasReachedMaximum && !hasReachedMinimum));
         return isDragging &&
                (((hasReachedMinimum && direction == ScrollDirection.Direction.Down) ||
                (hasReachedMaximum && direction == ScrollDirection.Direction.Up)) || (!hasReachedMaximum && !hasReachedMinimum));
     }
 
     private boolean calculateHasReachedMaximum(int currentTopBarTranslation, int maxTranslation) {
+        Log.w("canCollapse", "calculateHasReachedMaximum " + (currentTopBarTranslation >= maxTranslation));
         return currentTopBarTranslation >= maxTranslation;
     }
 
@@ -124,7 +132,9 @@ public class ScrollListener implements ScrollViewDelegate.OnScrollListener {
         if (y == getPreviousY()) {
             return ScrollDirection.Direction.None;
         }
-        return y < previousY ? ScrollDirection.Direction.Up : ScrollDirection.Direction.Down;
+        ScrollDirection.Direction ret = y < previousY ? ScrollDirection.Direction.Up : ScrollDirection.Direction.Down;
+        Log.i("canScroll", y + " < " + previousY + "  -->  " + ret);
+        return ret;
     }
 
     private float getPreviousY() {

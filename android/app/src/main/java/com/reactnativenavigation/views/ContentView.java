@@ -69,8 +69,6 @@ public class ContentView extends ReactRootView {
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
         Log.d(TAG, "onTouchEvent() called with: " + "ev = [" + ev + "]");
-//        return scrollViewDelegate.onTouch(this, ev) || super.onTouchEvent(ev);
-
         return super.onTouchEvent(ev);
     }
 
@@ -79,9 +77,9 @@ public class ContentView extends ReactRootView {
         Log.v(TAG, "dispatchTouchEvent. " + ev.getRawY());
         if (scrollViewDelegate.didInterceptTouchEvent(ev)) {
             boolean consumed = scrollViewDelegate.onTouch(this, ev);
-            Log.i(TAG, "Consuming dispatchTouchEvent " + consumed);
             if (consumed) {
-                return false;
+                Log.i(TAG, "Consuming dispatchTouchEvent " + consumed);
+                return true;
             }
         }
         return super.dispatchTouchEvent(ev);
