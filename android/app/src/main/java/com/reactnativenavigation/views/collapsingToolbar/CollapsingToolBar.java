@@ -1,18 +1,17 @@
 package com.reactnativenavigation.views.collapsingToolbar;
 
 import android.content.Context;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.reactnativenavigation.R;
 import com.reactnativenavigation.utils.ViewUtils;
 
-public class CollapsingToolBar extends CollapsingToolbarLayout {
+public class CollapsingToolBar extends FrameLayout {
     public static final float MAX_HEIGHT = ViewUtils.convertDpToPixel(256);
 
     private ImageView image;
-
 
     public CollapsingToolBar(Context context) {
         super(context);
@@ -24,10 +23,7 @@ public class CollapsingToolBar extends CollapsingToolbarLayout {
         image = new ImageView(getContext());
         image.setImageResource(R.drawable.gyro_header);
         image.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        image.setFitsSystemWindows(true);
         addView(image, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-    }
-
-    public boolean isBackDropImageVisible() {
-        return image.getY() >= 0;
     }
 }

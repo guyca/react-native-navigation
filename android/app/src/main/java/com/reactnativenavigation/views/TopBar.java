@@ -23,17 +23,17 @@ public class TopBar extends AppBarLayout {
         super(context);
         setFitsSystemWindows(true);
         setId(ViewUtils.generateViewId());
+        createCollapsingTopBar();
     }
 
     public void addTitleBarAndSetButtons(List<TitleBarButtonParams> rightButtons,
                                          TitleBarLeftButtonParams leftButton,
                                          LeftButtonOnClickListener leftButtonOnClickListener,
                                          String navigatorEventId, boolean overrideBackPressInJs) {
-        createCollapsingTopBar();
         titleBar = new TitleBar(getContext());
-        collapsingToolBar.addView(titleBar, 1);
         titleBar.setRightButtons(rightButtons, navigatorEventId);
         titleBar.setLeftButton(leftButton, leftButtonOnClickListener, navigatorEventId, overrideBackPressInJs);
+        collapsingToolBar.addView(titleBar, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
     }
 
     private void createCollapsingTopBar() {
@@ -92,5 +92,11 @@ public class TopBar extends AppBarLayout {
 
     public CollapsingToolBar getCollapsingToolBar() {
         return collapsingToolBar;
+    }
+
+    @Override
+    public void setTranslationY(float translationY) {
+        titleBar.setTranslationY(-translationY);
+        super.setTranslationY(translationY);
     }
 }

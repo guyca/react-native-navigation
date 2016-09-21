@@ -35,7 +35,8 @@ public class ScrollListener implements ScrollViewDelegate.OnScrollListener {
         ViewUtils.runOnPreDraw(topBar, new Runnable() {
             @Override
             public void run() {
-                finalCollapsedTranslation = -topBar.getTitleBar().getHeight();
+                finalCollapsedTranslation = -(topBar.getHeight() - topBar.getTitleBar().getHeight());
+
             }
         });
     }
@@ -126,12 +127,18 @@ public class ScrollListener implements ScrollViewDelegate.OnScrollListener {
     private boolean shouldTranslateTopBarAndScrollView(ScrollDirection.Direction direction) {
         Log.i("shouldTranslate", "isExpended: " + isExpended + " isCollapsed: " + isCollapsed + " direction: " + direction);
         return isDragging &&
-               (isNotFullyCollapsedOrExpended() ||
-                (isExpended && direction == ScrollDirection.Direction.Up) ||
-                (isCollapsed && direction == ScrollDirection.Direction.Down));
+               (isNotCollapsedOrExpended() || isExpendedAndScrollingUp(direction) || isCollapsedAndScrollingDown(direction));
     }
 
-    private boolean isNotFullyCollapsedOrExpended() {
+    private boolean isCollapsedAndScrollingDown(ScrollDirection.Direction direction) {
+        return isCollapsed && direction == ScrollDirection.Direction.Down;
+    }
+
+    private boolean isExpendedAndScrollingUp(ScrollDirection.Direction direction) {
+        return isExpended && direction == ScrollDirection.Direction.Up;
+    }
+
+    private boolean isNotCollapsedOrExpended() {
         Log.d("NotCollapsedOrExpended", "canExpend: " + canExpend + " canCollapse: " + canCollapse);
         return canExpend && canCollapse;
     }
