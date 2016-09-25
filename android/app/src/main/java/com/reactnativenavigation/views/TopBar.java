@@ -1,12 +1,10 @@
 package com.reactnativenavigation.views;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.view.ViewGroup;
 
-import com.reactnativenavigation.R;
 import com.reactnativenavigation.params.StyleParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
@@ -35,7 +33,7 @@ public class TopBar extends AppBarLayout {
         titleBar = new TitleBar(getContext());
         titleBar.setRightButtons(rightButtons, navigatorEventId);
         titleBar.setLeftButton(leftButton, leftButtonOnClickListener, navigatorEventId, overrideBackPressInJs);
-        collapsingToolBar.addView(titleBar, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        collapsingToolBar.addView(titleBar, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
     }
 
     private void createCollapsingTopBar() {
@@ -46,6 +44,7 @@ public class TopBar extends AppBarLayout {
 
     public void setTitle(String title) {
         titleBar.setTitle(title);
+//        collapsingToolBar.setTitle(title);
     }
 
     public void setSubtitle(String subtitle) {
@@ -88,25 +87,17 @@ public class TopBar extends AppBarLayout {
         topTabs.setSelectedTabIndicatorStyle(style);
     }
 
-    public TitleBar getTitleBar() {
-        return titleBar;
-    }
-
     public CollapsingToolBar getCollapsingToolBar() {
         return collapsingToolBar;
     }
 
-    @Override
-    public void setTranslationY(float translationY) {
-        titleBar.setTranslationY(-translationY);
-        super.setTranslationY(translationY);
+    public void collapseBy(float delta) {
+        titleBar.collapseBy(delta);
+//        titleBar.setTextSize(calculateTitleFontSize(delta));
+        setTranslationY(delta);
     }
 
-    public int getCollapsedTopBarHeight() {
-        int[] attrs = new int[] {R.attr.actionBarSize};
-        TypedArray ta = getContext().obtainStyledAttributes(attrs);
-        int topBarHeight = ta.getDimensionPixelSize(0, -1);
-        ta.recycle();
-        return topBarHeight;
-    }
+//    private float calculateTitleFontSize(float delta) {
+//        return (1 - Math.abs(delta / (CollapsingToolBar.MAX_HEIGHT - collapsingToolBar.getCollapsedTopBarHeight())));
+//    }
 }

@@ -20,6 +20,9 @@ public class TitleBar extends Toolbar {
     private LeftButton leftButton;
     private ActionMenuView actionMenuView;
     private TextView title;
+//    private float collapsedTitleFontSize;
+//    private float expendedTitleFontSize;
+//    private CollapsingTextHelper collapsingTextHelper;
 
     public TitleBar(Context context) {
         super(context);
@@ -33,18 +36,27 @@ public class TitleBar extends Toolbar {
         }
         if (child instanceof TextView) {
             title = (TextView) child;
-            setInitialTitlePosition();
+//            collapsingTextHelper = new CollapsingTextHelper(title);
+//            setInitialTitlePosition();
+//            setInitialTitleSize();
         }
     }
 
-    private void setInitialTitlePosition() {
-        ViewUtils.runOnPreDraw(title, new Runnable() {
-            @Override
-            public void run() {
-                title.setY(getHeight() - title.getHeight() - ViewUtils.convertDpToPixel(16));
-            }
-        });
-    }
+//    private void setInitialTitleSize() {
+////        collapsedTitleFontSize = ViewUtils.convertPixelToSp(title.getTextSize());
+////        expendedTitleFontSize = ViewUtils.convertPixelToSp(title.getTextSize() * 1.5f);
+//        title.setScaleX(1.5f);
+//        title.setScaleY(1.5f);
+//    }
+
+//    private void setInitialTitlePosition() {
+//        ViewUtils.runOnPreDraw(title, new Runnable() {
+//            @Override
+//            public void run() {
+//                title.setY(getHeight() - title.getHeight() - ViewUtils.convertDpToPixel(16));
+//            }
+//        });
+//    }
 
     public void setRightButtons(List<TitleBarButtonParams> rightButtons, String navigatorEventId) {
         Menu menu = getMenu();
@@ -127,4 +139,15 @@ public class TitleBar extends Toolbar {
         setNavigationOnClickListener(leftButton);
         setNavigationIcon(leftButton);
     }
+
+    public void collapseBy(float delta) {
+//        title.setY(getHeight() - title.getHeight() - ViewUtils.convertDpToPixel(16) + delta);
+        title.setTranslationY(0);
+        setTranslationY(-delta);
+    }
+
+//    public void setTextSize(float fraction) {
+////        collapsingTitleAnimationHelper.update(fraction);
+////        x.setFloatValues();
+//    }
 }

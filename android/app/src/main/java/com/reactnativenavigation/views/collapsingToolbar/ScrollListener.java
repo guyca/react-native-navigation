@@ -35,7 +35,7 @@ public class ScrollListener implements ScrollViewDelegate.OnScrollListener {
         ViewUtils.runOnPreDraw(topBar, new Runnable() {
             @Override
             public void run() {
-                finalCollapsedTranslation = -(topBar.getHeight() - topBar.getCollapsedTopBarHeight());
+                finalCollapsedTranslation = -(topBar.getHeight() - collapsingToolBar.getCollapsedTopBarHeight());
             }
         });
     }
@@ -86,7 +86,6 @@ public class ScrollListener implements ScrollViewDelegate.OnScrollListener {
         }
 
         delta = (int) (y - yTouchDown + previousDelta);
-//        delta = (int) (y - yTouchDown);
         checkCollapseLimits();
         ScrollDirection.Direction direction = getScrollDirection(y);
         Log.v("Delta", "delta: " + delta);
@@ -100,7 +99,6 @@ public class ScrollListener implements ScrollViewDelegate.OnScrollListener {
             return true;
         } else {
             isCollapsing = false;
-//            previousY = y;
             Log.e(TAG, "Not handling scroll");
             return false;
         }
@@ -158,7 +156,7 @@ public class ScrollListener implements ScrollViewDelegate.OnScrollListener {
         if (translation > finalExpendedTranslation) {
             translation = finalExpendedTranslation;
         }
-        topBar.setTranslationY(translation);
+        topBar.collapseBy(translation);
     }
 
     private void setContentViewTranslationY() {
