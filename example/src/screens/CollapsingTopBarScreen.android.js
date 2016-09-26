@@ -9,8 +9,24 @@ import {
 
 export default class ThirdTabScreen extends Component {
   static navigatorStyle = {
-    drawUnderTabBar: true
+    drawUnderTabBar: true,
+    navBarButtonColor: '#ffffff',
+    navBarTextColor: '#ffffff'
   };
+
+  static navigatorButtons = {
+    rightButtons: [
+      {
+        title: 'Edit',
+        id: 'edit'
+      },
+      {
+        icon: require('../../img/navicon_add.png'),
+        id: 'add'
+      }
+    ]
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -19,27 +35,29 @@ export default class ThirdTabScreen extends Component {
   }
   render() {
     return (
-      <ScrollView style={styles.container}>
-        <TouchableOpacity onPress={ this.onPushPress.bind(this) }>
-          <Text style={styles.button}>Push Plain Screen</Text>
-        </TouchableOpacity>
+        <ScrollView style={styles.container}>
+          <View style={{flex: 1, backgroundColor: '#ffffff'}}>
+            <TouchableOpacity onPress={ this.onPushPress.bind(this) }>
+              <Text style={styles.button}>Push Plain Screen</Text>
+            </TouchableOpacity>
 
-        <TouchableOpacity onPress={ this.onPushStyledPress.bind(this) }>
-          <Text style={styles.button}>Push Styled Screen</Text>
-        </TouchableOpacity>
+            <TouchableOpacity onPress={ this.onPushStyledPress.bind(this) }>
+              <Text style={styles.button}>Push Styled Screen</Text>
+            </TouchableOpacity>
 
-        <TouchableOpacity onPress={ this.onPushStyled2Press.bind(this) }>
-          <Text style={styles.button}>Push Styled Screen 2</Text>
-        </TouchableOpacity>
+            <TouchableOpacity onPress={ this.onPushStyled2Press.bind(this) }>
+              <Text style={styles.button}>Push Styled Screen 2</Text>
+            </TouchableOpacity>
 
-        <TouchableOpacity onPress={ this.onModalPress.bind(this) }>
-          <Text style={styles.button}>Show Modal Screen</Text>
-        </TouchableOpacity>
+            <TouchableOpacity onPress={ this.onModalPress.bind(this) }>
+              <Text style={styles.button}>Show Modal Screen</Text>
+            </TouchableOpacity>
 
-        <TouchableOpacity onPress={ this.onToggleNavBarPressed.bind(this) }>
-          <Text style={styles.button}>Toggle Navigation Bar</Text>
-        </TouchableOpacity>
-      </ScrollView>
+            <TouchableOpacity onPress={ this.onToggleNavBarPressed.bind(this) }>
+              <Text style={styles.button}>Toggle Navigation Bar</Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
     );
   }
   onPushPress() {
@@ -87,7 +105,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: 'white'
+    backgroundColor: '#eeeeee'
   },
   button: {
     textAlign: 'center',

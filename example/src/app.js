@@ -4,6 +4,7 @@ import {Navigation} from 'react-native-navigation';
 import {registerScreens} from './screens';
 registerScreens();
 
+
 // this will start our app
 Navigation.startTabBasedApp({
   tabs: [
@@ -11,7 +12,7 @@ Navigation.startTabBasedApp({
       label: 'Collapsing',
       screen: 'example.CollapsingTopBarScreen',
       icon: require('../img/one.png'),
-      title: 'Collapsing TopBar example',
+      title: 'Collapsing',
     },
     {
       label: 'One',
