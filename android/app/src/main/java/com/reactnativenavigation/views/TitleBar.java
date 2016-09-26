@@ -6,8 +6,8 @@ import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.View;
+import android.widget.TextView;
 
-import com.reactnativenavigation.animation.VisibilityAnimator;
 import com.reactnativenavigation.params.StyleParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
@@ -17,10 +17,12 @@ import java.util.List;
 
 public class TitleBar extends Toolbar {
 
-    private boolean hideOnScroll = false;
-    private VisibilityAnimator visibilityAnimator;
     private LeftButton leftButton;
     private ActionMenuView actionMenuView;
+    private TextView title;
+//    private float collapsedTitleFontSize;
+//    private float expendedTitleFontSize;
+//    private CollapsingTextHelper collapsingTextHelper;
 
     public TitleBar(Context context) {
         super(context);
@@ -32,16 +34,36 @@ public class TitleBar extends Toolbar {
         if (child instanceof ActionMenuView) {
             actionMenuView = (ActionMenuView) child;
         }
+        if (child instanceof TextView) {
+            title = (TextView) child;
+//            collapsingTextHelper = new CollapsingTextHelper(title);
+//            setInitialTitlePosition();
+//            setInitialTitleSize();
+        }
     }
+
+//    private void setInitialTitleSize() {
+////        collapsedTitleFontSize = ViewUtils.convertPixelToSp(title.getTextSize());
+////        expendedTitleFontSize = ViewUtils.convertPixelToSp(title.getTextSize() * 1.5f);
+//        title.setScaleX(1.5f);
+//        title.setScaleY(1.5f);
+//    }
+
+//    private void setInitialTitlePosition() {
+//        ViewUtils.runOnPreDraw(title, new Runnable() {
+//            @Override
+//            public void run() {
+//                title.setY(getHeight() - title.getHeight() - ViewUtils.convertDpToPixel(16));
+//            }
+//        });
+//    }
 
     public void setRightButtons(List<TitleBarButtonParams> rightButtons, String navigatorEventId) {
         Menu menu = getMenu();
         menu.clear();
-
         if (rightButtons == null) {
             return;
         }
-
         addButtonsToTitleBar(rightButtons, navigatorEventId, menu);
     }
 
@@ -118,20 +140,14 @@ public class TitleBar extends Toolbar {
         setNavigationIcon(leftButton);
     }
 
-    public void setHideOnScroll(boolean hideOnScroll) {
-        this.hideOnScroll = hideOnScroll;
+    public void collapseBy(float delta) {
+//        title.setY(getHeight() - title.getHeight() - ViewUtils.convertDpToPixel(16) + delta);
+        title.setTranslationY(0);
+        setTranslationY(-delta);
     }
 
-    public void onScrollChanged(ScrollDirectionListener.Direction direction) {
-        if (hideOnScroll) {
-            if (visibilityAnimator == null) {
-                createScrollAnimator();
-            }
-            visibilityAnimator.onScrollChanged(direction);
-        }
-    }
-
-    private void createScrollAnimator() {
-        visibilityAnimator = new VisibilityAnimator(this, VisibilityAnimator.HideDirection.Up, getHeight());
-    }
+//    public void setTextSize(float fraction) {
+////        collapsingTitleAnimationHelper.update(fraction);
+////        x.setFloatValues();
+//    }
 }

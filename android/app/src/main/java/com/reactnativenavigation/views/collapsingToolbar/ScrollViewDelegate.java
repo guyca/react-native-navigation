@@ -1,47 +1,41 @@
 package com.reactnativenavigation.views.collapsingToolbar;
 
-import android.os.Build;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.ScrollView;
 
-public class ScrollViewDelegate implements ViewTreeObserver.OnScrollChangedListener {
+import com.facebook.react.uimanager.JSTouchDispatcher;
+import com.facebook.react.uimanager.UIManagerModule;
+import com.facebook.react.uimanager.events.EventDispatcher;
+import com.reactnativenavigation.NavigationApplication;
+
+public class ScrollViewDelegate implements View.OnTouchListener {
+    private final EventDispatcher eventDispatcher;
 
     public interface OnScrollListener {
-        void onScroll(ScrollView scrollView);
+        boolean onTouch(MotionEvent event);
+
+        void onScrollViewAdded(ScrollView scrollView);
+
+        boolean didInterceptTouchEvent(MotionEvent ev);
     }
 
-    private ScrollView scrollView;
+    private JSTouchDispatcher jsTouchDispatcher;
     private OnScrollListener listener;
+    private Boolean didInterceptLastTouchEvent = null;
+    private boolean touchDownReported = false;
 
-    public ScrollViewDelegate() {
+    public ScrollViewDelegate(JSTouchDispatcher jsTouchDispatcher) {
+        this.jsTouchDispatcher = jsTouchDispatcher;
+        eventDispatcher = NavigationApplication.instance.getReactGateway().getReactContext().
+                getNativeModule(UIManagerModule.class).getEventDispatcher();
     }
 
     public void onViewAdded(View child) {
         if (child instanceof ScrollView) {
-            detach();
-            scrollView = (ScrollView) child;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                scrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-                    @Override
-                    public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                        ScrollViewDelegate.this.onScrollChanged();
-                    }
-                });
-            } else {
-                scrollView.getViewTreeObserver().addOnScrollChangedListener(this);
-            }
-        }
-    }
-
-    private void detach() {
-        if (scrollView != null) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                scrollView.setOnScrollChangeListener(null);
-            } else {
-                scrollView.getViewTreeObserver().removeOnScrollChangedListener(this);
-            }
-            scrollView = null;
+            ScrollView scrollView = (ScrollView) child;
+            scrollView.setScrollbarFadingEnabled(false);
+            listener.onScrollViewAdded(scrollView);
         }
     }
 
@@ -49,10 +43,29 @@ public class ScrollViewDelegate implements ViewTreeObserver.OnScrollChangedListe
         this.listener = listener;
     }
 
-    @Override
-    public void onScrollChanged() {
-        if (this.listener != null) {
-            this.listener.onScroll(scrollView);
+    public boolean didInterceptTouchEvent(MotionEvent ev) {
+        boolean didInterceptTouchEvent = listener.didInterceptTouchEvent(ev);
+        if (!touchDownReported && wasLastTouchIntercepted()) {
+            sendDownEventBeforePassingTouchEventsToScrollView(ev);
+            return false;
         }
+        didInterceptLastTouchEvent = didInterceptTouchEvent;
+        return true;
+    }
+
+    private void sendDownEventBeforePassingTouchEventsToScrollView(MotionEvent ev) {
+        MotionEvent simulatedDownEvent = MotionEvent.obtain(ev);
+        simulatedDownEvent.setAction(MotionEvent.ACTION_DOWN);
+        jsTouchDispatcher.handleTouchEvent(simulatedDownEvent, eventDispatcher);
+        touchDownReported = true;
+    }
+
+    private boolean wasLastTouchIntercepted() {
+        return didInterceptLastTouchEvent != null && didInterceptLastTouchEvent;
+    }
+
+    @Override
+    public boolean onTouch(View view, MotionEvent event) {
+        return this.listener.onTouch(event);
     }
 }

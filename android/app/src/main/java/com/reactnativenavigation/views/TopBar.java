@@ -23,17 +23,17 @@ public class TopBar extends AppBarLayout {
         super(context);
         setFitsSystemWindows(true);
         setId(ViewUtils.generateViewId());
+        createCollapsingTopBar();
     }
 
     public void addTitleBarAndSetButtons(List<TitleBarButtonParams> rightButtons,
                                          TitleBarLeftButtonParams leftButton,
                                          LeftButtonOnClickListener leftButtonOnClickListener,
                                          String navigatorEventId, boolean overrideBackPressInJs) {
-        createCollapsingTopBar();
         titleBar = new TitleBar(getContext());
-        collapsingToolBar.addView(titleBar, 1);
         titleBar.setRightButtons(rightButtons, navigatorEventId);
         titleBar.setLeftButton(leftButton, leftButtonOnClickListener, navigatorEventId, overrideBackPressInJs);
+        collapsingToolBar.addView(titleBar, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
     }
 
     private void createCollapsingTopBar() {
@@ -44,6 +44,7 @@ public class TopBar extends AppBarLayout {
 
     public void setTitle(String title) {
         titleBar.setTitle(title);
+//        collapsingToolBar.setTitle(title);
     }
 
     public void setSubtitle(String subtitle) {
@@ -86,11 +87,21 @@ public class TopBar extends AppBarLayout {
         topTabs.setSelectedTabIndicatorStyle(style);
     }
 
-    public TitleBar getTitleBar() {
-        return titleBar;
+    public int getTitleBarHeight() {
+        return titleBar.getMeasuredHeight();
     }
 
     public CollapsingToolBar getCollapsingToolBar() {
         return collapsingToolBar;
     }
+
+    public void collapseBy(float delta) {
+        titleBar.collapseBy(delta);
+//        titleBar.setTextSize(calculateTitleFontSize(delta));
+        setTranslationY(delta);
+    }
+
+//    private float calculateTitleFontSize(float delta) {
+//        return (1 - Math.abs(delta / (CollapsingToolBar.MAX_HEIGHT - collapsingToolBar.getCollapsedTopBarHeight())));
+//    }
 }
