@@ -87,6 +87,10 @@ public class TopBar extends AppBarLayout {
         topTabs.setSelectedTabIndicatorStyle(style);
     }
 
+    public int getTitleBarHeight() {
+        return titleBar.getMeasuredHeight();
+    }
+
     public CollapsingToolBar getCollapsingToolBar() {
         return collapsingToolBar;
     }

@@ -14,6 +14,7 @@ import com.reactnativenavigation.utils.ReflectionUtils;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.views.collapsingToolbar.ScrollListener;
 import com.reactnativenavigation.views.collapsingToolbar.ScrollViewDelegate;
+import com.reactnativenavigation.views.utils.ViewMeasurer;
 
 public class ContentView extends ReactRootView {
     private static final String TAG = "ContentView";
@@ -24,6 +25,7 @@ public class ContentView extends ReactRootView {
     private SingleScreen.OnDisplayListener onDisplayListener;
     private ScrollViewDelegate scrollViewDelegate;
     private JSTouchDispatcher jsTouchDispatcher;
+    private ViewMeasurer viewMeasurer;
 
     public void setOnDisplayListener(SingleScreen.OnDisplayListener onDisplayListener) {
         this.onDisplayListener = onDisplayListener;
@@ -41,6 +43,11 @@ public class ContentView extends ReactRootView {
         jsTouchDispatcher = getJsTouchDispatcher();
         scrollViewDelegate = new ScrollViewDelegate(jsTouchDispatcher);
         scrollViewDelegate.setListener(new ScrollListener(topBar, this));
+        viewMeasurer = new ViewMeasurer(this);
+    }
+
+    public void setViewMeasurer(ViewMeasurer viewMeasurer) {
+        this.viewMeasurer = viewMeasurer;
     }
 
     private JSTouchDispatcher getJsTouchDispatcher() {
@@ -58,6 +65,13 @@ public class ContentView extends ReactRootView {
 
     public void unmountReactView() {
         unmountReactApplication();
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        setMeasuredDimension(viewMeasurer.getMeasuredWidth(widthMeasureSpec),
+                viewMeasurer.getMeasuredHeight(heightMeasureSpec));
     }
 
     @Override
