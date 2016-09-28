@@ -24,7 +24,6 @@ public class ContentView extends ReactRootView {
     boolean isContentVisible = false;
     private SingleScreen.OnDisplayListener onDisplayListener;
     private ScrollViewDelegate scrollViewDelegate;
-    private JSTouchDispatcher jsTouchDispatcher;
     private ViewMeasurer viewMeasurer;
 
     public void setOnDisplayListener(SingleScreen.OnDisplayListener onDisplayListener) {
@@ -45,8 +44,7 @@ public class ContentView extends ReactRootView {
     }
 
     private void setupScrollDetection(TopBar topBar) {
-        jsTouchDispatcher = getJsTouchDispatcher();
-        scrollViewDelegate = new ScrollViewDelegate(jsTouchDispatcher);
+        scrollViewDelegate = new ScrollViewDelegate(getJsTouchDispatcher());
         scrollViewDelegate.setListener(new ScrollListener(topBar, this));
     }
 

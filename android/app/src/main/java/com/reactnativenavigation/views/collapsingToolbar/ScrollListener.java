@@ -58,7 +58,7 @@ public class ScrollListener implements ScrollViewDelegate.OnScrollListener {
     private void updateInitialTouchY(MotionEvent event) {
 //        Log.v(TAG, "updateInitialTouchY: " + getHumanReadableMotionEventName(event));
         if (MotionEvent.ACTION_DOWN == event.getActionMasked()) {
-            saveInitialTouchYIfNeeded(event);
+            saveInitialTouchY(event);
         } else if (MotionEvent.ACTION_UP == event.getActionMasked()) {
             clearInitialTouchY();
         }
@@ -83,13 +83,11 @@ public class ScrollListener implements ScrollViewDelegate.OnScrollListener {
         }
     }
 
-    private void saveInitialTouchYIfNeeded(MotionEvent event) {
-//        if (yTouchDown < 0) {
-            yTouchDown = event.getRawY();
-            previousY = yTouchDown;
-            isDragging = true;
-            Log.i(TAG, "Saving initial touch: " + yTouchDown);
-//        }
+    private void saveInitialTouchY(MotionEvent event) {
+        yTouchDown = event.getRawY();
+        previousY = yTouchDown;
+        isDragging = true;
+        Log.i(TAG, "Saving initial touch: " + yTouchDown);
     }
 
     private void clearInitialTouchY() {

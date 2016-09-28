@@ -11,8 +11,9 @@ import com.reactnativenavigation.NavigationApplication;
 
 public class ScrollViewDelegate implements View.OnTouchListener {
     private final EventDispatcher eventDispatcher;
+    private ScrollView scrollView;
 
-    public interface OnScrollListener {
+    interface OnScrollListener {
         boolean onTouch(MotionEvent event);
 
         void onScrollViewAdded(ScrollView scrollView);
@@ -33,7 +34,7 @@ public class ScrollViewDelegate implements View.OnTouchListener {
 
     public void onViewAdded(View child) {
         if (child instanceof ScrollView) {
-            ScrollView scrollView = (ScrollView) child;
+            scrollView = (ScrollView) child;
             scrollView.setScrollbarFadingEnabled(false);
             listener.onScrollViewAdded(scrollView);
         }
@@ -66,6 +67,9 @@ public class ScrollViewDelegate implements View.OnTouchListener {
 
     @Override
     public boolean onTouch(View view, MotionEvent event) {
+        if (!didInterceptLastTouchEvent) {
+            scrollView.onTouchEvent(event);
+        }
         return this.listener.onTouch(event);
     }
 }
