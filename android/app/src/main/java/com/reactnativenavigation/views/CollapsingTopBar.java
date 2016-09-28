@@ -1,21 +1,21 @@
 package com.reactnativenavigation.views;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.view.ViewGroup;
 
+import com.reactnativenavigation.params.CollapsingTopBarParams;
 import com.reactnativenavigation.views.collapsingToolbar.CollapsingToolBar;
 
 public class CollapsingTopBar extends TopBar {
     private CollapsingToolBar collapsingToolBar;
 
-    public CollapsingTopBar(Context context, Drawable collapsingToolBarImage) {
+    public CollapsingTopBar(Context context, CollapsingTopBarParams params) {
         super(context);
-        createCollapsingTopBar(collapsingToolBarImage);
+        createCollapsingTopBar(params);
     }
 
-    private void createCollapsingTopBar(Drawable collapsingToolBarImage) {
-        collapsingToolBar = new CollapsingToolBar(getContext(), collapsingToolBarImage);
+    private void createCollapsingTopBar(CollapsingTopBarParams params) {
+        collapsingToolBar = new CollapsingToolBar(getContext(), params);
         ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) CollapsingToolBar.MAX_HEIGHT);
         addView(collapsingToolBar, lp);
     }

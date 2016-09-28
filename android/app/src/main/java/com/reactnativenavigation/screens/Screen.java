@@ -81,7 +81,7 @@ public abstract class Screen extends RelativeLayout {
 
     private void createTopBar() {
         topBar = screenParams.hasCollapsingTopBar() ?
-                new CollapsingTopBar(getContext(), styleParams.collapsingToolBarImage) : new TopBar(getContext());
+                new CollapsingTopBar(getContext(), styleParams.collapsingTopBarParams) : new TopBar(getContext());
         createTopBarVisibilityAnimator();
         addView(topBar, new LayoutParams(MATCH_PARENT, WRAP_CONTENT));
     }

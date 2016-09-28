@@ -1,6 +1,5 @@
 package com.reactnativenavigation.params;
 
-import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 
 public class StyleParams {
@@ -39,7 +38,7 @@ public class StyleParams {
     public Color statusBarColor;
 
     public Color topBarColor;
-    public Drawable collapsingToolBarImage;
+    public CollapsingTopBarParams collapsingTopBarParams;
     public boolean topBarHidden;
     public boolean topTabsHidden;
     public boolean drawScreenBelowTopBar;

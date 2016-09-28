@@ -3,35 +3,42 @@ package com.reactnativenavigation.views.collapsingToolbar;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.reactnativenavigation.R;
+import com.reactnativenavigation.params.CollapsingTopBarParams;
 import com.reactnativenavigation.utils.ViewUtils;
 
 public class CollapsingToolBar extends FrameLayout {
     public static final float MAX_HEIGHT = ViewUtils.convertDpToPixel(256);
+    private final CollapsingTopBarParams params;
 
-    private ImageView image;
-    private Drawable backdropImage;
+    private SimpleDraweeView image;
     //    private CollapsingTextHelper collapsingTextHelper;
 
-    public CollapsingToolBar(Context context, Drawable backdropImage) {
+    public CollapsingToolBar(Context context, CollapsingTopBarParams params) {
         super(context);
-        this.backdropImage = backdropImage;
+        this.params = params;
         setFitsSystemWindows(true);
         createBackDropImage();
     }
 
     private void createBackDropImage() {
-        image = new ImageView(getContext());
-        image.setImageDrawable(backdropImage);
+        image = new SimpleDraweeView(getContext());
+        setImageSource();
         image.setScaleType(ImageView.ScaleType.CENTER_CROP);
         image.setFitsSystemWindows(true);
         addView(image, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+    }
+
+    private void setImageSource() {
+        if (params.imageUri != null) {
+            image.setImageURI(params.imageUri);
+        }
     }
 
     public int getCollapsedTopBarHeight() {

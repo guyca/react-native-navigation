@@ -35,6 +35,6 @@ public class BaseScreenParams {
     }
 
     public boolean hasCollapsingTopBar() {
-        return styleParams.collapsingToolBarImage != null;
+        return styleParams.collapsingTopBarParams != null;
     }
 }
