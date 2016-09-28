@@ -11,7 +11,8 @@ export default class ThirdTabScreen extends Component {
   static navigatorStyle = {
     drawUnderTabBar: true,
     navBarButtonColor: '#ffffff',
-    navBarTextColor: '#ffffff'
+    navBarTextColor: '#ffffff',
+    collapsingToolBarImage: require('../../img/gyro_header.jpg'),
   };
 
   static navigatorButtons = {
@@ -30,13 +31,23 @@ export default class ThirdTabScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      navBarVisability: 'shown'
+      navBarVisibility: 'shown'
     }
   }
   render() {
     return (
         <ScrollView style={styles.container}>
           <View style={{flex: 1, backgroundColor: '#ffffff'}}>
+            <Text style={styles.button}>Row 0</Text>
+            <Text style={styles.button}>Row 1</Text>
+            <Text style={styles.button}>Row 2</Text>
+            <Text style={styles.button}>Row 3</Text>
+            <Text style={styles.button}>Row 4</Text>
+            <Text style={styles.button}>Row 5</Text>
+            <Text style={styles.button}>Row 6</Text>
+            <Text style={styles.button}>Row 7</Text>
+            <Text style={styles.button}>Row 8</Text>
+
             <TouchableOpacity onPress={ this.onPushPress.bind(this) }>
               <Text style={styles.button}>Push Plain Screen</Text>
             </TouchableOpacity>
@@ -87,9 +98,9 @@ export default class ThirdTabScreen extends Component {
   }
 
   onToggleNavBarPressed() {
-    this.state.navBarVisability = (this.state.navBarVisability === 'shown') ? 'hidden' : 'shown';
+    this.state.navBarVisibility = (this.state.navBarVisibility === 'shown') ? 'hidden' : 'shown';
     this.props.navigator.toggleNavBar({
-      to: this.state.navBarVisability,
+      to: this.state.navBarVisibility,
       animated: true  // true is default
     });
   }
