@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import com.reactnativenavigation.params.AppStyle;
 import com.reactnativenavigation.params.StyleParams;
+import com.reactnativenavigation.react.ImageLoader;
 
 public class StyleParamsParser {
     private Bundle params;
@@ -22,6 +23,9 @@ public class StyleParamsParser {
         result.statusBarColor = getColor("statusBarColor", getDefaultStatusBarColor());
 
         result.topBarColor = getColor("topBarColor", getDefaultTopBarColor());
+        if (params.containsKey("collapsingToolBarImage")) {
+            result.collapsingToolBarImage = ImageLoader.loadImage(params.getString("collapsingToolBarImage"));
+        }
         result.titleBarHidden = getBoolean("titleBarHidden", getDefaultTopBarHidden());
         result.titleBarTitleColor = getColor("titleBarTitleColor", getDefaultTitleBarColor());
         result.titleBarSubtitleColor = getColor("titleBarSubtitleColor", getDefaultSubtitleBarColor());

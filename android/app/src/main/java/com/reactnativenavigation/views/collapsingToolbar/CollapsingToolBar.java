@@ -3,6 +3,7 @@ package com.reactnativenavigation.views.collapsingToolbar;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -15,17 +16,19 @@ public class CollapsingToolBar extends FrameLayout {
     public static final float MAX_HEIGHT = ViewUtils.convertDpToPixel(256);
 
     private ImageView image;
-    private CollapsingTextHelper collapsingTextHelper;
+    private Drawable backdropImage;
+    //    private CollapsingTextHelper collapsingTextHelper;
 
-    public CollapsingToolBar(Context context) {
+    public CollapsingToolBar(Context context, Drawable backdropImage) {
         super(context);
+        this.backdropImage = backdropImage;
         setFitsSystemWindows(true);
         createBackDropImage();
     }
 
     private void createBackDropImage() {
         image = new ImageView(getContext());
-        image.setImageResource(R.drawable.gyro_header);
+        image.setImageDrawable(backdropImage);
         image.setScaleType(ImageView.ScaleType.CENTER_CROP);
         image.setFitsSystemWindows(true);
         addView(image, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));

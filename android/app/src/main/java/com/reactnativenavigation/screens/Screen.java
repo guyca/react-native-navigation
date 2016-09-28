@@ -15,6 +15,7 @@ import com.reactnativenavigation.params.StyleParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
 import com.reactnativenavigation.utils.ViewUtils;
+import com.reactnativenavigation.views.CollapsingTopBar;
 import com.reactnativenavigation.views.LeftButtonOnClickListener;
 import com.reactnativenavigation.views.TopBar;
 
@@ -79,7 +80,8 @@ public abstract class Screen extends RelativeLayout {
     }
 
     private void createTopBar() {
-        topBar = new TopBar(getContext());
+        topBar = screenParams.hasCollapsingTopBar() ?
+                new CollapsingTopBar(getContext(), styleParams.collapsingToolBarImage) : new TopBar(getContext());
         createTopBarVisibilityAnimator();
         addView(topBar, new LayoutParams(MATCH_PARENT, WRAP_CONTENT));
     }

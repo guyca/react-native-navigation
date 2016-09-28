@@ -40,10 +40,14 @@ public class ContentView extends ReactRootView {
         this.screenId = screenId;
         this.navigationParams = navigationParams;
         attachToJS();
+        viewMeasurer = new ViewMeasurer(this);
+        setupScrollDetection(topBar);
+    }
+
+    private void setupScrollDetection(TopBar topBar) {
         jsTouchDispatcher = getJsTouchDispatcher();
         scrollViewDelegate = new ScrollViewDelegate(jsTouchDispatcher);
         scrollViewDelegate.setListener(new ScrollListener(topBar, this));
-        viewMeasurer = new ViewMeasurer(this);
     }
 
     public void setViewMeasurer(ViewMeasurer viewMeasurer) {

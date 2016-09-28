@@ -113,7 +113,7 @@ function convertStyleParams(originalStyleObject) {
     return null;
   }
 
-  return {
+  let ret = {
     statusBarColor: originalStyleObject.statusBarColor,
     topBarColor: originalStyleObject.navBarBackgroundColor,
     titleBarHidden: originalStyleObject.navBarHidden,
@@ -144,6 +144,15 @@ function convertStyleParams(originalStyleObject) {
 
     navigationBarColor: originalStyleObject.navigationBarColor
   }
+
+  if (originalStyleObject.collapsingToolBarImage) {
+    const collapsingToolBarImage = resolveAssetSource(originalStyleObject.collapsingToolBarImage)
+    if (collapsingToolBarImage) {
+      ret.collapsingToolBarImage = collapsingToolBarImage.uri;
+    }
+    console.log('img: ' + ret.collapsingToolBarImage);
+  }
+  return ret;
 }
 
 function convertDrawerParamsToSideMenuParams(drawerParams) {
@@ -394,7 +403,7 @@ function getFab(screen) {
       _.forEach(fab.actions, (action) => {
         action.icon = resolveAssetSource(action.icon).uri;
         return action;
-      })
+      });
     }
 
     return fab;

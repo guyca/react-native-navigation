@@ -9,21 +9,17 @@ import com.reactnativenavigation.params.StyleParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
 import com.reactnativenavigation.utils.ViewUtils;
-import com.reactnativenavigation.views.collapsingToolbar.CollapsingToolBar;
 
 import java.util.List;
 
 public class TopBar extends AppBarLayout {
-
-    private CollapsingToolBar collapsingToolBar;
-    private TitleBar titleBar;
+    protected TitleBar titleBar;
     private TopTabs topTabs;
 
     public TopBar(Context context) {
         super(context);
         setFitsSystemWindows(true);
         setId(ViewUtils.generateViewId());
-        createCollapsingTopBar();
     }
 
     public void addTitleBarAndSetButtons(List<TitleBarButtonParams> rightButtons,
@@ -33,13 +29,11 @@ public class TopBar extends AppBarLayout {
         titleBar = new TitleBar(getContext());
         titleBar.setRightButtons(rightButtons, navigatorEventId);
         titleBar.setLeftButton(leftButton, leftButtonOnClickListener, navigatorEventId, overrideBackPressInJs);
-        collapsingToolBar.addView(titleBar, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        addTitleBar();
     }
 
-    private void createCollapsingTopBar() {
-        collapsingToolBar = new CollapsingToolBar(getContext());
-        ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) CollapsingToolBar.MAX_HEIGHT);
-        addView(collapsingToolBar, lp);
+    protected void addTitleBar() {
+        addView(titleBar, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
     }
 
     public void setTitle(String title) {
@@ -82,26 +76,11 @@ public class TopBar extends AppBarLayout {
         if (topTabs == null) {
             return;
         }
-
         topTabs.setTopTabsTextColor(style);
         topTabs.setSelectedTabIndicatorStyle(style);
     }
 
-    public int getTitleBarHeight() {
-        return titleBar.getMeasuredHeight();
-    }
+    public void collapseBy(float translation) {
 
-    public CollapsingToolBar getCollapsingToolBar() {
-        return collapsingToolBar;
     }
-
-    public void collapseBy(float delta) {
-        titleBar.collapseBy(delta);
-//        titleBar.setTextSize(calculateTitleFontSize(delta));
-        setTranslationY(delta);
-    }
-
-//    private float calculateTitleFontSize(float delta) {
-//        return (1 - Math.abs(delta / (CollapsingToolBar.MAX_HEIGHT - collapsingToolBar.getCollapsedTopBarHeight())));
-//    }
 }
