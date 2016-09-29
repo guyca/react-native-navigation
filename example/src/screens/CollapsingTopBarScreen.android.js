@@ -7,12 +7,17 @@ import {
   StyleSheet,
 } from 'react-native';
 
+// collapsingToolBarImage: require('../../img/gyro_header.jpg'),
+// collapsingToolBarImage: "https://static.wixstatic.com/media/ec14061b42d1dc5b809367f7cfda8eff.jpg/v1/fill/w_1002,h_499,q_80/ec14061b42d1dc5b809367f7cfda8eff.webp",
+
 export default class ThirdTabScreen extends Component {
   static navigatorStyle = {
     drawUnderTabBar: true,
     navBarButtonColor: '#ffffff',
     navBarTextColor: '#ffffff',
     collapsingToolBarImage: require('../../img/gyro_header.jpg'),
+    collapsingToolBarCollapsedColor: '#0f2362',
+    navBarBackgroundColor: '#eeeeee'
   };
 
   static navigatorButtons = {
