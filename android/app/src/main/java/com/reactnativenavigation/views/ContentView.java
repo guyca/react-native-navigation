@@ -5,13 +5,12 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ScrollView;
 
 import com.facebook.react.ReactRootView;
-import com.facebook.react.uimanager.JSTouchDispatcher;
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.params.NavigationParams;
 import com.reactnativenavigation.screens.SingleScreen;
-import com.reactnativenavigation.utils.ReflectionUtils;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.views.collapsingToolbar.ScrollListener;
 import com.reactnativenavigation.views.collapsingToolbar.ScrollViewDelegate;
@@ -47,16 +46,12 @@ public class ContentView extends ReactRootView {
     }
 
     private void setupScrollDetection(TopBar topBar) {
-        scrollViewDelegate = new ScrollViewDelegate(getJsTouchDispatcher());
+        scrollViewDelegate = new ScrollViewDelegate();
         scrollViewDelegate.setListener(new ScrollListener(topBar, this));
     }
 
     public void setViewMeasurer(ViewMeasurer viewMeasurer) {
         this.viewMeasurer = viewMeasurer;
-    }
-
-    private JSTouchDispatcher getJsTouchDispatcher() {
-        return (JSTouchDispatcher) ReflectionUtils.getDeclaredField(this, "mJSTouchDispatcher");
     }
 
     private void attachToJS() {
@@ -94,12 +89,9 @@ public class ContentView extends ReactRootView {
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         Log.v(TAG, "dispatchTouchEvent. " + ev.getRawY());
-        if (scrollViewDelegate != null && scrollViewDelegate.didInterceptTouchEvent(ev)) {
-            boolean consumed = scrollViewDelegate.onTouch(this, ev);
-            if (consumed) {
-                Log.i(TAG, "Consuming dispatchTouchEvent true");
-                return true;
-            }
+        if (scrollViewDelegate != null) {
+            scrollViewDelegate.didInterceptTouchEvent(ev);
+            return true;
         }
         return super.dispatchTouchEvent(ev);
     }
@@ -108,8 +100,8 @@ public class ContentView extends ReactRootView {
     public void onViewAdded(final View child) {
         super.onViewAdded(child);
         detectContentViewVisible(child);
-        if (scrollViewDelegate != null) {
-            scrollViewDelegate.onViewAdded(child);
+        if (scrollViewDelegate != null && child instanceof ScrollView) {
+            scrollViewDelegate.onViewAdded((ScrollView) child);
         }
     }
 

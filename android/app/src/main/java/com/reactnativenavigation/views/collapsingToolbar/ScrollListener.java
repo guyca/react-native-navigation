@@ -46,13 +46,14 @@ public class ScrollListener implements ScrollViewDelegate.OnScrollListener {
 
     @Override
     public void onScrollViewAdded(ScrollView scrollView) {
+        scrollDirectionComputer = new ScrollDirection(scrollView);
         this.scrollView = scrollView;
     }
 
     @Override
     public boolean onTouch(MotionEvent event) {
         updateInitialTouchY(event);
-        return handleTouch(scrollView, event.getRawY());
+        return handleTouch(event);
     }
 
     private void updateInitialTouchY(MotionEvent event) {
@@ -99,19 +100,23 @@ public class ScrollListener implements ScrollViewDelegate.OnScrollListener {
         isDragging = false;
     }
 
-    private boolean handleTouch(ScrollView scrollView, float y) {
-        if (scrollDirectionComputer == null) {
-            scrollDirectionComputer = new ScrollDirection(scrollView);
-        }
-
+    private boolean handleTouch(MotionEvent event) {
+        final float y = event.getRawY();
         if (shouldTranslateTopBarAndScrollView(y)) {
             calculateDelta(y);
             setTranslation();
             previousY = y;
             isCollapsing = true;
         } else {
+            if (isCollapsing) {
+                MotionEvent evDown = MotionEvent.obtain(event);
+                evDown.setAction(MotionEvent.ACTION_DOWN);
+                scrollView.onTouchEvent(evDown);
+            }
+
             isCollapsing = false;
             Log.e(TAG, "Not handling scroll");
+            scrollView.onTouchEvent(event);
         }
         return isCollapsing;
     }
@@ -188,10 +193,5 @@ public class ScrollListener implements ScrollViewDelegate.OnScrollListener {
         ScrollDirection.Direction ret = y < previousY ? ScrollDirection.Direction.Up : ScrollDirection.Direction.Down;
         Log.w(TAG, "direction: " + ret);
         return ret;
-    }
-
-    @Override
-    public boolean didInterceptTouchEvent(MotionEvent ev) {
-        return isCollapsing && !isExpended && !isCollapsed;
     }
 }
