@@ -116,7 +116,8 @@ function convertStyleParams(originalStyleObject) {
   let ret = {
     statusBarColor: originalStyleObject.statusBarColor,
     topBarColor: originalStyleObject.navBarBackgroundColor,
-    collapsingToolBarImageUrl: originalStyleObject.collapsingToolBarImageUrl,
+    collapsingToolBarImage: originalStyleObject.collapsingToolBarImage,
+    collapsingToolBarCollapsedColor: originalStyleObject.collapsingToolBarCollapsedColor,
     titleBarHidden: originalStyleObject.navBarHidden,
     titleBarTitleColor: originalStyleObject.navBarTextColor,
     titleBarSubtitleColor: originalStyleObject.navBarTextSubtitleColor,
@@ -147,11 +148,14 @@ function convertStyleParams(originalStyleObject) {
   }
 
   if (originalStyleObject.collapsingToolBarImage) {
+    if (_.isString(originalStyleObject.collapsingToolBarImage)) {
+      ret.collapsingToolBarImage = originalStyleObject.collapsingToolBarImage;
+    }
+
     const collapsingToolBarImage = resolveAssetSource(originalStyleObject.collapsingToolBarImage)
     if (collapsingToolBarImage) {
       ret.collapsingToolBarImage = collapsingToolBarImage.uri;
     }
-    console.log('img: ' + ret.collapsingToolBarImage);
   }
   return ret;
 }

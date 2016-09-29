@@ -36,6 +36,7 @@ public class CollapsingTopBar extends TopBar {
     public void collapseBy(float delta) {
         titleBar.collapseBy(delta);
         //        titleBar.setTextSize(calculateTitleFontSize(delta));
-        setTranslationY(delta);
+        // TODO: Migrate collapsingToolBar into collapsingTopBar -guyca
+        collapsingToolBar.collapseBy(delta);
     }
 }

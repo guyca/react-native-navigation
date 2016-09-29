@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -12,12 +13,15 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.reactnativenavigation.R;
 import com.reactnativenavigation.params.CollapsingTopBarParams;
 import com.reactnativenavigation.utils.ViewUtils;
+import com.reactnativenavigation.views.Scrim;
 
 public class CollapsingToolBar extends FrameLayout {
     public static final float MAX_HEIGHT = ViewUtils.convertDpToPixel(256);
     private final CollapsingTopBarParams params;
 
-    private SimpleDraweeView image;
+    private SimpleDraweeView backdrop;
+    private Scrim scrim;
+    private int topBarHeight = -1;
     //    private CollapsingTextHelper collapsingTextHelper;
 
     public CollapsingToolBar(Context context, CollapsingTopBarParams params) {
@@ -25,26 +29,36 @@ public class CollapsingToolBar extends FrameLayout {
         this.params = params;
         setFitsSystemWindows(true);
         createBackDropImage();
+        createScrim();
     }
 
     private void createBackDropImage() {
-        image = new SimpleDraweeView(getContext());
+        backdrop = new SimpleDraweeView(getContext());
         setImageSource();
-        image.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        image.setFitsSystemWindows(true);
-        addView(image, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        backdrop.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        backdrop.setFitsSystemWindows(true);
+        addView(backdrop, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+    }
+
+    private void createScrim() {
+        scrim = new Scrim(getContext(), params.scrimColor, MAX_HEIGHT / 2);
+        addView(scrim);
     }
 
     private void setImageSource() {
         if (params.imageUri != null) {
-            image.setImageURI(params.imageUri);
+            backdrop.setImageURI(params.imageUri);
         }
     }
 
     public int getCollapsedTopBarHeight() {
+        if (topBarHeight > -1) {
+            return topBarHeight;
+        }
+
         int[] attrs = new int[] {R.attr.actionBarSize};
         TypedArray ta = getContext().obtainStyledAttributes(attrs);
-        int topBarHeight = ta.getDimensionPixelSize(0, -1);
+        topBarHeight = ta.getDimensionPixelSize(0, -1);
         ta.recycle();
         return topBarHeight;
     }
@@ -62,7 +76,12 @@ public class CollapsingToolBar extends FrameLayout {
 //        collapsingTextHelper.draw(canvas);
     }
 
-//    public void setTitle(String title) {
+    public void collapseBy(float delta) {
+        ((View) getParent()).setTranslationY(delta);
+        scrim.handleCollapse(delta);
+    }
+
+    //    public void setTitle(String title) {
 //        collapsingTextHelper.setText(title);
 //    }
 }
