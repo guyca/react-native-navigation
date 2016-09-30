@@ -19,14 +19,11 @@ public class ScrollListener implements ScrollViewDelegate.OnScrollListener {
     private boolean isExpended;
     private boolean isCollapsed = true;
     private boolean canCollapse = true;
-    protected boolean canExpend = false;
-    private boolean isCollapsing = false;
-    private boolean isDragging = false;
-    private int delta;
-    private int previousDelta = 0;
+    private boolean canExpend = false;
+    private float delta;
+    private float previousDelta = 0;
     private int finalCollapsedTranslation;
     private final int finalExpendedTranslation;
-    private ScrollDirection scrollDirectionComputer;
 
     public ScrollListener(final TopBar topBar, ContentView contentView) {
         this.topBar = topBar;
@@ -46,7 +43,6 @@ public class ScrollListener implements ScrollViewDelegate.OnScrollListener {
 
     @Override
     public void onScrollViewAdded(ScrollView scrollView) {
-        scrollDirectionComputer = new ScrollDirection(scrollView);
         this.scrollView = scrollView;
     }
 
@@ -64,29 +60,9 @@ public class ScrollListener implements ScrollViewDelegate.OnScrollListener {
         }
     }
 
-    private String getHumanReadableMotionEventName(MotionEvent event) {
-        switch (event.getActionMasked()) {
-            case MotionEvent.ACTION_DOWN:
-                return "ACTION_DOWN";
-            case MotionEvent.ACTION_CANCEL:
-                return "ACTION_CANCEL";
-            case MotionEvent.ACTION_MOVE:
-                return "ACTION_MOVE";
-            case MotionEvent.ACTION_POINTER_DOWN:
-                return "ACTION_POINTER_DOWN";
-            case MotionEvent.ACTION_POINTER_UP:
-                return "ACTION_POINTER_UP";
-            case MotionEvent.ACTION_UP:
-                return "ACTION_UP";
-            default:
-                throw new RuntimeException("Unhandled event type " + event.getActionMasked());
-        }
-    }
-
     private void saveInitialTouchY(MotionEvent event) {
         yTouchDown = event.getRawY();
         previousY = yTouchDown;
-        isDragging = true;
         Log.i(TAG, "Saving initial touch: " + yTouchDown);
     }
 
@@ -96,39 +72,38 @@ public class ScrollListener implements ScrollViewDelegate.OnScrollListener {
         previousDelta = delta;
         delta = 0;
         previousY = -1;
-        isDragging = false;
     }
 
     private boolean handleTouch(MotionEvent event) {
         final float y = event.getRawY();
         if (shouldTranslateTopBarAndScrollView(y, event)) {
-            calculateDelta(y);
-            setTranslation();
-            previousY = y;
-            isCollapsing = true;
+            translateTopBarAndScrollView(y);
             return true;
         } else {
             if (event.getActionMasked() != MotionEvent.ACTION_MOVE) {
                 Log.v(TAG, "Ignoring touch event");
-                isCollapsing = false;
                 return false;
             }
 
-            if (isCollapsing) {
-                MotionEvent evDown = MotionEvent.obtain(event);
-                evDown.setAction(MotionEvent.ACTION_DOWN);
-                scrollView.onTouchEvent(evDown);
-            }
+//            if (isCollapsing) {
+//                MotionEvent evDown = MotionEvent.obtain(event);
+//                evDown.setAction(MotionEvent.ACTION_DOWN);
+//                scrollView.onTouchEvent(evDown);
+//            }
 
-            isCollapsing = false;
             Log.e(TAG, "Not handling scroll");
             return false;
         }
     }
 
-    private void calculateDelta(float y) {
-        delta = (int) (y - yTouchDown + previousDelta);
-        Log.v("Delta", "delta: " + delta);
+    private void translateTopBarAndScrollView(float y) {
+        delta = calculateDelta(y);
+        setTranslation();
+        previousY = y;
+    }
+
+    private float calculateDelta(float y) {
+        return y - yTouchDown + previousDelta;
     }
 
     private void checkCollapseLimits() {
@@ -152,11 +127,14 @@ public class ScrollListener implements ScrollViewDelegate.OnScrollListener {
         checkCollapseLimits();
         ScrollDirection.Direction direction = getScrollDirection(y);
         Log.i("shouldTranslate", "isExpended: " + isExpended + " isCollapsed: " + isCollapsed + " direction: " + direction);
-        return event.getActionMasked() == MotionEvent.ACTION_MOVE &&
-                isDragging &&
+        return isMoveEvent(event) &&
                (isNotCollapsedOrExpended() ||
                 isExpendedAndScrollingUp(direction) ||
                 isCollapsedAndScrollingDown(direction));
+    }
+
+    private boolean isMoveEvent(MotionEvent event) {
+        return event.getActionMasked() == MotionEvent.ACTION_MOVE;
     }
 
     private boolean isCollapsedAndScrollingDown(ScrollDirection.Direction direction) {
