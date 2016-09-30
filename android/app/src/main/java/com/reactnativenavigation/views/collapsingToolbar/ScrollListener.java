@@ -57,7 +57,6 @@ public class ScrollListener implements ScrollViewDelegate.OnScrollListener {
     }
 
     private void updateInitialTouchY(MotionEvent event) {
-//        Log.v(TAG, "updateInitialTouchY: " + getHumanReadableMotionEventName(event));
         if (MotionEvent.ACTION_DOWN == event.getActionMasked()) {
             saveInitialTouchY(event);
         } else if (MotionEvent.ACTION_UP == event.getActionMasked()) {
@@ -102,12 +101,19 @@ public class ScrollListener implements ScrollViewDelegate.OnScrollListener {
 
     private boolean handleTouch(MotionEvent event) {
         final float y = event.getRawY();
-        if (shouldTranslateTopBarAndScrollView(y)) {
+        if (shouldTranslateTopBarAndScrollView(y, event)) {
             calculateDelta(y);
             setTranslation();
             previousY = y;
             isCollapsing = true;
+            return true;
         } else {
+            if (event.getActionMasked() != MotionEvent.ACTION_MOVE) {
+                Log.v(TAG, "Ignoring touch event");
+                isCollapsing = false;
+                return false;
+            }
+
             if (isCollapsing) {
                 MotionEvent evDown = MotionEvent.obtain(event);
                 evDown.setAction(MotionEvent.ACTION_DOWN);
@@ -116,9 +122,8 @@ public class ScrollListener implements ScrollViewDelegate.OnScrollListener {
 
             isCollapsing = false;
             Log.e(TAG, "Not handling scroll");
-            scrollView.onTouchEvent(event);
+            return false;
         }
-        return isCollapsing;
     }
 
     private void calculateDelta(float y) {
@@ -143,11 +148,12 @@ public class ScrollListener implements ScrollViewDelegate.OnScrollListener {
         return currentTopBarTranslation >= finalCollapsedTranslation && currentTopBarTranslation < finalExpendedTranslation;
     }
 
-    private boolean shouldTranslateTopBarAndScrollView(float y) {
+    private boolean shouldTranslateTopBarAndScrollView(float y, MotionEvent event) {
         checkCollapseLimits();
         ScrollDirection.Direction direction = getScrollDirection(y);
         Log.i("shouldTranslate", "isExpended: " + isExpended + " isCollapsed: " + isCollapsed + " direction: " + direction);
-        return isDragging &&
+        return event.getActionMasked() == MotionEvent.ACTION_MOVE &&
+                isDragging &&
                (isNotCollapsedOrExpended() ||
                 isExpendedAndScrollingUp(direction) ||
                 isCollapsedAndScrollingDown(direction));

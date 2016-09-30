@@ -74,24 +74,14 @@ public class ContentView extends ReactRootView {
                 viewMeasurer.getMeasuredHeight(heightMeasureSpec));
     }
 
-//    @Override
-//    public boolean onInterceptTouchEvent(MotionEvent ev) {
-//        Log.d(TAG, "onInterceptTouchEvent() called with: " + "ev = [" + ev + "]");
-//        return super.onInterceptTouchEvent(ev);
-//    }
-
-//    @Override
-//    public boolean onTouchEvent(MotionEvent ev) {
-//        Log.d(TAG, "onTouchEvent() called with: " + "ev = [" + ev + "]");
-//        return super.onTouchEvent(ev);
-//    }
-
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         Log.v(TAG, "dispatchTouchEvent. " + ev.getRawY());
         if (scrollViewDelegate != null) {
-            scrollViewDelegate.didInterceptTouchEvent(ev);
-            return true;
+            boolean consumed = scrollViewDelegate.didInterceptTouchEvent(ev);
+            if (consumed) {
+                return true;
+            }
         }
         return super.dispatchTouchEvent(ev);
     }
