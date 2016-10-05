@@ -2,8 +2,6 @@ package com.reactnativenavigation.views.collapsingToolbar;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Canvas;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -22,7 +20,6 @@ public class CollapsingToolBar extends FrameLayout {
     private SimpleDraweeView backdrop;
     private Scrim scrim;
     private int topBarHeight = -1;
-    //    private CollapsingTextHelper collapsingTextHelper;
 
     public CollapsingToolBar(Context context, CollapsingTopBarParams params) {
         super(context);
@@ -63,25 +60,8 @@ public class CollapsingToolBar extends FrameLayout {
         return topBarHeight;
     }
 
-    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        super.onLayout(changed, left, top, right, bottom);
-        Log.d("onLayout", "onLayout");
+    public void collapseBy(float translation) {
+        ((View) getParent()).setTranslationY(translation);
+        scrim.handleCollapse(translation);
     }
-
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-
-        // Let the collapsing text helper draw its text
-//        collapsingTextHelper.draw(canvas);
-    }
-
-    public void collapseBy(float delta) {
-        ((View) getParent()).setTranslationY(delta);
-        scrim.handleCollapse(delta);
-    }
-
-    //    public void setTitle(String title) {
-//        collapsingTextHelper.setText(title);
-//    }
 }

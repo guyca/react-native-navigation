@@ -41,11 +41,11 @@ public class ContentView extends ReactRootView {
         attachToJS();
         viewMeasurer = new ViewMeasurer(this);
         if (topBar instanceof CollapsingTopBar) {
-            setupScrollDetection(topBar);
+            setupScrollDetection((CollapsingTopBar) topBar);
         }
     }
 
-    private void setupScrollDetection(TopBar topBar) {
+    private void setupScrollDetection(CollapsingTopBar topBar) {
         scrollViewDelegate = new ScrollViewDelegate();
         scrollViewDelegate.setListener(new ScrollListener(topBar, this));
     }
@@ -108,5 +108,10 @@ public class ContentView extends ReactRootView {
                 }
             });
         }
+    }
+
+    public void collapseBy(float delta) {
+        float translation = ScrollListener.correctTranslationValue(getTranslationY() + delta);
+        setTranslationY(translation);
     }
 }

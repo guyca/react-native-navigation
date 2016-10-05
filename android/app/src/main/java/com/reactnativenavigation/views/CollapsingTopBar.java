@@ -5,6 +5,7 @@ import android.view.ViewGroup;
 
 import com.reactnativenavigation.params.CollapsingTopBarParams;
 import com.reactnativenavigation.views.collapsingToolbar.CollapsingToolBar;
+import com.reactnativenavigation.views.collapsingToolbar.ScrollListener;
 
 public class CollapsingTopBar extends TopBar {
     private CollapsingToolBar collapsingToolBar;
@@ -34,9 +35,8 @@ public class CollapsingTopBar extends TopBar {
     }
 
     public void collapseBy(float delta) {
-        titleBar.collapseBy(delta);
-        //        titleBar.setTextSize(calculateTitleFontSize(delta));
-        // TODO: Migrate collapsingToolBar into collapsingTopBar -guyca
-        collapsingToolBar.collapseBy(delta);
+        float translation = ScrollListener.correctTranslationValue(getTranslationY() + delta);
+        titleBar.collapseBy(translation);
+        collapsingToolBar.collapseBy(translation);
     }
 }
