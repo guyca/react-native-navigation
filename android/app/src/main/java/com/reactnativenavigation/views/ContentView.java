@@ -12,6 +12,7 @@ import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.params.NavigationParams;
 import com.reactnativenavigation.screens.SingleScreen;
 import com.reactnativenavigation.utils.ViewUtils;
+import com.reactnativenavigation.views.collapsingToolbar.CollapseDeltaCalculator;
 import com.reactnativenavigation.views.collapsingToolbar.ScrollListener;
 import com.reactnativenavigation.views.collapsingToolbar.ScrollViewDelegate;
 import com.reactnativenavigation.views.utils.ViewMeasurer;
@@ -111,7 +112,7 @@ public class ContentView extends ReactRootView {
     }
 
     public void collapseBy(float delta) {
-        float translation = ScrollListener.correctTranslationValue(getTranslationY() + delta);
+        float translation = CollapseDeltaCalculator.correctTranslationValue(getTranslationY() + delta);
         setTranslationY(translation);
     }
 }
