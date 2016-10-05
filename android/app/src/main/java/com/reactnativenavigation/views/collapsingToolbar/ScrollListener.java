@@ -14,7 +14,6 @@ public class ScrollListener implements ScrollViewDelegate.OnScrollListener {
     private CollapsingTopBar topBar;
     private ContentView contentView;
     private float touchDownY = -1;
-    private float previousMoveY = -1;
     private float initialMoveY = -1;
     private float previousCollapseY = -1;
     private ScrollView scrollView;
@@ -169,8 +168,6 @@ public class ScrollListener implements ScrollViewDelegate.OnScrollListener {
         if (y == (previousCollapseY == -1 ? touchDownY : previousCollapseY)) {
             return ScrollDirection.Direction.None;
         }
-//        Log.v("getScrollDirection", y + " < " + previousCollapseY + " ? " + (y < previousCollapseY));
-//        return y < previousCollapseY ? ScrollDirection.Direction.Up : ScrollDirection.Direction.Down;
 
         if (previousTouchEvent == null) {
             return ScrollDirection.Direction.None;
@@ -183,7 +180,6 @@ public class ScrollListener implements ScrollViewDelegate.OnScrollListener {
     private void translateTopBarAndScrollView(float y) {
         if (initialMoveY == -1) {
             initialMoveY = previousTouchEvent.getRawY();
-//            Log.w("translation", "Setting initialMoveY " + initialMoveY);
         }
         if (previousCollapseY == -1) {
             previousCollapseY = y;
@@ -191,19 +187,12 @@ public class ScrollListener implements ScrollViewDelegate.OnScrollListener {
 
         delta = y - touchDownY + previousTouchDelta - scrollAmountOnInitialTouch;
         exTotalDelta = calculateExDelta(y);
-//        Log.v("TEST", "y - touchDownY: " + y + " - " + touchDownY + "=" + (y - touchDownY) +
-//                      " previousTouchDelta: " + previousTouchDelta +
-//                      " scrollAmountOnInitialTouch: " + scrollAmountOnInitialTouch +
-//                      " delta: " + delta
-//        );
-//        Log.v("deltaa", "" + delta + " exDelta: " + exTotalDelta + "PTD: " + previousTouchDelta);
         translateViews(calculateDelta(y));
         previousCollapseY = y;
     }
 
     private float calculateDelta(float y) {
         float delta = y - previousCollapseY;
-//        Log.i("calculateDelta", y + " - " + previousCollapseY + " = " + (y - previousCollapseY));
         return delta;
     }
 
@@ -212,9 +201,6 @@ public class ScrollListener implements ScrollViewDelegate.OnScrollListener {
     }
 
     private void translateViews(float delta) {
-//        float translation = exTotalDelta;
-//        translation = correctTranslationValue(translation);
-//        Log.i("translation", "" + translation + " delta: " + delta);
         topBar.collapseBy(delta);
         contentView.collapseBy(delta);
     }
@@ -225,7 +211,6 @@ public class ScrollListener implements ScrollViewDelegate.OnScrollListener {
             translation = finalCollapsedTranslation;
         }
         if (translation > expendedTranslation) {
-//            Log.e("translation", "corrected " + translation + " to 0");
             translation = expendedTranslation;
         }
         return translation;
