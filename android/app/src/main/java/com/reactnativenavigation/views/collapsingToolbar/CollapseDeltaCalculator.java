@@ -7,7 +7,6 @@ import android.view.MotionEvent;
 import android.widget.ScrollView;
 
 import com.reactnativenavigation.utils.ViewUtils;
-import com.reactnativenavigation.views.CollapsingTopBar;
 
 import static com.facebook.react.common.ReactConstants.TAG;
 

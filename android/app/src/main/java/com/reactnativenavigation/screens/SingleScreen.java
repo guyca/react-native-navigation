@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 
 import com.reactnativenavigation.params.ScreenParams;
-import com.reactnativenavigation.views.CollapsingTopBar;
+import com.reactnativenavigation.views.collapsingToolbar.CollapsingTopBar;
 import com.reactnativenavigation.views.ContentView;
 import com.reactnativenavigation.views.LeftButtonOnClickListener;
 import com.reactnativenavigation.views.collapsingToolbar.CollapsingContentViewMeasurer;
@@ -23,7 +23,7 @@ public class SingleScreen extends Screen {
     protected void createContent() {
         contentView = new ContentView(getContext(), screenParams.screenId, screenParams.navigationParams, topBar);
         if (screenParams.hasCollapsingTopBar()) {
-            contentView.setViewMeasurer(new CollapsingContentViewMeasurer(contentView, (CollapsingTopBar) topBar));
+            contentView.setViewMeasurer(new CollapsingContentViewMeasurer((CollapsingTopBar) topBar));
         }
         addView(contentView, createLayoutParams());
     }

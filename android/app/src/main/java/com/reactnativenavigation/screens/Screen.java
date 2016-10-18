@@ -15,7 +15,7 @@ import com.reactnativenavigation.params.StyleParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
 import com.reactnativenavigation.utils.ViewUtils;
-import com.reactnativenavigation.views.CollapsingTopBar;
+import com.reactnativenavigation.views.collapsingToolbar.CollapsingTopBar;
 import com.reactnativenavigation.views.LeftButtonOnClickListener;
 import com.reactnativenavigation.views.TopBar;
 

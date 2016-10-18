@@ -48,6 +48,11 @@ public class ViewUtils {
         return pixels/scaledDensity;
     }
 
+    public static float convertSpToPixel(float pixels) {
+        float scaledDensity = NavigationApplication.instance.getResources().getDisplayMetrics().scaledDensity;
+        return pixels * scaledDensity;
+    }
+
     public static int generateViewId() {
         if (Build.VERSION.SDK_INT >= 17) {
             return View.generateViewId();
@@ -74,6 +79,5 @@ public class ViewUtils {
             }
         }
     }
-
 }
 

@@ -19,7 +19,7 @@ public class TitleBar extends Toolbar {
 
     private LeftButton leftButton;
     private ActionMenuView actionMenuView;
-    private TextView title;
+    private View title;
 
     public TitleBar(Context context) {
         super(context);
@@ -32,7 +32,7 @@ public class TitleBar extends Toolbar {
             actionMenuView = (ActionMenuView) child;
         }
         if (child instanceof TextView) {
-            title = (TextView) child;
+            title = child;
         }
     }
 
@@ -72,13 +72,13 @@ public class TitleBar extends Toolbar {
         return overflowIcon != null && params.titleBarButtonColor.hasColor();
     }
 
-    private void setTitleTextColor(StyleParams params) {
+    protected void setTitleTextColor(StyleParams params) {
         if (params.titleBarTitleColor.hasColor()) {
             setTitleTextColor(params.titleBarTitleColor.getColor());
         }
     }
 
-    private void setSubtitleTextColor(StyleParams params) {
+    protected void setSubtitleTextColor(StyleParams params) {
         if (params.titleBarSubtitleColor.hasColor()) {
             setSubtitleTextColor(params.titleBarSubtitleColor.getColor());
         }
@@ -118,8 +118,7 @@ public class TitleBar extends Toolbar {
         setNavigationIcon(leftButton);
     }
 
-    public void collapseBy(float translation) {
-        title.setTranslationY(0);
-        setTranslationY(-translation);
+    public void hideTitle() {
+        title.setVisibility(INVISIBLE);
     }
 }

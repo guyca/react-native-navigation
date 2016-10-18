@@ -1,11 +1,10 @@
-package com.reactnativenavigation.views;
+package com.reactnativenavigation.views.collapsingToolbar;
 
 import android.content.Context;
-import android.view.ViewGroup;
 
 import com.reactnativenavigation.params.CollapsingTopBarParams;
-import com.reactnativenavigation.views.collapsingToolbar.CollapseDeltaCalculator;
-import com.reactnativenavigation.views.collapsingToolbar.CollapsingToolBar;
+import com.reactnativenavigation.views.TitleBar;
+import com.reactnativenavigation.views.TopBar;
 
 public class CollapsingTopBar extends TopBar {
     private CollapsingToolBar collapsingToolBar;
@@ -17,13 +16,18 @@ public class CollapsingTopBar extends TopBar {
 
     private void createCollapsingTopBar(CollapsingTopBarParams params) {
         collapsingToolBar = new CollapsingToolBar(getContext(), params);
-        ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) CollapsingToolBar.MAX_HEIGHT);
+        LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, (int) CollapsingToolBar.MAX_HEIGHT);
         addView(collapsingToolBar, lp);
     }
 
     @Override
+    protected TitleBar createTitleBar() {
+        return new CollapsingTitleBar(getContext(), collapsingToolBar.getCollapsedTopBarHeight());
+    }
+
+    @Override
     protected void addTitleBar() {
-        collapsingToolBar.addView(titleBar, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        collapsingToolBar.addView(titleBar, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
     }
 
     public int getTitleBarHeight() {
@@ -36,7 +40,7 @@ public class CollapsingTopBar extends TopBar {
 
     public void collapseBy(float delta) {
         float translation = CollapseDeltaCalculator.correctTranslationValue(getTranslationY() + delta);
-        titleBar.collapseBy(translation);
+        ((CollapsingTitleBar) titleBar).collapseBy(translation);
         collapsingToolBar.collapseBy(translation);
     }
 }

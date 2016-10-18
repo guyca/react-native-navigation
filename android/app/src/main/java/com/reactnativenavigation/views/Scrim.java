@@ -27,7 +27,7 @@ public class Scrim extends View {
         interpolator = new DecelerateInterpolator();
     }
 
-    public void handleCollapse(float delta) {
+    public void collapseBy(float delta) {
         if (shouldShowScrim(delta)) {
             showScrim();
         } else if (shouldHideScrim(delta)) {

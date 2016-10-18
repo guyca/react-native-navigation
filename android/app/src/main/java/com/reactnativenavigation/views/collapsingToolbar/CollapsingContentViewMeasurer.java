@@ -1,14 +1,10 @@
 package com.reactnativenavigation.views.collapsingToolbar;
 
-import android.view.View;
-
-import com.reactnativenavigation.views.CollapsingTopBar;
 import com.reactnativenavigation.views.utils.ViewMeasurer;
 
 public class CollapsingContentViewMeasurer extends ViewMeasurer {
     private final float titleBarHeight;
-    public CollapsingContentViewMeasurer(View view, CollapsingTopBar topBar) {
-        super(view);
+    public CollapsingContentViewMeasurer(CollapsingTopBar topBar) {
         titleBarHeight = topBar.getTitleBarHeight();
     }
 

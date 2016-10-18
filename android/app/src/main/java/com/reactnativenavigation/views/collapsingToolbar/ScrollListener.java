@@ -3,7 +3,6 @@ package com.reactnativenavigation.views.collapsingToolbar;
 import android.view.MotionEvent;
 import android.widget.ScrollView;
 
-import com.reactnativenavigation.views.CollapsingTopBar;
 import com.reactnativenavigation.views.ContentView;
 
 public class ScrollListener implements ScrollViewDelegate.OnScrollListener {

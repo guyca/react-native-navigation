@@ -18,7 +18,7 @@ public class TopBar extends AppBarLayout {
 
     public TopBar(Context context) {
         super(context);
-        setFitsSystemWindows(true);
+//        setFitsSystemWindows(true);
         setId(ViewUtils.generateViewId());
     }
 
@@ -26,10 +26,18 @@ public class TopBar extends AppBarLayout {
                                          TitleBarLeftButtonParams leftButton,
                                          LeftButtonOnClickListener leftButtonOnClickListener,
                                          String navigatorEventId, boolean overrideBackPressInJs) {
-        titleBar = new TitleBar(getContext());
+        titleBar = createTitleBar();
+        addButtons(rightButtons, leftButton, leftButtonOnClickListener, navigatorEventId, overrideBackPressInJs);
+        addTitleBar();
+    }
+
+    protected TitleBar createTitleBar() {
+        return new TitleBar(getContext());
+    }
+
+    private void addButtons(List<TitleBarButtonParams> rightButtons, TitleBarLeftButtonParams leftButton, LeftButtonOnClickListener leftButtonOnClickListener, String navigatorEventId, boolean overrideBackPressInJs) {
         titleBar.setRightButtons(rightButtons, navigatorEventId);
         titleBar.setLeftButton(leftButton, leftButtonOnClickListener, navigatorEventId, overrideBackPressInJs);
-        addTitleBar();
     }
 
     protected void addTitleBar() {
@@ -38,7 +46,6 @@ public class TopBar extends AppBarLayout {
 
     public void setTitle(String title) {
         titleBar.setTitle(title);
-//        collapsingToolBar.setTitle(title);
     }
 
     public void setSubtitle(String subtitle) {

@@ -1,16 +1,8 @@
 package com.reactnativenavigation.views.utils;
 
-import android.view.View;
-
-import static android.view.View.*;
+import static android.view.View.MeasureSpec;
 
 public class ViewMeasurer {
-
-    private View view;
-
-    public ViewMeasurer(View view) {
-        this.view = view;
-    }
 
     public int getMeasuredHeight(int heightMeasuerSpec) {
         return MeasureSpec.getSize(heightMeasuerSpec);
