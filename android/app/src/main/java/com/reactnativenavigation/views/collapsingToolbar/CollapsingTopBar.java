@@ -1,6 +1,7 @@
 package com.reactnativenavigation.views.collapsingToolbar;
 
 import android.content.Context;
+import android.widget.ScrollView;
 
 import com.reactnativenavigation.params.CollapsingTopBarParams;
 import com.reactnativenavigation.views.TitleBar;
@@ -8,10 +9,16 @@ import com.reactnativenavigation.views.TopBar;
 
 public class CollapsingTopBar extends TopBar {
     private CollapsingToolBar collapsingToolBar;
+    private ScrollListener scrollListener;
 
     public CollapsingTopBar(Context context, CollapsingTopBarParams params) {
         super(context);
         createCollapsingTopBar(params);
+    }
+
+    public void setScrollListener(ScrollListener scrollListener) {
+        this.scrollListener = scrollListener;
+
     }
 
     private void createCollapsingTopBar(CollapsingTopBarParams params) {
@@ -22,7 +29,9 @@ public class CollapsingTopBar extends TopBar {
 
     @Override
     protected TitleBar createTitleBar() {
-        return new CollapsingTitleBar(getContext(), collapsingToolBar.getCollapsedTopBarHeight());
+        return new CollapsingTitleBar(getContext(),
+                collapsingToolBar.getCollapsedTopBarHeight(),
+                scrollListener);
     }
 
     @Override
@@ -39,8 +48,12 @@ public class CollapsingTopBar extends TopBar {
     }
 
     public void collapseBy(float delta) {
-        float translation = CollapseDeltaCalculator.correctTranslationValue(getTranslationY() + delta);
+        float translation = DeltaCalculator.correctTranslationValue(getTranslationY() + delta);
         ((CollapsingTitleBar) titleBar).collapseBy(translation);
         collapsingToolBar.collapseBy(translation);
+    }
+
+    public void onScrollViewAdded(ScrollView scrollView) {
+        scrollListener.onScrollViewAdded(scrollView);
     }
 }

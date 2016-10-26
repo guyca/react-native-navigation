@@ -10,19 +10,30 @@ import com.reactnativenavigation.utils.ViewUtils;
 
 import static com.facebook.react.common.ReactConstants.TAG;
 
-public class CollapseDeltaCalculator {
+public class DeltaCalculator {
+
     private float delta;
-    private static int finalCollapsedTranslation;
     private MotionEvent previousTouchEvent;
     private float touchDownY = -1;
     private float initialMoveY = -1;
     private float previousCollapseY = -1;
-    private ScrollView scrollView;
     private boolean isExpended;
     private boolean isCollapsed = true;
     private boolean canCollapse = true;
     private boolean canExpend = false;
     private CollapsingTopBar topBar;
+    protected ScrollView scrollView;
+    private static int finalCollapsedTranslation;
+
+    public DeltaCalculator(final CollapsingTopBar topBar) {
+        this.topBar = topBar;
+        ViewUtils.runOnPreDraw(topBar, new Runnable() {
+            @Override
+            public void run() {
+                finalCollapsedTranslation = -topBar.getHeight() + topBar.getCollapsingToolBar().getCollapsedTopBarHeight();
+            }
+        });
+    }
 
     public static float correctTranslationValue(float translation) {
         final float expendedTranslation = 0;
@@ -35,23 +46,12 @@ public class CollapseDeltaCalculator {
         return translation;
     }
 
-    CollapseDeltaCalculator(final CollapsingTopBar topBar) {
-        this.topBar = topBar;
-        ViewUtils.runOnPreDraw(topBar, new Runnable() {
-            @Override
-            public void run() {
-                finalCollapsedTranslation = -topBar.getHeight();
-                finalCollapsedTranslation += topBar.getCollapsingToolBar().getCollapsedTopBarHeight();
-            }
-        });
-    }
-
     void setScrollView(ScrollView scrollView) {
         this.scrollView = scrollView;
     }
 
     @Nullable
-    Float calculateDelta(MotionEvent event) {
+    Float calculate(MotionEvent event) {
         updateInitialTouchY(event);
         if (!isMoveEvent(event)) {
             Log.v(TAG, "Ignoring touch event");
@@ -59,9 +59,7 @@ public class CollapseDeltaCalculator {
         }
 
         if (shouldTranslateTopBarAndScrollView(event)) {
-            final float delta = translateTopBarAndScrollView(event.getRawY());
-            previousTouchEvent = MotionEvent.obtain(event);
-            return delta;
+            return calculateDelta(event);
         } else {
             Log.e(TAG, "Not handling scroll");
             previousCollapseY = -1;
@@ -104,7 +102,6 @@ public class CollapseDeltaCalculator {
         isCollapsed = isCollapsed(currentTopBarTranslation, finalCollapsedTranslation);
         canCollapse = calculateCanCollapse(currentTopBarTranslation, finalExpendedTranslation, finalCollapsedTranslation);
         canExpend = calculateCanExpend(currentTopBarTranslation, finalExpendedTranslation, finalCollapsedTranslation);
-        Log.v("checkCollapseLimits", "canExpend: " + canExpend + " canCollapse: " + canCollapse);
     }
 
     private boolean calculateCanCollapse(int currentTopBarTranslation, int finalExpendedTranslation, int finalCollapsedTranslation) {
@@ -139,21 +136,22 @@ public class CollapseDeltaCalculator {
     }
 
     @CheckResult
-    private float translateTopBarAndScrollView(float y) {
+    private float calculateDelta(MotionEvent event) {
+        float y = event.getRawY();
         if (initialMoveY == -1) {
+            if (previousTouchEvent == null) {
+                previousTouchEvent = MotionEvent.obtain(event);
+            }
             initialMoveY = previousTouchEvent.getRawY();
         }
         if (previousCollapseY == -1) {
             previousCollapseY = y;
         }
 
-        delta = calculateDelta(y);
+        delta = y - previousCollapseY;
         previousCollapseY = y;
+        previousTouchEvent = MotionEvent.obtain(event);
         return delta;
-    }
-
-    private float calculateDelta(float y) {
-        return y - previousCollapseY;
     }
 
     private void updateInitialTouchY(MotionEvent event) {
@@ -162,20 +160,6 @@ public class CollapseDeltaCalculator {
         } else if (isTouchUp(event) && isMoveEvent(previousTouchEvent)) {
             clearInitialTouchY();
         }
-    }
-
-    private void saveInitialTouchY(MotionEvent event) {
-        touchDownY = event.getRawY();
-        previousCollapseY = touchDownY;
-        Log.i("saveInitialTouchY", "Saving initial touch: " + touchDownY + " scroll: " + scrollView.getScrollY());
-    }
-
-    private void clearInitialTouchY() {
-        Log.d("clearInitialTouchY", "Clearing initial touch " + delta);
-        touchDownY = -1;
-        initialMoveY = -1;
-        previousCollapseY = -1;
-        delta = 0;
     }
 
     private boolean isMoveEvent(@Nullable MotionEvent event) {
@@ -189,4 +173,19 @@ public class CollapseDeltaCalculator {
     private boolean isTouchUp(@Nullable MotionEvent event) {
         return event != null && event.getActionMasked() == MotionEvent.ACTION_UP;
     }
+
+    private void saveInitialTouchY(MotionEvent event) {
+        touchDownY = event.getRawY();
+        previousCollapseY = touchDownY;
+    }
+
+    private void clearInitialTouchY() {
+        touchDownY = -1;
+        initialMoveY = -1;
+        previousCollapseY = -1;
+        delta = 0;
+    }
+
+
+
 }

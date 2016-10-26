@@ -18,7 +18,6 @@ public class TopBar extends AppBarLayout {
 
     public TopBar(Context context) {
         super(context);
-//        setFitsSystemWindows(true);
         setId(ViewUtils.generateViewId());
     }
 
@@ -85,9 +84,5 @@ public class TopBar extends AppBarLayout {
         }
         topTabs.setTopTabsTextColor(style);
         topTabs.setSelectedTabIndicatorStyle(style);
-    }
-
-    public void collapseBy(float translation) {
-
     }
 }

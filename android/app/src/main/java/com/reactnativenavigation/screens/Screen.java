@@ -15,7 +15,6 @@ import com.reactnativenavigation.params.StyleParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
 import com.reactnativenavigation.utils.ViewUtils;
-import com.reactnativenavigation.views.collapsingToolbar.CollapsingTopBar;
 import com.reactnativenavigation.views.LeftButtonOnClickListener;
 import com.reactnativenavigation.views.TopBar;
 
@@ -36,7 +35,7 @@ public abstract class Screen extends RelativeLayout {
     private final LeftButtonOnClickListener leftButtonOnClickListener;
     private VisibilityAnimator topBarVisibilityAnimator;
     private ScreenAnimator screenAnimator;
-    private final StyleParams styleParams;
+    protected final StyleParams styleParams;
 
     public Screen(AppCompatActivity activity, ScreenParams screenParams, LeftButtonOnClickListener leftButtonOnClickListener) {
         super(activity);
@@ -55,7 +54,7 @@ public abstract class Screen extends RelativeLayout {
     }
 
     private void createViews() {
-        createTopBar();
+        createAndAddTopBar();
         createTitleBar();
         createContent();
     }
@@ -79,9 +78,16 @@ public abstract class Screen extends RelativeLayout {
                 screenParams.overrideBackPressInJs);
     }
 
-    private void createTopBar() {
-        topBar = screenParams.hasCollapsingTopBar() ?
-                new CollapsingTopBar(getContext(), styleParams.collapsingTopBarParams) : new TopBar(getContext());
+    private void createAndAddTopBar() {
+        createTopBar();
+        addTopBar();
+    }
+
+    protected void createTopBar() {
+        topBar = new TopBar(getContext());
+    }
+
+    private void addTopBar() {
         createTopBarVisibilityAnimator();
         addView(topBar, new LayoutParams(MATCH_PARENT, WRAP_CONTENT));
     }

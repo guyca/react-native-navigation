@@ -12,8 +12,8 @@ import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.params.NavigationParams;
 import com.reactnativenavigation.screens.SingleScreen;
 import com.reactnativenavigation.utils.ViewUtils;
-import com.reactnativenavigation.views.collapsingToolbar.CollapseDeltaCalculator;
-import com.reactnativenavigation.views.collapsingToolbar.CollapsingTopBar;
+import com.reactnativenavigation.views.collapsingToolbar.DeltaCalculator;
+import com.reactnativenavigation.views.collapsingToolbar.OnScrollViewAddedListener;
 import com.reactnativenavigation.views.collapsingToolbar.ScrollListener;
 import com.reactnativenavigation.views.collapsingToolbar.ScrollViewDelegate;
 import com.reactnativenavigation.views.utils.ViewMeasurer;
@@ -27,6 +27,7 @@ public class ContentView extends ReactRootView {
     private SingleScreen.OnDisplayListener onDisplayListener;
     @Nullable private ScrollViewDelegate scrollViewDelegate;
     private ViewMeasurer viewMeasurer;
+    private OnScrollViewAddedListener scrollViewAddedListener;
 
     public void setOnDisplayListener(SingleScreen.OnDisplayListener onDisplayListener) {
         this.onDisplayListener = onDisplayListener;
@@ -42,14 +43,10 @@ public class ContentView extends ReactRootView {
         this.navigationParams = navigationParams;
         attachToJS();
         viewMeasurer = new ViewMeasurer();
-        if (topBar instanceof CollapsingTopBar) {
-            setupScrollDetection((CollapsingTopBar) topBar);
-        }
     }
 
-    private void setupScrollDetection(CollapsingTopBar topBar) {
-        scrollViewDelegate = new ScrollViewDelegate();
-        scrollViewDelegate.setListener(new ScrollListener(topBar, this));
+    public void setupScrollDetection(ScrollListener scrollListener) {
+        scrollViewDelegate = new ScrollViewDelegate(scrollListener);
     }
 
     public void setViewMeasurer(ViewMeasurer viewMeasurer) {
@@ -94,6 +91,7 @@ public class ContentView extends ReactRootView {
         detectContentViewVisible(child);
         if (scrollViewDelegate != null && child instanceof ScrollView) {
             scrollViewDelegate.onViewAdded((ScrollView) child);
+            scrollViewAddedListener.onScrollViewAdded((ScrollView) child);
         }
     }
 
@@ -113,7 +111,11 @@ public class ContentView extends ReactRootView {
     }
 
     public void collapseBy(float delta) {
-        float translation = CollapseDeltaCalculator.correctTranslationValue(getTranslationY() + delta);
+        float translation = DeltaCalculator.correctTranslationValue(getTranslationY() + delta);
         setTranslationY(translation);
+    }
+
+    public void setOnScrollViewAddedListener(OnScrollViewAddedListener scrollViewAddedListener) {
+        this.scrollViewAddedListener = scrollViewAddedListener;
     }
 }

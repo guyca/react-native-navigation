@@ -1,18 +1,23 @@
 package com.reactnativenavigation.views.collapsingToolbar;
 
 import android.content.Context;
+import android.view.MotionEvent;
+import android.view.View;
 
 import com.reactnativenavigation.params.StyleParams;
 import com.reactnativenavigation.views.TitleBar;
 
-public class CollapsingTitleBar extends TitleBar {
+public class CollapsingTitleBar extends TitleBar implements View.OnTouchListener {
     private CollapsingTextView title;
     private int collapsedHeight;
+    private final ScrollListener scrollListener;
 
-    public CollapsingTitleBar(Context context, int collapsedHeight) {
+    public CollapsingTitleBar(Context context, int collapsedHeight, ScrollListener scrollListener) {
         super(context);
         this.collapsedHeight = collapsedHeight;
+        this.scrollListener = scrollListener;
         addCollapsingTitle();
+        setOnTouchListener(this);
     }
 
     private void addCollapsingTitle() {
@@ -38,5 +43,10 @@ public class CollapsingTitleBar extends TitleBar {
         title.setTranslationY(0);
         setTranslationY(-translation);
         title.collapseBy(translation);
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        return scrollListener.onTouch(event);
     }
 }

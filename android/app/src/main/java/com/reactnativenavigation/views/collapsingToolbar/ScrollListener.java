@@ -3,22 +3,22 @@ package com.reactnativenavigation.views.collapsingToolbar;
 import android.view.MotionEvent;
 import android.widget.ScrollView;
 
-import com.reactnativenavigation.views.ContentView;
-
 public class ScrollListener implements ScrollViewDelegate.OnScrollListener {
-    private CollapsingTopBar topBar;
-    private ContentView contentView;
-    private CollapseDeltaCalculator boundsCalculator;
+    private DeltaCalculator deltaCalculator;
+    private OnScrollListener scrollListener;
 
-    public ScrollListener(final CollapsingTopBar topBar, ContentView contentView) {
-        this.contentView = contentView;
-        this.topBar = topBar;
-        boundsCalculator = new CollapseDeltaCalculator(topBar);
+    public interface  OnScrollListener {
+        void onScroll(float delta);
+    }
+
+    public ScrollListener(DeltaCalculator deltaCalculator, OnScrollListener scrollListener) {
+        this.deltaCalculator = deltaCalculator;
+        this.scrollListener = scrollListener;
     }
 
     @Override
     public void onScrollViewAdded(ScrollView scrollView) {
-        boundsCalculator.setScrollView(scrollView);
+        deltaCalculator.setScrollView(scrollView);
     }
 
     @Override
@@ -27,16 +27,11 @@ public class ScrollListener implements ScrollViewDelegate.OnScrollListener {
     }
 
     private boolean handleTouch(MotionEvent event) {
-        Float delta = boundsCalculator.calculateDelta(event);
+        Float delta = deltaCalculator.calculate(event);
         if (delta != null) {
-            translateViews(delta);
+            scrollListener.onScroll(delta);
             return true;
         }
         return false;
-    }
-
-    private void translateViews(float delta) {
-        topBar.collapseBy(delta);
-        contentView.collapseBy(delta);
     }
 }
