@@ -2,7 +2,6 @@ package com.reactnativenavigation.views;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ScrollView;
@@ -19,7 +18,6 @@ import com.reactnativenavigation.views.collapsingToolbar.ScrollViewDelegate;
 import com.reactnativenavigation.views.utils.ViewMeasurer;
 
 public class ContentView extends ReactRootView {
-    private static final String TAG = "ContentView";
     private final String screenId;
     private final NavigationParams navigationParams;
 
@@ -34,10 +32,6 @@ public class ContentView extends ReactRootView {
     }
 
     public ContentView(Context context, String screenId, NavigationParams navigationParams) {
-        this(context, screenId, navigationParams, null);
-    }
-
-    public ContentView(Context context, String screenId, NavigationParams navigationParams, TopBar topBar) {
         super(context);
         this.screenId = screenId;
         this.navigationParams = navigationParams;
@@ -75,7 +69,6 @@ public class ContentView extends ReactRootView {
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        Log.v(TAG, "dispatchTouchEvent. " + ev.getRawY());
         if (scrollViewDelegate != null) {
             boolean consumed = scrollViewDelegate.didInterceptTouchEvent(ev);
             if (consumed) {

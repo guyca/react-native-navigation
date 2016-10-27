@@ -9,7 +9,6 @@ import com.reactnativenavigation.views.ContentView;
 import com.reactnativenavigation.views.LeftButtonOnClickListener;
 import com.reactnativenavigation.views.collapsingToolbar.CollapsingContentViewMeasurer;
 import com.reactnativenavigation.views.collapsingToolbar.CollapsingTopBar;
-import com.reactnativenavigation.views.collapsingToolbar.DeltaCalculator;
 import com.reactnativenavigation.views.collapsingToolbar.OnScrollViewAddedListener;
 import com.reactnativenavigation.views.collapsingToolbar.ScrollListener;
 
@@ -27,7 +26,7 @@ public class SingleScreen extends Screen {
     protected void createTopBar() {
         if (screenParams.hasCollapsingTopBar()) {
             final CollapsingTopBar topBar = new CollapsingTopBar(getContext(), styleParams.collapsingTopBarParams);
-            topBar.setScrollListener(new ScrollListener(new DeltaCalculator(topBar),
+            topBar.setScrollListener(new ScrollListener(topBar,
                     new ScrollListener.OnScrollListener() {
                         @Override
                         public void onScroll(float delta) {
@@ -44,7 +43,7 @@ public class SingleScreen extends Screen {
 
     @Override
     protected void createContent() {
-        contentView = new ContentView(getContext(), screenParams.screenId, screenParams.navigationParams, topBar);
+        contentView = new ContentView(getContext(), screenParams.screenId, screenParams.navigationParams);
         if (screenParams.hasCollapsingTopBar()) {
             contentView.setViewMeasurer(new CollapsingContentViewMeasurer((CollapsingTopBar) topBar));
             setupScrollDetection((CollapsingTopBar) topBar);
@@ -53,7 +52,7 @@ public class SingleScreen extends Screen {
     }
 
     private void setupScrollDetection(final CollapsingTopBar topBar) {
-        contentView.setupScrollDetection(new ScrollListener(new DeltaCalculator(topBar),
+        contentView.setupScrollDetection(new ScrollListener(topBar,
                 new ScrollListener.OnScrollListener() {
                     @Override
                     public void onScroll(float delta) {

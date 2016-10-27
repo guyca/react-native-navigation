@@ -21,16 +21,16 @@ public class DeltaCalculator {
     private boolean isCollapsed = true;
     private boolean canCollapse = true;
     private boolean canExpend = false;
-    private CollapsingTopBar topBar;
+    private CollapsingView view;
     protected ScrollView scrollView;
-    private static int finalCollapsedTranslation;
+    private static float finalCollapsedTranslation;
 
-    public DeltaCalculator(final CollapsingTopBar topBar) {
-        this.topBar = topBar;
-        ViewUtils.runOnPreDraw(topBar, new Runnable() {
+    public DeltaCalculator(final CollapsingView collapsingView) {
+        this.view = collapsingView;
+        ViewUtils.runOnPreDraw(view.asView(), new Runnable() {
             @Override
             public void run() {
-                finalCollapsedTranslation = -topBar.getHeight() + topBar.getCollapsingToolBar().getCollapsedTopBarHeight();
+                finalCollapsedTranslation = view.getFinalCollapseValue();
             }
         });
     }
@@ -96,20 +96,20 @@ public class DeltaCalculator {
     }
 
     private void checkCollapseLimits() {
-        int currentTopBarTranslation = (int) topBar.getTranslationY();
-        int finalExpendedTranslation = 0;
+        float currentTopBarTranslation = view.getCurrentCollapseValue();
+        float finalExpendedTranslation = 0;
         isExpended = isExpended(currentTopBarTranslation, finalExpendedTranslation);
         isCollapsed = isCollapsed(currentTopBarTranslation, finalCollapsedTranslation);
         canCollapse = calculateCanCollapse(currentTopBarTranslation, finalExpendedTranslation, finalCollapsedTranslation);
         canExpend = calculateCanExpend(currentTopBarTranslation, finalExpendedTranslation, finalCollapsedTranslation);
     }
 
-    private boolean calculateCanCollapse(int currentTopBarTranslation, int finalExpendedTranslation, int finalCollapsedTranslation) {
+    private boolean calculateCanCollapse(float currentTopBarTranslation, float finalExpendedTranslation, float finalCollapsedTranslation) {
         return currentTopBarTranslation > finalCollapsedTranslation &&
                currentTopBarTranslation <= finalExpendedTranslation;
     }
 
-    private boolean calculateCanExpend(int currentTopBarTranslation, int finalExpendedTranslation, int finalCollapsedTranslation) {
+    private boolean calculateCanExpend(float currentTopBarTranslation, float finalExpendedTranslation, float finalCollapsedTranslation) {
         return currentTopBarTranslation >= finalCollapsedTranslation &&
                currentTopBarTranslation < finalExpendedTranslation &&
                scrollView.getScrollY() == 0;
@@ -127,11 +127,11 @@ public class DeltaCalculator {
         return canExpend && canCollapse;
     }
 
-    private boolean isCollapsed(int currentTopBarTranslation, int finalCollapsedTranslation) {
+    private boolean isCollapsed(float currentTopBarTranslation, float finalCollapsedTranslation) {
         return currentTopBarTranslation == finalCollapsedTranslation;
     }
 
-    private boolean isExpended(int currentTopBarTranslation, int finalExpendedTranslation) {
+    private boolean isExpended(float currentTopBarTranslation, float finalExpendedTranslation) {
         return currentTopBarTranslation == finalExpendedTranslation;
     }
 
