@@ -93,7 +93,7 @@ public class ContentView extends ReactRootView {
 
     private void onScrollViewAdded(ScrollView child) {
         if (scrollViewDelegate != null) {
-            scrollViewDelegate.onViewAdded(child);
+            scrollViewDelegate.onScrollViewAdded(child);
             scrollViewAddedListener.onScrollViewAdded(child);
         }
     }

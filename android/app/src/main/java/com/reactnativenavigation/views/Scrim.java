@@ -10,14 +10,13 @@ import com.reactnativenavigation.params.StyleParams;
 import static com.reactnativenavigation.views.Scrim.State.Invisible;
 import static com.reactnativenavigation.views.Scrim.State.Visible;
 
-
 public class Scrim extends View {
+    enum State {Visible, Invisible}
+
+    private State state = Invisible;
     private final float threshold;
     private final static int ANIMATION_DURATION = 600;
     private final Interpolator interpolator;
-
-    enum State {Visible, Invisible};
-    private State state = Invisible;
 
     public Scrim(Context context, StyleParams.Color color, float threshold) {
         super(context);

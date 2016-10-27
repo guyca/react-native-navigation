@@ -19,7 +19,7 @@ public class ScrollViewDelegate implements View.OnTouchListener {
         listener = scrollListener;
     }
 
-    public void onViewAdded(ScrollView scrollView) {
+    public void onScrollViewAdded(ScrollView scrollView) {
         this.scrollView = scrollView;
         this.scrollView.setScrollbarFadingEnabled(false);
         listener.onScrollViewAdded(this.scrollView);
