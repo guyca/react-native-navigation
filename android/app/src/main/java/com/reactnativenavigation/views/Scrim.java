@@ -14,33 +14,33 @@ public class Scrim extends View {
     enum State {Visible, Invisible}
 
     private State state = Invisible;
-    private final float threshold;
+    private final float collapseThreshold;
     private final static int ANIMATION_DURATION = 600;
     private final Interpolator interpolator;
 
-    public Scrim(Context context, StyleParams.Color color, float threshold) {
+    public Scrim(Context context, StyleParams.Color color, float collapseThreshold) {
         super(context);
-        this.threshold = threshold;
+        this.collapseThreshold = collapseThreshold;
         setBackgroundColor(color.getColor());
         setAlpha(0);
         interpolator = new DecelerateInterpolator();
     }
 
-    public void collapseBy(float delta) {
-        if (shouldShowScrim(delta)) {
+    public void collapse(float collapse) {
+        if (shouldShowScrim(collapse)) {
             showScrim();
-        } else if (shouldHideScrim(delta)) {
+        } else if (shouldHideScrim(collapse)) {
             hideScrim();
         }
 
     }
 
-    private boolean shouldShowScrim(float delta) {
-        return Math.abs(delta) >= threshold && state == Invisible;
+    private boolean shouldShowScrim(float collapse) {
+        return Math.abs(collapse) >= collapseThreshold && state == Invisible;
     }
 
-    private boolean shouldHideScrim(float delta) {
-        return Math.abs(delta) < threshold && state == Visible;
+    private boolean shouldHideScrim(float collapse) {
+        return Math.abs(collapse) < collapseThreshold && state == Visible;
     }
 
     private void showScrim() {

@@ -48,10 +48,9 @@ public class CollapsingTopBar extends TopBar implements CollapsingView {
         return collapsingToolBar;
     }
 
-    public void collapseBy(float delta) {
-        float translation = DeltaCalculator.correctTranslationValue(getTranslationY() + delta);
-        ((CollapsingTitleBar) titleBar).collapseBy(translation);
-        collapsingToolBar.collapseBy(translation);
+    public void collapse(float collapse) {
+        ((CollapsingTitleBar) titleBar).collapse(collapse);
+        collapsingToolBar.collapse(collapse);
     }
 
     public void onScrollViewAdded(ScrollView scrollView) {

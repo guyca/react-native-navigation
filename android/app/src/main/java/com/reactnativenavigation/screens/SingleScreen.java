@@ -29,9 +29,9 @@ public class SingleScreen extends Screen {
             topBar.setScrollListener(new ScrollListener(topBar,
                     new ScrollListener.OnScrollListener() {
                         @Override
-                        public void onScroll(float delta) {
-                            contentView.collapseBy(delta);
-                            topBar.collapseBy(delta);
+                        public void onScroll(float amount) {
+                            contentView.collapse(amount);
+                            topBar.collapse(amount);
                         }
                     }
             ));
@@ -55,9 +55,9 @@ public class SingleScreen extends Screen {
         contentView.setupScrollDetection(new ScrollListener(topBar,
                 new ScrollListener.OnScrollListener() {
                     @Override
-                    public void onScroll(float delta) {
-                        contentView.collapseBy(delta);
-                        topBar.collapseBy(delta);
+                    public void onScroll(float amount) {
+                        contentView.collapse(amount);
+                        topBar.collapse(amount);
                     }
                 }
         ));

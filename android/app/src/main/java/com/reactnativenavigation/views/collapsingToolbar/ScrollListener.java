@@ -4,21 +4,21 @@ import android.view.MotionEvent;
 import android.widget.ScrollView;
 
 public class ScrollListener implements ScrollViewDelegate.OnScrollListener {
-    private DeltaCalculator deltaCalculator;
+    private CollapseCalculator collapseCalculator;
     private OnScrollListener scrollListener;
 
     public interface  OnScrollListener {
-        void onScroll(float delta);
+        void onScroll(float amount);
     }
 
     public ScrollListener(CollapsingView collapsingView, OnScrollListener scrollListener) {
-        this.deltaCalculator = new DeltaCalculator(collapsingView);
+        this.collapseCalculator = new CollapseCalculator(collapsingView);
         this.scrollListener = scrollListener;
     }
 
     @Override
     public void onScrollViewAdded(ScrollView scrollView) {
-        deltaCalculator.setScrollView(scrollView);
+        collapseCalculator.setScrollView(scrollView);
     }
 
     @Override
@@ -27,9 +27,9 @@ public class ScrollListener implements ScrollViewDelegate.OnScrollListener {
     }
 
     private boolean handleTouch(MotionEvent event) {
-        Float delta = deltaCalculator.calculate(event);
-        if (delta != null) {
-            scrollListener.onScroll(delta);
+        Float scrollAmount = collapseCalculator.calculate(event);
+        if (scrollAmount != null) {
+            scrollListener.onScroll(scrollAmount);
             return true;
         }
         return false;

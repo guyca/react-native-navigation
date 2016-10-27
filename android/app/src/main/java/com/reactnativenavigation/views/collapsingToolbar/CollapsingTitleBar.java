@@ -39,10 +39,10 @@ public class CollapsingTitleBar extends TitleBar implements View.OnTouchListener
     protected void setSubtitleTextColor(StyleParams params) {
     }
 
-    public void collapseBy(float translation) {
+    public void collapse(float collapse) {
         title.setTranslationY(0);
-        setTranslationY(-translation);
-        title.collapseBy(translation);
+        setTranslationY(-collapse);
+        title.collapseBy(collapse);
     }
 
     @Override

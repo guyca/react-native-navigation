@@ -63,8 +63,8 @@ public class CollapsingToolBar extends FrameLayout {
         ta.recycle();
     }
 
-    public void collapseBy(float translation) {
-        ((View) getParent()).setTranslationY(translation);
-        scrim.collapseBy(translation);
+    public void collapse(float collapse) {
+        ((View) getParent()).setTranslationY(collapse);
+        scrim.collapse(collapse);
     }
 }
