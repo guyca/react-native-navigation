@@ -31,6 +31,10 @@ public class ContentView extends ReactRootView {
         this.onDisplayListener = onDisplayListener;
     }
 
+    public void setOnScrollViewAddedListener(OnScrollViewAddedListener scrollViewAddedListener) {
+        this.scrollViewAddedListener = scrollViewAddedListener;
+    }
+
     public ContentView(Context context, String screenId, NavigationParams navigationParams) {
         super(context);
         this.screenId = screenId;
@@ -82,9 +86,15 @@ public class ContentView extends ReactRootView {
     public void onViewAdded(final View child) {
         super.onViewAdded(child);
         detectContentViewVisible(child);
-        if (scrollViewDelegate != null && child instanceof ScrollView) {
-            scrollViewDelegate.onViewAdded((ScrollView) child);
-            scrollViewAddedListener.onScrollViewAdded((ScrollView) child);
+        if (child instanceof ScrollView) {
+            onScrollViewAdded((ScrollView) child);
+        }
+    }
+
+    private void onScrollViewAdded(ScrollView child) {
+        if (scrollViewDelegate != null) {
+            scrollViewDelegate.onViewAdded(child);
+            scrollViewAddedListener.onScrollViewAdded(child);
         }
     }
 
@@ -106,9 +116,5 @@ public class ContentView extends ReactRootView {
     public void collapseBy(float delta) {
         float translation = DeltaCalculator.correctTranslationValue(getTranslationY() + delta);
         setTranslationY(translation);
-    }
-
-    public void setOnScrollViewAddedListener(OnScrollViewAddedListener scrollViewAddedListener) {
-        this.scrollViewAddedListener = scrollViewAddedListener;
     }
 }
