@@ -33,7 +33,6 @@ public class ScreenParamsParser extends Parser {
         result.rightButtons = ButtonParser.parseRightButton(params);
         result.overrideBackPressInJs = params.getBoolean(OVERRIDE_BACK_PRESS, false);
         result.leftButton = ButtonParser.parseLeftButton(params);
-        result.searchParams = ButtonParser.parseSearchButton(params);
 
         result.topTabParams = parseTopTabs(params);
 

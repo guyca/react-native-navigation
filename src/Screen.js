@@ -9,6 +9,7 @@ import platformSpecific from './deprecated/platformSpecificDeprecated';
 import Navigation from './Navigation';
 
 const _allNavigatorEventHandlers = {};
+const _allScreens = {};
 
 const NavigationSpecific = {
   push: platformSpecific.navigatorPush,
@@ -139,6 +140,7 @@ class Navigator {
   }
 
   onNavigatorEvent(event) {
+    console.log('Navigator', 'onNavigatorEvent' + JSON.stringify(event));
     if (this.navigatorEventHandler) {
       this.navigatorEventHandler(event);
     }
@@ -150,6 +152,10 @@ class Navigator {
       delete _allNavigatorEventHandlers[this.navigatorEventID];
     }
   }
+
+  addScreenEventListener() {
+    // _allScreens
+  }
 }
 
 export default class Screen extends Component {
@@ -160,6 +166,7 @@ export default class Screen extends Component {
     super(props);
     if (props.navigatorID) {
       this.navigator = new Navigator(props.navigatorID, props.navigatorEventID, props.screenInstanceID);
+      // navigator.addScreenEventListener();
     }
   }
 
