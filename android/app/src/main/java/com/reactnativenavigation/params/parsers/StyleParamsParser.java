@@ -28,6 +28,7 @@ public class StyleParamsParser {
         result.collapsingTopBarParams = new CollapsingTopBarParamsParser(params).parse();
         result.titleBarHidden = getBoolean("titleBarHidden", getDefaultTopBarHidden());
         result.topBarTransparent = getBoolean("topBarTransparent", getDefaultTopBarHidden());
+        result.topBarTranslucent = getBoolean("topBarTranslucent", getDefaultTopBarTranslucent());
         result.titleBarTitleColor = getColor("titleBarTitleColor", getDefaultTitleBarColor());
         result.titleBarSubtitleColor = getColor("titleBarSubtitleColor", getDefaultSubtitleBarColor());
         result.titleBarButtonColor = getColor("titleBarButtonColor", getTitleBarButtonColor());
@@ -161,6 +162,10 @@ public class StyleParamsParser {
 
     private boolean getDefaultTopBarHidden() {
         return AppStyle.appStyle != null && AppStyle.appStyle.topBarTransparent;
+    }
+
+    private boolean getDefaultTopBarTranslucent() {
+        return AppStyle.appStyle != null && AppStyle.appStyle.topBarTranslucent;
     }
 
     private StyleParams.Color getDefaultTopBarColor() {

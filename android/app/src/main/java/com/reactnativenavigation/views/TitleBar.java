@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
 
+import com.reactnativenavigation.R;
 import com.reactnativenavigation.params.BaseTitleBarButtonParams;
 import com.reactnativenavigation.params.StyleParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
@@ -62,12 +64,19 @@ public class TitleBar extends Toolbar {
         setTitleTextColor(params);
         setSubtitleTextColor(params);
         colorOverflowButton(params);
+        setTranslucent(params);
     }
 
     private void colorOverflowButton(StyleParams params) {
         Drawable overflowIcon = actionMenuView.getOverflowIcon();
         if (shouldColorOverflowButton(params, overflowIcon)) {
             ViewUtils.tintDrawable(overflowIcon, params.titleBarButtonColor.getColor(), true);
+        }
+    }
+
+    private void setTranslucent(StyleParams params) {
+        if (params.topBarTranslucent) {
+            setBackground(ContextCompat.getDrawable(getContext(), R.drawable.topbar_shadow));
         }
     }
 
