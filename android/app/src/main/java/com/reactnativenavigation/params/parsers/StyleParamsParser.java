@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 import com.reactnativenavigation.params.AppStyle;
+import com.reactnativenavigation.params.CollapsingTopBarParams;
 import com.reactnativenavigation.params.StyleParams;
 
 public class StyleParamsParser {
@@ -27,8 +28,15 @@ public class StyleParamsParser {
         result.topBarColor = getColor("topBarColor", getDefaultTopBarColor());
         result.collapsingTopBarParams = new CollapsingTopBarParamsParser(params).parse();
         result.titleBarHidden = getBoolean("titleBarHidden", getDefaultTopBarHidden());
+        result.titleBarHideOnScroll = getBoolean("titleBarHideOnScroll", getDefaultTitleBarHideOnScroll());
+        if (result.titleBarHideOnScroll) {
+            result.collapsingTopBarParams = new CollapsingTopBarParams();
+        }
         result.topBarTransparent = getBoolean("topBarTransparent", getDefaultTopBarHidden());
         result.topBarTranslucent = getBoolean("topBarTranslucent", getDefaultTopBarTranslucent());
+        if (!result.topBarTransparent) {
+            result.topBarTranslucent = false;
+        }
         result.titleBarTitleColor = getColor("titleBarTitleColor", getDefaultTitleBarColor());
         result.titleBarSubtitleColor = getColor("titleBarSubtitleColor", getDefaultSubtitleBarColor());
         result.titleBarButtonColor = getColor("titleBarButtonColor", getTitleBarButtonColor());
@@ -162,6 +170,10 @@ public class StyleParamsParser {
 
     private boolean getDefaultTopBarHidden() {
         return AppStyle.appStyle != null && AppStyle.appStyle.topBarTransparent;
+    }
+
+    private boolean getDefaultTitleBarHideOnScroll() {
+        return AppStyle.appStyle != null && AppStyle.appStyle.titleBarHideOnScroll;
     }
 
     private boolean getDefaultTopBarTranslucent() {

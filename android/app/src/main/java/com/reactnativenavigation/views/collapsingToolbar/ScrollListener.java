@@ -11,8 +11,8 @@ public class ScrollListener implements ScrollViewDelegate.OnScrollListener {
         void onScroll(float amount);
     }
 
-    public ScrollListener(CollapsingView collapsingView, OnScrollListener scrollListener) {
-        this.collapseCalculator = new CollapseCalculator(collapsingView);
+    public ScrollListener(CollapseCalculator collapseCalculator, OnScrollListener scrollListener) {
+        this.collapseCalculator = collapseCalculator;
         this.scrollListener = scrollListener;
     }
 

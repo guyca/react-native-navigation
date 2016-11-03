@@ -2,22 +2,24 @@ package com.reactnativenavigation.views.collapsingToolbar;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.ScrollView;
 
-class CollapseCalculator {
+public class CollapseCalculator {
+    private static final String TAG = "CollapseCalculator";
     private float collapse;
-    private MotionEvent previousTouchEvent;
-    private float touchDownY = -1;
-    private float previousCollapseY = -1;
+    protected MotionEvent previousTouchEvent;
+    protected float touchDownY = -1;
+    protected float previousCollapseY = -1;
     private boolean isExpended;
     private boolean isCollapsed = true;
     private boolean canCollapse = true;
     private boolean canExpend = false;
-    private CollapsingView view;
+    protected CollapsingView view;
     protected ScrollView scrollView;
 
-    CollapseCalculator(final CollapsingView collapsingView) {
+    public CollapseCalculator(final CollapsingView collapsingView) {
         this.view = collapsingView;
     }
 
@@ -49,7 +51,7 @@ class CollapseCalculator {
                 (canExpend && isCollapsedAndScrollingDown(direction));
     }
 
-    private ScrollDirection.Direction getScrollDirection(float y) {
+    protected ScrollDirection.Direction getScrollDirection(float y) {
         if (y == (previousCollapseY == -1 ? touchDownY : previousCollapseY)) {
             return ScrollDirection.Direction.None;
         }
@@ -68,21 +70,24 @@ class CollapseCalculator {
         isCollapsed = isCollapsed(currentCollapse, view.getFinalCollapseValue());
         canCollapse = calculateCanCollapse(currentCollapse, finalExpendedTranslation, view.getFinalCollapseValue());
         canExpend = calculateCanExpend(currentCollapse, finalExpendedTranslation, view.getFinalCollapseValue());
+        Log.d(TAG, "checkCollapseLimits: isExpended: [" + isExpended + "] isCollapsed: [" + isCollapsed + "] canCollapse: [" + canCollapse + "] canExpend: [" + canExpend +"]" );
     }
 
-    private boolean calculateCanCollapse(float currentTopBarTranslation, float finalExpendedTranslation, float finalCollapsedTranslation) {
+    protected boolean calculateCanCollapse(float currentTopBarTranslation, float finalExpendedTranslation, float finalCollapsedTranslation) {
         return currentTopBarTranslation > finalCollapsedTranslation &&
                currentTopBarTranslation <= finalExpendedTranslation;
     }
 
-    private boolean calculateCanExpend(float currentTopBarTranslation, float finalExpendedTranslation, float finalCollapsedTranslation) {
+    protected boolean calculateCanExpend(float currentTopBarTranslation, float finalExpendedTranslation, float finalCollapsedTranslation) {
         return currentTopBarTranslation >= finalCollapsedTranslation &&
                currentTopBarTranslation < finalExpendedTranslation &&
                scrollView.getScrollY() == 0;
     }
 
     private boolean isCollapsedAndScrollingDown(ScrollDirection.Direction direction) {
-        return isCollapsed && direction == ScrollDirection.Direction.Down;
+        boolean b = isCollapsed && direction == ScrollDirection.Direction.Down;
+        Log.i("isCollapsedAndSc", "isCollapsedAndScrollingDown: " + b);
+        return b;
     }
 
     private boolean isExpendedAndScrollingUp(ScrollDirection.Direction direction) {
@@ -93,7 +98,7 @@ class CollapseCalculator {
         return canExpend && canCollapse;
     }
 
-    private boolean isCollapsed(float currentTopBarTranslation, float finalCollapsedTranslation) {
+    protected boolean isCollapsed(float currentTopBarTranslation, float finalCollapsedTranslation) {
         return currentTopBarTranslation == finalCollapsedTranslation;
     }
 
@@ -112,7 +117,7 @@ class CollapseCalculator {
         return new CollapseAmount(collapse);
     }
 
-    private float calculateCollapse(float y) {
+    protected float calculateCollapse(float y) {
         float translation = y - previousCollapseY + view.getCurrentCollapseValue();
         if (translation < view.getFinalCollapseValue()) {
             translation = view.getFinalCollapseValue();

@@ -42,7 +42,7 @@ public class ContentView extends ReactRootView {
         viewMeasurer = new ViewMeasurer();
     }
 
-    public void setupCollapseDetection(ScrollListener scrollListener) {
+    public void setupScrollDetection(ScrollListener scrollListener) {
         scrollViewDelegate = new ScrollViewDelegate(scrollListener);
     }
 
@@ -75,7 +75,8 @@ public class ContentView extends ReactRootView {
         if (scrollViewDelegate != null) {
             boolean consumed = scrollViewDelegate.didInterceptTouchEvent(ev);
             if (consumed) {
-                return true;
+                // TODO: lol -guyca
+//                return true;
             }
         }
         return super.dispatchTouchEvent(ev);

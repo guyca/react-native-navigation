@@ -7,7 +7,7 @@ import android.view.View;
 import com.reactnativenavigation.params.StyleParams;
 import com.reactnativenavigation.views.TitleBar;
 
-public class CollapsingTitleBar extends TitleBar implements View.OnTouchListener {
+public class CollapsingTitleBar extends TitleBar implements CollapsingView, View.OnTouchListener {
     private CollapsingTextView title;
     private int collapsedHeight;
     private final ScrollListener scrollListener;
@@ -48,5 +48,20 @@ public class CollapsingTitleBar extends TitleBar implements View.OnTouchListener
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         return scrollListener.onTouch(event);
+    }
+
+    @Override
+    public float getFinalCollapseValue() {
+        return getHeight();
+    }
+
+    @Override
+    public float getCurrentCollapseValue() {
+        return getTranslationY();
+    }
+
+    @Override
+    public View asView() {
+        return this;
     }
 }

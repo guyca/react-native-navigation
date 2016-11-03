@@ -20,10 +20,11 @@ import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
 import com.reactnativenavigation.params.TitleBarSearchButtonParams;
 import com.reactnativenavigation.utils.ViewUtils;
+import com.reactnativenavigation.views.collapsingToolbar.CollapsingView;
 
 import java.util.List;
 
-public class TitleBar extends Toolbar {
+public class TitleBar extends Toolbar implements CollapsingView {
 
     private LeftButton leftButton;
     private ActionMenuView actionMenuView;
@@ -164,5 +165,25 @@ public class TitleBar extends Toolbar {
                 .alpha(1)
                 .setDuration(200)
                 .setInterpolator(new AccelerateDecelerateInterpolator());
+    }
+
+    @Override
+    public float getFinalCollapseValue() {
+        return getHeight();
+    }
+
+    @Override
+    public float getCurrentCollapseValue() {
+        return getTranslationY();
+    }
+
+    @Override
+    public View asView() {
+        return this;
+    }
+
+    @Override
+    public void collapse(float collapse) {
+        setTranslationY(collapse);
     }
 }

@@ -35,6 +35,6 @@ public class BaseScreenParams {
     }
 
     public boolean hasCollapsingTopBar() {
-        return styleParams.collapsingTopBarParams != null;
+        return styleParams.collapsingTopBarParams != null || styleParams.titleBarHideOnScroll;
     }
 }
