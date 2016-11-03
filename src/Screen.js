@@ -10,6 +10,7 @@ import Navigation from './Navigation';
 
 const _allNavigatorEventHandlers = {};
 const _allScreens = {};
+const _allScreensEventHandlers = [];
 
 const NavigationSpecific = {
   push: platformSpecific.navigatorPush,
@@ -140,7 +141,6 @@ class Navigator {
   }
 
   onNavigatorEvent(event) {
-    console.log('Navigator', 'onNavigatorEvent' + JSON.stringify(event));
     if (this.navigatorEventHandler) {
       this.navigatorEventHandler(event);
     }
@@ -151,10 +151,28 @@ class Navigator {
       this.navigatorEventSubscription.remove();
       delete _allNavigatorEventHandlers[this.navigatorEventID];
     }
+
+    this.screenEventSubscription.remove();
+    delete _allScreensEventHandlers[this.navigatorEventID];
+    delete _allScreens[this.navigatorEventID];
   }
 
-  addScreenEventListener() {
-    // _allScreens
+  registerListener(screen) {
+    _allScreens[this.navigatorEventID] = screen;
+    this._registerScreen(screen);
+  }
+
+  _registerScreen(screen) {
+      let Emitter = Platform.OS === 'android' ? DeviceEventEmitter : NativeAppEventEmitter;
+      this.screenEventSubscription = Emitter.addListener(this.navigatorEventID + 'screen', (event) => this.onScreenEvent(event));
+      _allScreensEventHandlers[this.navigatorEventID + 'screen'] = (event) => this.onScreenEvent(event);
+  }
+
+  onScreenEvent(event) {
+    const screen = _allScreens[this.navigatorEventID];
+    if (event.id === 'search' && screen.onSearchTextSubmit) {
+      screen.onSearchTextSubmit(event.query);
+    }
   }
 }
 
@@ -166,7 +184,6 @@ export default class Screen extends Component {
     super(props);
     if (props.navigatorID) {
       this.navigator = new Navigator(props.navigatorID, props.navigatorEventID, props.screenInstanceID);
-      // navigator.addScreenEventListener();
     }
   }
 

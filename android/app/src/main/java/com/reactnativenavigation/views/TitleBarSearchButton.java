@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.support.annotation.Nullable;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,7 +42,7 @@ public class TitleBarSearchButton extends TitleBarButton implements SearchView.O
     public boolean onQueryTextSubmit(String query) {
         WritableMap arguments = Arguments.createMap();
         arguments.putString("query", query);
-        NavigationApplication.instance.sendNavigatorEvent("search", navigatorEventId, arguments);
+        NavigationApplication.instance.sendNavigatorEvent("search", navigatorEventId + "screen", arguments);
         return false;
     }
 
