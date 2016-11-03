@@ -8,6 +8,7 @@ public class ScreenParams extends BaseScreenParams {
     public String tabLabel;
     public Drawable tabIcon;
     public List<PageParams> topTabParams;
+    public TitleBarSearchButtonParams searchParams;
 
     public boolean hasTopTabs() {
         return topTabParams != null && !topTabParams.isEmpty();

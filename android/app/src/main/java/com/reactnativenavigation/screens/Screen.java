@@ -91,8 +91,10 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
         if (screenParams.leftButton != null) {
             screenParams.leftButton.setColorFromScreenStyle(screenParams.styleParams.titleBarButtonColor);
         }
-        topBar.addTitleBarAndSetButtons(screenParams.rightButtons,
+        topBar.addTitleBarAndSetButtons(
+                screenParams.rightButtons,
                 screenParams.leftButton,
+                screenParams.searchParams,
                 leftButtonOnClickListener,
                 screenParams.getNavigatorEventId(),
                 screenParams.overrideBackPressInJs);

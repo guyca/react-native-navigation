@@ -4,7 +4,9 @@ import android.os.Bundle;
 
 import com.reactnativenavigation.params.AppStyle;
 import com.reactnativenavigation.params.BaseTitleBarButtonParams;
+import com.reactnativenavigation.params.SearchParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
+import com.reactnativenavigation.params.TitleBarSearchButtonParams;
 import com.reactnativenavigation.react.ImageLoader;
 
 import java.util.List;
@@ -30,6 +32,17 @@ public class TitleBarButtonParamsParser extends Parser {
         result.showAsAction = parseShowAsAction(bundle.getString("showAsAction"));
         result.enabled = bundle.getBoolean("enabled", true);
         result.eventId = bundle.getString("id");
+        return result;
+    }
+
+    public TitleBarSearchButtonParams parseSearchButton(SearchParams searchParams) {
+        TitleBarSearchButtonParams result = new TitleBarSearchButtonParams();
+        result.label = "navigationInfrastructureSearchButton";
+        result.icon = searchParams.icon;
+        result.color = AppStyle.appStyle.titleBarButtonColor;
+        result.disabledColor = AppStyle.appStyle.titleBarDisabledButtonColor;
+        result.enabled = true;
+        result.eventId = null;
         return result;
     }
 

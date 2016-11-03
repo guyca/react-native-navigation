@@ -18,6 +18,7 @@ import com.reactnativenavigation.params.BaseTitleBarButtonParams;
 import com.reactnativenavigation.params.StyleParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
+import com.reactnativenavigation.params.TitleBarSearchButtonParams;
 import com.reactnativenavigation.utils.ViewUtils;
 
 import java.util.List;
@@ -39,13 +40,13 @@ public class TitleBar extends Toolbar {
         }
     }
 
-    public void setRightButtons(List<TitleBarButtonParams> rightButtons, String navigatorEventId) {
+    public void setRightButtons(List<TitleBarButtonParams> rightButtons, TitleBarSearchButtonParams searchParams, String navigatorEventId) {
         Menu menu = getMenu();
         menu.clear();
         if (rightButtons == null) {
             return;
         }
-        addButtonsToTitleBar(rightButtons, navigatorEventId, menu);
+        addButtonsToTitleBar(rightButtons, searchParams, navigatorEventId, menu);
     }
 
     public void setLeftButton(TitleBarLeftButtonParams leftButtonParams,
@@ -96,16 +97,22 @@ public class TitleBar extends Toolbar {
         }
     }
 
-    private void addButtonsToTitleBar(List<TitleBarButtonParams> rightButtons, String navigatorEventId, Menu menu) {
+    private void addButtonsToTitleBar(List<TitleBarButtonParams> rightButtons, TitleBarButtonParams searchParams, String navigatorEventId, Menu menu) {
         for (int i = 0; i < rightButtons.size(); i++) {
             final TitleBarButton button = new TitleBarButton(menu, this, rightButtons.get(i), navigatorEventId);
             addButtonInReverseOrder(rightButtons, i, button);
         }
+        TitleBarButton searchButton = new TitleBarSearchButton(menu, this, searchParams, navigatorEventId);
+        addSearchButtonToTitleBar(searchButton);
     }
 
     protected void addButtonInReverseOrder(List<? extends BaseTitleBarButtonParams> buttons, int i, TitleBarButton button) {
         final int index = buttons.size() - i - 1;
         button.addToMenu(index);
+    }
+
+    protected void addSearchButtonToTitleBar(TitleBarButton searchButton) {
+        searchButton.addToMenu(0);
     }
 
     private boolean hasLeftButton() {

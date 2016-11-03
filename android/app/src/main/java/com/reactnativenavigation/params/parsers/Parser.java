@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class Parser {
+
     protected static boolean hasKey(Bundle bundle, String key) {
         return bundle.keySet().contains(key);
     }

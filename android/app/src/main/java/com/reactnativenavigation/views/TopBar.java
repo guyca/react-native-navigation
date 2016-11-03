@@ -10,9 +10,11 @@ import android.widget.FrameLayout;
 
 import com.facebook.react.bridge.Callback;
 import com.reactnativenavigation.params.ContextualMenuParams;
+import com.reactnativenavigation.params.SearchParams;
 import com.reactnativenavigation.params.StyleParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
+import com.reactnativenavigation.params.TitleBarSearchButtonParams;
 import com.reactnativenavigation.utils.ViewUtils;
 
 import java.util.List;
@@ -39,19 +41,20 @@ public class TopBar extends AppBarLayout {
 
     public void addTitleBarAndSetButtons(List<TitleBarButtonParams> rightButtons,
                                          TitleBarLeftButtonParams leftButton,
+                                         TitleBarSearchButtonParams searchParams,
                                          LeftButtonOnClickListener leftButtonOnClickListener,
                                          String navigatorEventId, boolean overrideBackPressInJs) {
         titleBar = createTitleBar();
         titleBarAndContextualMenuContainer.addView(titleBar, new ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT));
-        addButtons(rightButtons, leftButton, leftButtonOnClickListener, navigatorEventId, overrideBackPressInJs);
+        addButtons(rightButtons, leftButton, searchParams, leftButtonOnClickListener, navigatorEventId, overrideBackPressInJs);
     }
 
     protected TitleBar createTitleBar() {
         return new TitleBar(getContext());
     }
 
-    private void addButtons(List<TitleBarButtonParams> rightButtons, TitleBarLeftButtonParams leftButton, LeftButtonOnClickListener leftButtonOnClickListener, String navigatorEventId, boolean overrideBackPressInJs) {
-        titleBar.setRightButtons(rightButtons, navigatorEventId);
+    private void addButtons(List<TitleBarButtonParams> rightButtons, TitleBarLeftButtonParams leftButton, TitleBarSearchButtonParams searchParams, LeftButtonOnClickListener leftButtonOnClickListener, String navigatorEventId, boolean overrideBackPressInJs) {
+        titleBar.setRightButtons(rightButtons, searchParams, navigatorEventId);
         titleBar.setLeftButton(leftButton, leftButtonOnClickListener, navigatorEventId, overrideBackPressInJs);
     }
 
@@ -84,7 +87,7 @@ public class TopBar extends AppBarLayout {
     }
 
     public void setTitleBarRightButtons(String navigatorEventId, List<TitleBarButtonParams> titleBarButtons) {
-        titleBar.setRightButtons(titleBarButtons, navigatorEventId);
+        titleBar.setRightButtons(titleBarButtons, null, navigatorEventId);
     }
 
     public TabLayout initTabs() {

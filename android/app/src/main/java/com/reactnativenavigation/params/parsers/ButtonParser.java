@@ -3,8 +3,10 @@ package com.reactnativenavigation.params.parsers;
 import android.os.Bundle;
 
 import com.reactnativenavigation.params.FabParams;
+import com.reactnativenavigation.params.SearchParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
+import com.reactnativenavigation.params.TitleBarSearchButtonParams;
 
 import java.util.List;
 
@@ -13,6 +15,7 @@ public class ButtonParser extends Parser {
     private static final String KEY_LEFT_BUTTON = "leftButton";
     private static final String KEY_FAB = "fab";
     private static final String KEY_BACK_BUTTON_HIDDEN = "backButtonHidden";
+    private static final String KEY_SEARCH_BUTTON = "search";
 
     public static List<TitleBarButtonParams> parseRightButton(Bundle params) {
         List<TitleBarButtonParams> rightButtons = null;
@@ -33,6 +36,15 @@ public class ButtonParser extends Parser {
             }
         }
         return leftButton;
+    }
+
+    public static TitleBarSearchButtonParams parseSearchButton(Bundle params) {
+        if (hasKey(params, KEY_SEARCH_BUTTON)) {
+            SearchParams searchParams = SearchParamsParser.parse(params.getBundle(KEY_SEARCH_BUTTON));
+            TitleBarSearchButtonParams buttonParams = new TitleBarButtonParamsParser().parseSearchButton(searchParams);
+            return buttonParams;
+        }
+        return null;
     }
 
     public static FabParams parseFab(Bundle params, String navigatorEventId) {
