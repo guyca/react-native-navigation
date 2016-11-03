@@ -1,13 +1,16 @@
 package com.reactnativenavigation.views;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableMap;
@@ -29,6 +32,9 @@ public class TitleBarSearchButton extends TitleBarButton implements SearchView.O
         }
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
         searchView.setOnQueryTextListener(this);
+
+        EditText searchEditText = (EditText) findChildByClass(searchView, EditText.class);
+        searchEditText.setTextColor(Color.WHITE);
         return item;
     }
 
@@ -49,5 +55,24 @@ public class TitleBarSearchButton extends TitleBarButton implements SearchView.O
     @Override
     public boolean onQueryTextChange(String newText) {
         return false;
+    }
+
+    // TODO: dont do
+    private View findChildByClass(ViewGroup root, Class clazz) {
+        for (int i = 0; i < root.getChildCount(); i++) {
+            View view = root.getChildAt(i);
+            if (clazz.isAssignableFrom(view.getClass())) {
+                return view;
+            }
+
+            if (view instanceof ViewGroup) {
+                view = findChildByClass((ViewGroup) view, clazz);
+                if (view != null && clazz.isAssignableFrom(view.getClass())) {
+                    return view;
+                }
+            }
+        }
+
+        return null;
     }
 }
