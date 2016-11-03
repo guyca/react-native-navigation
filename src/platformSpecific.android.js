@@ -128,6 +128,10 @@ function dismissContextualMenu(screenInstanceID) {
   NativeReactModule.dismissContextualMenu(screenInstanceID);
 }
 
+function setSearchResults(params) {
+  NativeReactModule.setSearchResults(params);
+}
+
 module.exports = {
   startApp,
   push,
@@ -150,5 +154,6 @@ module.exports = {
   setBottomTabBadgeByIndex,
   showSnackbar,
   showContextualMenu,
-  dismissContextualMenu
+  dismissContextualMenu,
+  setSearchResults
 };

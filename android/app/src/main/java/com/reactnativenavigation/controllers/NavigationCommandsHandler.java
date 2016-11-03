@@ -4,10 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.ReadableMap;
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.params.ActivityParams;
 import com.reactnativenavigation.params.ContextualMenuParams;
 import com.reactnativenavigation.params.ScreenParams;
+import com.reactnativenavigation.params.SearchViewParams;
 import com.reactnativenavigation.params.SnackbarParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
@@ -356,6 +358,20 @@ public class NavigationCommandsHandler {
             @Override
             public void run() {
                 currentActivity.dismissContextualMenu(screenInstanceId);
+            }
+        });
+    }
+
+    public static void setSearchResults(final SearchViewParams params) {
+        final NavigationActivity currentActivity = NavigationActivity.currentActivity;
+        if (currentActivity == null) {
+            return;
+        }
+
+        NavigationApplication.instance.runOnMainThread(new Runnable() {
+            @Override
+            public void run() {
+                currentActivity.setSearchResults(params);
             }
         });
     }

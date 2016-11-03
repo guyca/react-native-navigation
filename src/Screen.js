@@ -120,6 +120,10 @@ class Navigator {
     return platformSpecific.dismissContextualMenu();
   }
 
+  setSearchResults(params) {
+    return platformSpecific.setSearchResults(this, params);
+  }
+
   setOnNavigatorEvent(callback) {
     this.navigatorEventHandler = callback;
     if (!this.navigatorEventSubscription) {
@@ -152,9 +156,11 @@ class Navigator {
       delete _allNavigatorEventHandlers[this.navigatorEventID];
     }
 
-    this.screenEventSubscription.remove();
-    delete _allScreensEventHandlers[this.navigatorEventID];
-    delete _allScreens[this.navigatorEventID];
+    if (this.screenEventSubscription) {
+      this.screenEventSubscription.remove();
+      delete _allScreensEventHandlers[this.navigatorEventID];
+      delete _allScreens[this.navigatorEventID];
+    }
   }
 
   registerListener(screen) {
@@ -163,9 +169,9 @@ class Navigator {
   }
 
   _registerScreen(screen) {
-      let Emitter = Platform.OS === 'android' ? DeviceEventEmitter : NativeAppEventEmitter;
-      this.screenEventSubscription = Emitter.addListener(this.navigatorEventID + 'screen', (event) => this.onScreenEvent(event));
-      _allScreensEventHandlers[this.navigatorEventID + 'screen'] = (event) => this.onScreenEvent(event);
+    let Emitter = Platform.OS === 'android' ? DeviceEventEmitter : NativeAppEventEmitter;
+    this.screenEventSubscription = Emitter.addListener(this.navigatorEventID + 'screen', (event) => this.onScreenEvent(event));
+    _allScreensEventHandlers[this.navigatorEventID + 'screen'] = (event) => this.onScreenEvent(event);
   }
 
   onScreenEvent(event) {

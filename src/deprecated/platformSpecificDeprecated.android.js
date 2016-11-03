@@ -506,6 +506,11 @@ function dismissContextualMenu() {
   newPlatformSpecific.dismissContextualMenu();
 }
 
+function setSearchResults(navigator, params) {
+  addNavigatorParams(params);
+  newPlatformSpecific.setSearchResults(params);
+}
+
 export default {
   startTabBasedApp,
   startSingleScreenApp,
@@ -526,5 +531,6 @@ export default {
   navigatorToggleNavBar,
   showSnackbar,
   showContextualMenu,
-  dismissContextualMenu
+  dismissContextualMenu,
+  setSearchResults
 };

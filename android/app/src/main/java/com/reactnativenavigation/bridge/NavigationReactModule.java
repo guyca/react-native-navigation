@@ -12,6 +12,7 @@ import com.reactnativenavigation.params.SnackbarParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
 import com.reactnativenavigation.params.parsers.ContextualMenuParamsParser;
+import com.reactnativenavigation.params.parsers.SearchViewParamsParser;
 import com.reactnativenavigation.params.parsers.SnackbarParamsParser;
 import com.reactnativenavigation.params.parsers.TitleBarButtonParamsParser;
 import com.reactnativenavigation.params.parsers.TitleBarLeftButtonParamsParser;
@@ -184,5 +185,10 @@ public class NavigationReactModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void dismissContextualMenu(String screenInstanceId) {
         NavigationCommandsHandler.dismissContextualMenu(screenInstanceId);
+    }
+
+    @ReactMethod
+    public void setSearchResults(final ReadableMap params) {
+        NavigationCommandsHandler.setSearchResults(new SearchViewParamsParser().parse(params));
     }
 }

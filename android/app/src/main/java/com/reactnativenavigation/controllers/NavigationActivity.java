@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 
 import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.events.Event;
@@ -19,6 +20,7 @@ import com.reactnativenavigation.layouts.LayoutFactory;
 import com.reactnativenavigation.params.ActivityParams;
 import com.reactnativenavigation.params.ContextualMenuParams;
 import com.reactnativenavigation.params.ScreenParams;
+import com.reactnativenavigation.params.SearchViewParams;
 import com.reactnativenavigation.params.SnackbarParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
@@ -282,6 +284,10 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
     public void dismissContextualMenu(String screenInstanceId) {
         layout.dismissContextualMenu(screenInstanceId);
         modalController.dismissContextualMenu(screenInstanceId);
+    }
+
+    public void setSearchResults(SearchViewParams params) {
+        layout.setSearchResults(params);
     }
 
     @Override

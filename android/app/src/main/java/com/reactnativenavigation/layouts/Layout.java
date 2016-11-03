@@ -4,6 +4,7 @@ import android.view.View;
 
 import com.facebook.react.bridge.Callback;
 import com.reactnativenavigation.params.ContextualMenuParams;
+import com.reactnativenavigation.params.SearchViewParams;
 import com.reactnativenavigation.params.SnackbarParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
@@ -38,4 +39,6 @@ public interface Layout extends ScreenStackContainer {
     void showContextualMenu(String screenInstanceId, ContextualMenuParams params, Callback onButtonClicked);
 
     void dismissContextualMenu(String screenInstanceId);
+
+    void setSearchResults(SearchViewParams params);
 }

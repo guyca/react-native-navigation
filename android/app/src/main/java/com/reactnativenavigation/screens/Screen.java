@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Window;
 import android.widget.RelativeLayout;
 
@@ -18,11 +19,13 @@ import com.reactnativenavigation.events.ViewPagerScreenChangedEvent;
 import com.reactnativenavigation.params.BaseScreenParams;
 import com.reactnativenavigation.params.ContextualMenuParams;
 import com.reactnativenavigation.params.ScreenParams;
+import com.reactnativenavigation.params.SearchViewParams;
 import com.reactnativenavigation.params.StyleParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.views.LeftButtonOnClickListener;
+import com.reactnativenavigation.views.SearchResultsView;
 import com.reactnativenavigation.views.TopBar;
 
 import java.util.List;
@@ -31,7 +34,6 @@ import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 public abstract class Screen extends RelativeLayout implements Subscriber {
-
     public interface OnDisplayListener {
         void onDisplay();
     }
@@ -230,6 +232,11 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
 
     public void dismissContextualMenu() {
         topBar.dismissContextualMenu();
+    }
+
+    public void setSearchResults(SearchViewParams params) {
+        SearchResultsView searchResultsView = new SearchResultsView(this, params);
+        addView(searchResultsView);
     }
 
     public void destroy() {
