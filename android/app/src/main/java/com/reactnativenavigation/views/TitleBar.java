@@ -102,8 +102,10 @@ public class TitleBar extends Toolbar {
             final TitleBarButton button = new TitleBarButton(menu, this, rightButtons.get(i), navigatorEventId);
             addButtonInReverseOrder(rightButtons, i, button);
         }
-        TitleBarButton searchButton = new TitleBarSearchButton(menu, this, searchParams, navigatorEventId);
-        addSearchButtonToTitleBar(searchButton);
+        if (searchParams != null) {
+            TitleBarButton searchButton = new TitleBarSearchButton(menu, this, searchParams, navigatorEventId);
+            addSearchButtonToTitleBar(searchButton);
+        }
     }
 
     protected void addButtonInReverseOrder(List<? extends BaseTitleBarButtonParams> buttons, int i, TitleBarButton button) {
