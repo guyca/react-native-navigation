@@ -10,7 +10,6 @@ import android.widget.FrameLayout;
 
 import com.facebook.react.bridge.Callback;
 import com.reactnativenavigation.params.ContextualMenuParams;
-import com.reactnativenavigation.params.SearchParams;
 import com.reactnativenavigation.params.StyleParams;
 import com.reactnativenavigation.params.TitleBarButtonParams;
 import com.reactnativenavigation.params.TitleBarLeftButtonParams;
@@ -81,7 +80,8 @@ public class TopBar extends AppBarLayout {
     private void setTransparent() {
         setBackgroundColor(Color.TRANSPARENT);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            setElevation(0);
+            // TODO: I think this can be removed -guyca
+//            setElevation(0);
             setOutlineProvider(null);
         }
     }
