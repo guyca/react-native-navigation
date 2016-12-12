@@ -142,6 +142,7 @@ function convertStyleParams(originalStyleObject) {
     selectedTopTabIndicatorColor: processColor(originalStyleObject.selectedTopTabIndicatorColor),
 
     screenBackgroundColor: processColor(originalStyleObject.screenBackgroundColor),
+    screenAnimationType: originalStyleObject.screenAnimationType,
 
     drawScreenAboveBottomTabs: !originalStyleObject.drawUnderTabBar,
 

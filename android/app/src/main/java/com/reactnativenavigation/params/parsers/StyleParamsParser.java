@@ -3,6 +3,7 @@ package com.reactnativenavigation.params.parsers;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import com.reactnativenavigation.params.AnimationType;
 import com.reactnativenavigation.params.AppStyle;
 import com.reactnativenavigation.params.StyleParams;
 
@@ -50,6 +51,7 @@ public class StyleParamsParser {
         }
 
         result.screenBackgroundColor = getColor("screenBackgroundColor", getDefaultScreenBackgroundColor());
+        result.screenAnimationType = getAnimationType();
 
         result.bottomTabsHidden = getBoolean("bottomTabsHidden", getDefaultBottomTabsHidden());
         result.drawScreenAboveBottomTabs = !result.bottomTabsHidden &&
@@ -141,6 +143,10 @@ public class StyleParamsParser {
         return AppStyle.appStyle != null ? AppStyle.appStyle.screenBackgroundColor : getColor("screenBackgroundColor", new StyleParams.Color());
     }
 
+    private AnimationType getDefaultAnimationType() {
+        return AppStyle.appStyle != null ? AppStyle.appStyle.screenAnimationType : AnimationType.SlideDown;
+    }
+
     private boolean getDefaultTopTabsHidden() {
         return AppStyle.appStyle != null && AppStyle.appStyle.topTabsHidden;
     }
@@ -204,5 +210,10 @@ public class StyleParamsParser {
 
     private int getInt(String key, int defaultValue) {
         return params.containsKey(key) ? params.getInt(key) : defaultValue;
+    }
+
+    private AnimationType getAnimationType() {
+        String animationType = params.getString("screenAnimationType");
+        return animationType == null ? getDefaultAnimationType() : AnimationType.fromString(animationType);
     }
 }

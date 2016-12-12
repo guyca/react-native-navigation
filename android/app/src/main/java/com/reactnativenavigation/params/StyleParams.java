@@ -60,6 +60,7 @@ public class StyleParams {
     public Color selectedTopTabIndicatorColor;
 
     public Color screenBackgroundColor;
+    public AnimationType screenAnimationType;
 
     public boolean drawScreenAboveBottomTabs;
 
