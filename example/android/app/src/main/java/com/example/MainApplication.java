@@ -1,5 +1,6 @@
 package com.example;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.facebook.react.ReactPackage;
@@ -14,6 +15,7 @@ public class MainApplication extends NavigationApplication {
     }
 
     @Nullable
+    @NonNull
     @Override
     public List<ReactPackage> createAdditionalReactPackages() {
         return null;

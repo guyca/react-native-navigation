@@ -4,7 +4,7 @@ import FirstTabScreen from './FirstTabScreen';
 import SecondTabScreen from './SecondTabScreen';
 import PushedScreen from './PushedScreen';
 import StyledScreen from './StyledScreen';
-import SideMenu from './SideMenu';
+import SideMenu from './LeftSideMenu';
 import ModalScreen from './ModalScreen';
 import NotificationScreen from './NotificationScreen';
 import LightBoxScreen from './LightBoxScreen';

@@ -8,7 +8,7 @@ import {
   AlertIOS
 } from 'react-native';
 
-export default class SideMenu extends Component {
+export default class LeftSideMenu extends Component {
   constructor(props) {
     super(props);
   }
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'white',
     justifyContent: 'center',
-    width: 300
+    width: 360
   },
   title: {
     textAlign: 'center',

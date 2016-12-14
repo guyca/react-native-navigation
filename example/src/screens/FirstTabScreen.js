@@ -18,7 +18,8 @@ export default class FirstTabScreen extends Component {
     rightButtons: [
       {
         title: 'Edit',
-        id: 'edit'
+        id: 'edit',
+        disabled: true
       },
       {
         icon: require('../../img/navicon_add.png'),
@@ -34,7 +35,8 @@ export default class FirstTabScreen extends Component {
     statusBarTextColorScheme: 'light',
     tabBarBackgroundColor: '#4dbce9',
     tabBarButtonColor: '#ffffff',
-    tabBarSelectedButtonColor: '#ffff00'
+    tabBarSelectedButtonColor: '#ffff00',
+    titleBarDisabledButtonColor: '#ff0000'
   };
 
   constructor(props) {

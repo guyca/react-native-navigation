@@ -9,7 +9,8 @@ import {
 
 export default class PushedScreen extends Component {
   static navigatorStyle = {
-    drawUnderTabBar: true
+    drawUnderTabBar: true,
+    screenAnimationType: 'fade'
   };
   constructor(props) {
     super(props);

@@ -14,7 +14,8 @@ const createTabs = () => {
       screen: 'example.FirstTabScreen',
       icon: require('../img/one.png'),
       selectedIcon: require('../img/one_selected.png'),
-      title: 'Screen One'
+      title: 'Screen One',
+      subtitle: 'subsub'
     },
     {
       label: 'Two',
@@ -29,6 +30,12 @@ const createTabs = () => {
   ];
   if (Platform.OS === 'android') {
     tabs.push({
+      label: 'List',
+      screen: 'example.ListScreen',
+      icon: require('../img/list.png'),
+      title: 'List'
+    });
+    tabs.push({
       label: 'Collapsing',
       screen: 'example.CollapsingTopBarScreen',
       icon: require('../img/one.png'),
@@ -37,17 +44,22 @@ const createTabs = () => {
   }
   return tabs;
 };
+
 // this will start our app
 Navigation.startTabBasedApp({
   tabs: createTabs(),
   appStyle: {
     tabBarBackgroundColor: '#0f2362',
     tabBarButtonColor: '#ffffff',
-    tabBarSelectedButtonColor: '#63d7cc'
+    tabBarSelectedButtonColor: '#63d7cc',
+    screenBackgroundColor: '#42A5F5'
   },
   drawer: {
     left: {
-      screen: 'example.SideMenu'
+      screen: 'example.LeftSideMenu'
+    },
+    right: {
+      screen: 'example.RightSideMenu'
     }
   }
 });
