@@ -7,26 +7,97 @@ import {Navigation} from 'react-native-navigation';
 import {registerScreens} from './screens';
 registerScreens();
 
-const createTabs = () => {
-  let tabs = [
-    {
-      label: 'One',
-      screen: 'example.FirstTabScreen',
-      icon: require('../img/one.png'),
-      selectedIcon: require('../img/one_selected.png'),
-      title: 'Screen One',
-      subtitle: 'subsub'
+import { iconsMap, iconsLoaded } from './icons/icons';
+iconsLoaded.then(() => {
+  startApp();
+});
+
+// this will start our app
+const startApp = () => {
+  Navigation.startTabBasedApp({
+    tabs: createTabs(),
+    appStyle: {
+      tabBarBackgroundColor: '#0f2362',
+      tabBarButtonColor: '#ffffff',
+      tabBarSelectedButtonColor: '#63d7cc',
+      screenBackgroundColor: '#42A5F5',
     },
-    {
-      label: 'Two',
-      screen: 'example.SecondTabScreen',
-      icon: require('../img/two.png'),
-      selectedIcon: require('../img/two_selected.png'),
-      title: 'Screen Two',
-      navigatorStyle: {
-        tabBarBackgroundColor: '#4dbce9',
+    drawer: {
+      left: {
+        screen: 'example.LeftSideMenu'
+      },
+      right: {
+        screen: 'example.RightSideMenu'
       }
     }
+  });
+};
+
+const firstTabScreen = {
+  label: 'One',
+  screen: 'example.FirstTabScreen',
+  icon: require('../img/one.png'),
+  selectedIcon: require('../img/one_selected.png'),
+  title: 'Screen One',
+  subtitle: 'subsub'
+};
+const secondTabScreen = {
+  label: 'Two',
+  screen: 'example.SecondTabScreen',
+  icon: require('../img/two.png'),
+  selectedIcon: require('../img/two_selected.png'),
+  title: 'Screen Two',
+  navigatorStyle: {
+    tabBarBackgroundColor: '#4dbce9',
+  }
+};
+
+const createTabs = () => {
+  const collapsingReactScreen = {
+    label: 'Club',
+    screen: 'example.collapsingReactViewScreen',
+    icon: iconsMap['face'],
+    title: 'Collapsing React View'
+  };
+  const collapsingReactTopTabsScreen = {
+    label: 'Clubs',
+    screen: 'example.collapsingReactViewTopTabsScreen',
+    icon: iconsMap['flight'],
+    title: 'Collapsing React TopTabs View',
+    topTabs: [
+      {
+        screenId: 'example.ListScreen',
+        icon: require('../img/list.png'),
+        passProps: {
+          onTabSelected: (navigator) => navigator.setTitle('List')
+        }
+      },
+      {
+        screenId: 'example.PushedScreen',
+        icon: require('../img/list.png'),
+        passProps: {
+          onTabSelected: (navigator) => navigator.setTitle('Screen 2')
+        }
+      },
+      {
+        screenId: 'example.PushedScreen',
+        icon: require('../img/one.png'),
+        passProps: {
+          onTabSelected: (navigator) => navigator.setTitle('Screen 3')
+        }
+      }
+    ]
+  };
+  // let tabs = [
+  //   collapsingReactTopTabsScreen
+  // ];
+  // let tabs = [
+  //   collapsingReactTopTabsScreen,
+  //   collapsingReactScreen
+  // ];
+  let tabs = [
+    firstTabScreen,
+    secondTabScreen
   ];
   if (Platform.OS === 'android') {
     tabs.push({
@@ -41,43 +112,25 @@ const createTabs = () => {
       icon: require('../img/one.png'),
       title: 'Collapsing',
     });
+    tabs.push({
+      title: 'TopTabs',
+      screen: 'example.TopTabsScreen',
+      icon: require('../img/list.png'),
+      topTabs: [
+        {
+          screenId: 'example.PushedScreen',
+          icon: require('../img/list.png')
+        },
+        {
+          screenId: 'example.PushedScreen',
+          icon: require('../img/one.png')
+        },
+        {
+          screenId: 'example.ListScreen',
+          icon: require('../img/list.png')
+        }
+      ],
+    })
   }
   return tabs;
 };
-
-// this will start our app
-Navigation.startTabBasedApp({
-  tabs: createTabs(),
-  appStyle: {
-    tabBarBackgroundColor: '#0f2362',
-    tabBarButtonColor: '#ffffff',
-    tabBarSelectedButtonColor: '#63d7cc',
-    screenBackgroundColor: '#42A5F5'
-  },
-  drawer: {
-    left: {
-      screen: 'example.LeftSideMenu'
-    },
-    right: {
-      screen: 'example.RightSideMenu'
-    }
-  }
-});
-//Navigation.startSingleScreenApp({
-//  screen: {
-//    screen: 'example.FirstTabScreen',
-//    title: 'Navigation',
-//    navigatorStyle: {
-//      navBarBackgroundColor: '#4dbce9',
-//      navBarTextColor: '#ffff00',
-//      navBarSubtitleTextColor: '#ff0000',
-//      navBarButtonColor: '#ffffff',
-//      statusBarTextColorScheme: 'light'
-//    }
-//  },
-//  drawer: {
-//    left: {
-//      screen: 'example.SideMenu'
-//    }
-//  }
-//});

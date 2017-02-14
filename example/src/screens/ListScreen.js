@@ -17,12 +17,11 @@ const hashCode = function(str) {
   return hash;
 };
 
-export default class FirstTopTabScreen extends Component {
+export default class ListScreen extends Component {
 
   static navigatorStyle = {
     navBarHideOnScroll: true,
-    screenBackgroundColor: '#90CAF9',
-    drawUnderTabBar: true
+    screenBackgroundColor: '#F5F5F5'
   };
 
   static navigatorButtons = {
@@ -64,8 +63,8 @@ export default class FirstTopTabScreen extends Component {
   constructor(props) {
     super(props);
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
-
-    var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    this.setButtons();
+    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
       dataSource: ds.cloneWithRows(this._genRows({}))
     }
@@ -73,20 +72,30 @@ export default class FirstTopTabScreen extends Component {
 
   onNavigatorEvent(event) {
     if (event.id == 'tabSelected') {
-      this.onTabSelected();
-      return;
+      this.setButtons();
     }
   }
 
-  onTabSelected() {
-
+  setButtons() {
+    this.props.navigator.setButtons({
+      rightButtons: [
+        {
+          title: 'Add',
+          icon: require('../../img/navicon_add.png'),
+          id: 'add',
+          showAsAction: 'always'
+        }
+      ]
+    })
   }
 
   render() {
     return (
-      <ListView
-        dataSource={this.state.dataSource}
-        renderRow={this._renderRow}/>
+      <View style={{backgroundColor: '#F5F5F5', flex: 1}}>
+        <ListView
+          dataSource={this.state.dataSource}
+          renderRow={this._renderRow}/>
+      </View>
     );
   }
 
@@ -103,7 +112,7 @@ export default class FirstTopTabScreen extends Component {
 
   _genRows() {
     var dataBlob = [];
-    for (var ii = 0; ii < 100; ii++) {
+    for (var ii = 0; ii < 10; ii++) {
       dataBlob.push('Row ' + ii + ' ');
     }
     return dataBlob;

@@ -14,30 +14,48 @@ export default class PushedScreen extends Component {
   };
   constructor(props) {
     super(props);
+    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
   }
+
+  onNavigatorEvent(event) {
+    if (event.id == 'tabSelected') {
+      this.onTabSelected();
+    }
+  }
+
+  onTabSelected() {
+
+  }
+
   render() {
     return (
-      <View style={styles.container}>
-        <TouchableOpacity onPress={ this.onPushPress.bind(this) }>
-          <Text style={styles.button}>Push Plain Screen</Text>
-        </TouchableOpacity>
+      <ScrollView style={styles.container}>
+        <View style={{flex: 1}}>
+          <TouchableOpacity onPress={ this.onPushPress.bind(this) }>
+            <Text style={styles.button}>Push Plain Screen</Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity onPress={ this.onPushStyledPress.bind(this) }>
-          <Text style={styles.button}>Push Styled Screen</Text>
-        </TouchableOpacity>
+          <TouchableOpacity onPress={ this.onPushStyledPress.bind(this) }>
+            <Text style={styles.button}>Push Styled Screen</Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity onPress={ this.onPopPress.bind(this) }>
-          <Text style={styles.button}>Pop Screen</Text>
-        </TouchableOpacity>
+          <TouchableOpacity onPress={ this.onPopPress.bind(this) }>
+            <Text style={styles.button}>Pop Screen</Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity onPress={ this.onPopToRootPress.bind(this) }>
-          <Text style={styles.button}>Pop To Root</Text>
-        </TouchableOpacity>
+          <TouchableOpacity onPress={ this.onPopToRootPress.bind(this) }>
+            <Text style={styles.button}>Pop To Root</Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity onPress={ this.onResetToPress.bind(this) }>
-          <Text style={styles.button}>Reset To</Text>
-        </TouchableOpacity>
-      </View>
+          <TouchableOpacity onPress={ this.onResetToPress.bind(this) }>
+            <Text style={styles.button}>Reset To</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={ this.onReplacePrevious.bind(this) }>
+            <Text style={styles.button}>replacePrevious</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
     );
   }
   onPushPress() {
@@ -61,7 +79,14 @@ export default class PushedScreen extends Component {
   onResetToPress() {
     this.props.navigator.resetTo({
       title: "New Root",
-      screen: "example.ThirdTabScreen"
+      screen: "example.FirstTabScreen"
+    });
+  }
+
+  onReplacePrevious() {
+    this.props.navigator.replacePrevious({
+      title: "New Screen",
+      screen: "example.ReplacedScreen"
     });
   }
 }

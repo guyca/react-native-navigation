@@ -12,12 +12,13 @@ import {
 
 export default class ThirdTabScreen extends Component {
   static navigatorStyle = {
-    drawUnderTabBar: true,
+    drawUnderTabBar: false,
     navBarButtonColor: '#ffffff',
     navBarTextColor: '#ffffff',
     collapsingToolBarImage: require('../../img/gyro_header.jpg'),
     collapsingToolBarCollapsedColor: '#0f2362',
-    navBarBackgroundColor: '#eeeeee'
+    navBarBackgroundColor: '#eeeeee',
+    screenBackgroundColor: '#eeeeee'
   };
 
   static navigatorButtons = {
@@ -37,7 +38,8 @@ export default class ThirdTabScreen extends Component {
     super(props);
     this.state = {
       navBarVisibility: 'shown'
-    }
+    };
+    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
   }
   render() {
     return (
@@ -52,6 +54,10 @@ export default class ThirdTabScreen extends Component {
             <Text style={styles.button}>Row 6</Text>
             <Text style={styles.button}>Row 7</Text>
             <Text style={styles.button}>Row 8</Text>
+
+            <TouchableOpacity onPress={ this.onToggleBottomTabsPress.bind(this) }>
+              <Text style={styles.button}>Toggle BottomTabs</Text>
+            </TouchableOpacity>
 
             <TouchableOpacity onPress={ this.onPushPress.bind(this) }>
               <Text style={styles.button}>Push Plain Screen</Text>
@@ -80,6 +86,11 @@ export default class ThirdTabScreen extends Component {
     this.props.navigator.push({
       title: "More",
       screen: "example.PushedScreen"
+    });
+  }
+  onToggleBottomTabsPress() {
+    this.props.navigator.toggleTabs({
+      to: 'hidden'
     });
   }
   onPushStyledPress() {
@@ -115,13 +126,15 @@ export default class ThirdTabScreen extends Component {
     this.state.navBarState = 'shown';
   }
 
+  onNavigatorEvent(event) {
+    console.log('event.id: ', JSON.stringify(event.id));
+  }
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
-    backgroundColor: '#eeeeee'
+    margin: 20,
   },
   button: {
     textAlign: 'center',

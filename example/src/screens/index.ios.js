@@ -4,7 +4,8 @@ import FirstTabScreen from './FirstTabScreen';
 import SecondTabScreen from './SecondTabScreen';
 import PushedScreen from './PushedScreen';
 import StyledScreen from './StyledScreen';
-import SideMenu from './LeftSideMenu';
+import RightSideMenu from './RightSideMenu';
+import LeftSideMenu from './LeftSideMenu';
 import ModalScreen from './ModalScreen';
 import NotificationScreen from './NotificationScreen';
 import LightBoxScreen from './LightBoxScreen';
@@ -18,5 +19,7 @@ export function registerScreens() {
   Navigation.registerComponent('example.ModalScreen', () => ModalScreen);
   Navigation.registerComponent('example.NotificationScreen', () => NotificationScreen);
   Navigation.registerComponent('example.SideMenu', () => SideMenu);
+  Navigation.registerComponent('example.LeftSideMenu', () => LeftSideMenu);
+  Navigation.registerComponent('example.RightSideMenu', () => RightSideMenu);
   Navigation.registerComponent('example.LightBoxScreen', () => LightBoxScreen);
 }

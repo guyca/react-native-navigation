@@ -5,7 +5,8 @@ import {
   ScrollView,
   TouchableOpacity,
   StyleSheet,
-  Alert
+  Alert,
+  Platform
 } from 'react-native';
 
 export default class SecondTabScreen extends Component {
@@ -47,9 +48,38 @@ export default class SecondTabScreen extends Component {
           <Text style={styles.button}>Set Tab Badge</Text>
         </TouchableOpacity>
 
+        <TouchableOpacity onPress={ this.onRemoveTabBadgePress.bind(this) }>
+          <Text style={styles.button}>Remove Tab Badge</Text>
+        </TouchableOpacity>
+
         <TouchableOpacity onPress={ this.onToggleTabsPress.bind(this) }>
           <Text style={styles.button}>Toggle Tabs</Text>
         </TouchableOpacity>
+
+        <TouchableOpacity onPress={ this.onToggleNavBarPress.bind(this) }>
+          <Text style={styles.button}>Toggle NavBar</Text>
+        </TouchableOpacity>
+
+        {
+          Platform.OS === 'android' ?
+            <TouchableOpacity onPress={ this.onSetFabPress.bind(this) }>
+              <Text style={styles.button}>Set Fab</Text>
+            </TouchableOpacity> : false
+        }
+
+        {
+          Platform.OS === 'android' ?
+            <TouchableOpacity onPress={ this.onRemoveFabPress.bind(this) }>
+              <Text style={styles.button}>Remove Fab</Text>
+            </TouchableOpacity> : false
+        }
+
+        {
+          Platform.OS === 'android' ?
+            <TouchableOpacity onPress={ this.showSnackbar.bind(this) }>
+              <Text style={styles.button}>Show Snackbar</Text>
+            </TouchableOpacity> : false
+        }
 
       </View>
     );
@@ -98,14 +128,53 @@ export default class SecondTabScreen extends Component {
       badge: 12
     });
   }
+  onRemoveTabBadgePress() {
+    this.props.navigator.setTabBadge({});
+  }
   onToggleTabsPress() {
     this.props.navigator.toggleTabs({
       to: this.tabsHidden ? 'shown' : 'hidden'
     });
     this.tabsHidden = !this.tabsHidden;
   }
+  onToggleNavBarPress() {
+    this.props.navigator.toggleNavBar({
+      to: this.navBarHidden ? 'shown' : 'hidden',
+      animated: true
+    });
+    this.navBarHidden = !this.navBarHidden;
+  }
+  onSetFabPress() {
+    this.props.navigator.setButtons({
+      fab: {
+        collapsedId: 'share',
+        collapsedIcon: require('../../img/navicon_add.png'),
+        backgroundColor: '#607D8B'
+      }
+    });
+  }
+
+  onRemoveFabPress() {
+    this.props.navigator.setButtons({
+      fab: {}
+    });
+  }
+
+  showSnackbar() {
+    this.props.navigator.showSnackbar({
+      text: 'Hello from Snackbar',
+      actionText: 'done',
+      actionColor: 'green',
+      textColor: 'red',
+      actionId: 'fabClicked',
+      backgroundColor: 'blue',
+      duration: 'indefinite'
+    })
+  }
+
   onNavigatorEvent(event) {
     // handle a deep link
+    console.log('event.id: ', JSON.stringify(event.id));
     if (event.type == 'DeepLink') {
       const parts = event.link.split('/');
       if (parts[0] == 'tab2') {

@@ -8,25 +8,15 @@ import {
   Platform
 } from 'react-native';
 import {Navigation} from 'react-native-navigation';
+import {iconsMap} from '../icons/icons';
 
 export default class FirstTabScreen extends Component {
-  static navigatorButtons = {
-    leftButtons: [{
-      icon: require('../../img/navicon_menu.png'),
-      id: 'menu'
-    }],
-    rightButtons: [
-      {
-        title: 'Edit',
-        id: 'edit',
-        disabled: true
-      },
-      {
-        icon: require('../../img/navicon_add.png'),
-        id: 'add'
-      }
-    ]
-  };
+  // static navigatorButtons = {
+  //   leftButtons: [{
+  //     icon: require('../../img/navicon_menu.png'),
+  //     id: 'sideMenu'
+  //   }]
+  // };
   static navigatorStyle = {
     navBarBackgroundColor: '#4dbce9',
     navBarTextColor: '#ffff00',
@@ -36,7 +26,8 @@ export default class FirstTabScreen extends Component {
     tabBarBackgroundColor: '#4dbce9',
     tabBarButtonColor: '#ffffff',
     tabBarSelectedButtonColor: '#ffff00',
-    titleBarDisabledButtonColor: '#ff0000'
+    titleBarDisabledButtonColor: '#ff0000',
+    topBarElevationShadowEnabled: false
   };
 
   constructor(props) {
@@ -45,8 +36,29 @@ export default class FirstTabScreen extends Component {
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
   }
 
+  componentDidMount() {
+    this.props.navigator.setButtons({
+      rightButtons: [
+        {
+          title: 'Edit',
+          id: 'edit',
+          disabled: true
+        },
+        {
+          icon: iconsMap['search'],
+          id: 'search'
+        },
+        {
+          icon: require('../../img/navicon_add.png'),
+          id: 'add'
+        }
+      ]
+    })
+  }
+
   onNavigatorEvent(event) {
-    if (event.id === 'menu') {
+    console.log('event.id: ', JSON.stringify(event.id));
+    if (event.id === 'sideMenu') {
       this.props.navigator.toggleDrawer({
         side: 'left',
         animated: true
@@ -75,6 +87,24 @@ export default class FirstTabScreen extends Component {
           <Text style={styles.button}>Show Modal Screen</Text>
         </TouchableOpacity>
 
+        <TouchableOpacity onPress={ this.onReplacePrevious.bind(this) }>
+          <Text style={styles.button}>replacePrevious</Text>
+        </TouchableOpacity>
+
+        {
+          Platform.OS === 'android' ?
+            <TouchableOpacity onPress={ this.onSetFabPress.bind(this) }>
+              <Text style={styles.button}>Set Fab</Text>
+            </TouchableOpacity> : false
+        }
+
+        {
+          Platform.OS === 'android' ?
+            <TouchableOpacity onPress={ this.onRemoveFabPress.bind(this) }>
+              <Text style={styles.button}>Remove Fab</Text>
+            </TouchableOpacity> : false
+        }
+
         {
           Platform.OS === 'ios' ?
             <TouchableOpacity onPress={ this.onLightBoxPress.bind(this) }>
@@ -89,16 +119,52 @@ export default class FirstTabScreen extends Component {
             </TouchableOpacity> : false
         }
 
+        <TouchableOpacity onPress={ this.onRemoveLeftButtonPress.bind(this) }>
+          <Text style={styles.button}>Remove left button</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={ this.setMenuButton.bind(this) }>
+          <Text style={styles.button}>Set menu button</Text>
+        </TouchableOpacity>
+
         <TouchableOpacity onPress={ this.onStartSingleScreenApp.bind(this) }>
           <Text style={styles.button}>Show Single Screen App</Text>
         </TouchableOpacity>
+
+        {
+          Platform.OS === 'android' ?
+            <TouchableOpacity onPress={ this.showSnackbar.bind(this) }>
+              <Text style={styles.button}>Show Snackbar</Text>
+            </TouchableOpacity> : false
+        }
+        {
+          Platform.OS === 'android' ?
+            <TouchableOpacity onPress={ this.dismissSnackbar.bind(this) }>
+              <Text style={styles.button}>Dismiss Snackbar</Text>
+            </TouchableOpacity> : false
+        }
       </View>
     );
   }
 
+  showSnackbar() {
+    this.props.navigator.showSnackbar({
+      text: 'Hello from Snackbar',
+      actionText: 'done',
+      actionColor: 'green',
+      textColor: 'red',
+      actionId: 'fabClicked',
+      backgroundColor: 'blue',
+      duration: 'indefinite'
+    })
+  }
+
+  dismissSnackbar() {
+    this.props.navigator.dismissSnackbar();
+  }
+
   onPushPress() {
     this.props.navigator.push({
-      title: "More",
       screen: "example.PushedScreen"
     });
   }
@@ -117,6 +183,29 @@ export default class FirstTabScreen extends Component {
     });
   }
 
+  onReplacePrevious() {
+    this.props.navigator.replacePrevious({
+      title: "New Screen",
+      screen: "example.ModalScreen"
+    });
+  }
+
+  onSetFabPress() {
+    this.props.navigator.setButtons({
+      fab: {
+        collapsedId: 'share',
+        collapsedIcon: require('../../img/navicon_add.png'),
+        backgroundColor: '#607D8B'
+      }
+    });
+  }
+
+  onRemoveFabPress() {
+    this.props.navigator.setButtons({
+      fab: {}
+    });
+  }
+
   onLightBoxPress() {
     this.props.navigator.showLightBox({
       screen: "example.LightBoxScreen",
@@ -132,6 +221,21 @@ export default class FirstTabScreen extends Component {
   onInAppNotificationPress() {
     this.props.navigator.showInAppNotification({
       screen: "example.NotificationScreen"
+    });
+  }
+
+  onRemoveLeftButtonPress() {
+    this.props.navigator.setButtons({
+      leftButtons: []
+    });
+  }
+
+  setMenuButton() {
+    this.props.navigator.setButtons({
+      leftButtons: [{
+        icon: require('../../img/navicon_menu.png'),
+        id: 'sideMenu'
+      }]
     });
   }
 
