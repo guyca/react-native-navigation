@@ -11,6 +11,7 @@ export default class CollapsingReactViewTopTabsScreen extends Component {
     expendCollapsingToolBarOnTopTabChange: false,
     selectedTopTabIconColor: '#4dbce9',
     selectedTopTabIndicatorColor: '#4dbce9',
-    collapsingToolBarCollapsedColor: '#0f2362',
+    _collapsingToolBarCollapsedColor: '#0f2362',
+    navBarTranslucent: true
   };
 }

@@ -24,11 +24,15 @@ export default class CollapsingReactViewScreen extends Component {
     navBarHideOnScroll: false,
     navBarBackgroundColor: '#4dbce9',
     navBarTextColor: '#ffff00',
-    navBarSubtitleTextColor: '#ff0000',
+    subtitleColor: '#ff0000',
     navBarButtonColor: '#ffffff',
     collapsingToolBarComponent: 'example.header',
     drawUnderTabBar: false,
-    screenBackgroundColor: '#ECEFF1'
+    navBarTranslucent: false,
+    collapsingToolBarCollapsedColor: 'green',
+    collapsingToolBarExpendedColor: 'red',
+    screenBackgroundColor: '#ECEFF1',
+    showTitleWhenExpended: false
   };
 
   constructor(props) {

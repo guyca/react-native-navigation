@@ -47,15 +47,12 @@ export default class Header extends Component {
 
 const styles = StyleSheet.create({
   header: {
-    height: 310,
-    flexDirection: 'column',
     backgroundColor: '#673AB7'
   },
   image: {
     height: 200
   },
   content: {
-    flex: 1,
     backgroundColor: '#0f2362',
     flexDirection: 'column',
     padding: 16

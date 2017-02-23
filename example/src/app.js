@@ -91,14 +91,14 @@ const createTabs = () => {
   // let tabs = [
   //   collapsingReactTopTabsScreen
   // ];
-  // let tabs = [
-  //   collapsingReactTopTabsScreen,
-  //   collapsingReactScreen
-  // ];
   let tabs = [
-    firstTabScreen,
-    secondTabScreen
+    collapsingReactScreen,
+    collapsingReactTopTabsScreen
   ];
+  // let tabs = [
+  //   firstTabScreen,
+  //   secondTabScreen
+  // ];
   if (Platform.OS === 'android') {
     tabs.push({
       label: 'List',
