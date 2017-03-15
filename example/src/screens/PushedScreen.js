@@ -27,9 +27,19 @@ export default class PushedScreen extends Component {
 
   }
 
+  componentDidMount() {
+    this.props.navigator.setButtons({
+      fab: {
+        collapsedId: 'share',
+        collapsedIcon: require('../../img/navicon_add.png'),
+        backgroundColor: 'blue'
+      }
+    });
+  }
+
   render() {
     return (
-      <ScrollView style={styles.container}>
+      <ScrollView style={[styles.container, {backgroundColor: 'green'}]}>
         <View style={{flex: 1}}>
           <TouchableOpacity onPress={ this.onPushPress.bind(this) }>
             <Text style={styles.button}>Push Plain Screen</Text>
