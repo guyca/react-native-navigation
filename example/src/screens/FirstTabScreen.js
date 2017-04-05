@@ -76,6 +76,10 @@ export default class FirstTabScreen extends Component {
   render() {
     return (
       <View style={{flex: 1, padding: 20}}>
+        <TouchableOpacity onPress={ this.onLightBoxPress.bind(this) }>
+          <Text style={styles.button}>Show LightBox</Text>
+        </TouchableOpacity>
+
         <TouchableOpacity onPress={ this.onPushPress.bind(this) }>
           <Text style={styles.button}>Push Plain Screen</Text>
         </TouchableOpacity>
@@ -103,13 +107,6 @@ export default class FirstTabScreen extends Component {
           Platform.OS === 'android' ?
             <TouchableOpacity onPress={ this.onRemoveFabPress.bind(this) }>
               <Text style={styles.button}>Remove Fab</Text>
-            </TouchableOpacity> : false
-        }
-
-        {
-          Platform.OS === 'ios' ?
-            <TouchableOpacity onPress={ this.onLightBoxPress.bind(this) }>
-              <Text style={styles.button}>Show LightBox</Text>
             </TouchableOpacity> : false
         }
 
@@ -180,7 +177,8 @@ export default class FirstTabScreen extends Component {
   onModalPress() {
     this.props.navigator.showModal({
       title: "Modal",
-      screen: "example.ModalScreen"
+      screen: "example.ModalScreen",
+      animationType: 'none'
     });
   }
 

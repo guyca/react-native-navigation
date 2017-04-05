@@ -22,6 +22,9 @@ export default class ModalScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <TouchableOpacity onPress={ this.onLightBoxPress.bind(this) }>
+          <Text style={styles.button}>Show LightBox</Text>
+        </TouchableOpacity>
 
         <TouchableOpacity onPress={ this.onPushPress.bind(this) }>
           <Text style={styles.button}>Push Plain Screen</Text>
@@ -46,6 +49,17 @@ export default class ModalScreen extends Component {
     if (event.id == 'close') {
       this.props.navigator.dismissModal();
     }
+  }
+  onLightBoxPress() {
+    this.props.navigator.showLightBox({
+      screen: "example.LightBoxScreen",
+      style: {
+        backgroundBlur: "dark"
+      },
+      passProps: {
+        greeting: 'hey there'
+      },
+    });
   }
   onPushPress() {
     this.props.navigator.push({

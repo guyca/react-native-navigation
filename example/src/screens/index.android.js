@@ -16,7 +16,7 @@ import ReplacedScreen from './ReplacedScreen';
 import CollapsingReactViewScreen from './CollapsingReactViewScreen';
 import CollapsingReactViewTopTabsScreen from './CollapsingReactViewTopTabsScreen';
 import Header  from './Header';
-
+import LightBoxScreen from './LightBoxScreen';
 
 // register all screens of the app (including internal ones)
 export function registerScreens() {
@@ -36,4 +36,5 @@ export function registerScreens() {
   Navigation.registerComponent('example.collapsingReactViewScreen', () => CollapsingReactViewScreen);
   Navigation.registerComponent('example.collapsingReactViewTopTabsScreen', () => CollapsingReactViewTopTabsScreen);
   Navigation.registerComponent('example.header', () => Header);
+  Navigation.registerComponent('example.LightBoxScreen', () => LightBoxScreen);
 }
