@@ -10,9 +10,9 @@
     "e2e": "node ./scripts/e2e.ios.js"
   },
   "dependencies": {
-    "react": "15.4.1",
-    "react-native": "0.38.0",
-    "react-native-navigation": "file:../",
+    "react": "15.4.2",
+    "react-native": "0.41.2",
+    "react-native-navigation": "next",
     "react-native-vector-icons": "^3.0.0"
   },
   "devDependencies": {
