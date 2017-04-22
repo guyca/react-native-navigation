@@ -4,6 +4,7 @@ export default class TopTabsScreen extends Component {
   static navigatorStyle = {
     navBarHideOnScroll: true,
     topTabIconColor: 'blue',
-    selectedTopTabIconColor: 'green'
+    selectedTopTabIconColor: 'green',
+    topTabsScrollable: true
   };
 }
