@@ -95,80 +95,80 @@ const createTabs = () => {
   //   collapsingReactScreen,
   //   collapsingReactTopTabsScreen
   // ];
-  // let tabs = [
-  //   firstTabScreen,
-  //   secondTabScreen
-  // ];
   let tabs = [
+    firstTabScreen,
+    secondTabScreen
   ];
+  // let tabs = [
+  // ];
   if (Platform.OS === 'android') {
-    // tabs.push({
-    //   label: 'List',
-    //   screen: 'example.ListScreen',
-    //   icon: require('../img/list.png'),
-    //   title: 'List'
-    // });
+    tabs.push({
+      label: 'List',
+      screen: 'example.ListScreen',
+      icon: require('../img/list.png'),
+      title: 'List'
+    });
     // tabs.push({
     //   label: 'Collapsing',
     //   screen: 'example.CollapsingTopBarScreen',
     //   icon: require('../img/one.png'),
     //   title: 'Collapsing',
     // });
-    tabs.push({
-      title: 'TopTabs',
-      screen: 'example.TopTabsScreen',
-      icon: require('../img/list.png'),
-      topTabs: [
-        {
-          screenId: 'example.PushedScreen',
-          icon: require('../img/list.png')
-        },
-        {
-          screenId: 'example.PushedScreen',
-          icon: require('../img/one.png')
-        },
-        {
-          screenId: 'example.ListScreen',
-          icon: require('../img/list.png')
-        },
-        {
-          screenId: 'example.PushedScreen',
-          icon: require('../img/list.png')
-        },
-        {
-          screenId: 'example.PushedScreen',
-          icon: require('../img/one.png')
-        },
-        {
-          screenId: 'example.ListScreen',
-          icon: require('../img/list.png')
-        },
-        {
-          screenId: 'example.PushedScreen',
-          icon: require('../img/list.png')
-        },
-        {
-          screenId: 'example.PushedScreen',
-          icon: require('../img/one.png')
-        },
-        {
-          screenId: 'example.ListScreen',
-          icon: require('../img/list.png')
-        },
-        {
-          screenId: 'example.PushedScreen',
-          icon: require('../img/list.png')
-        },
-        {
-          screenId: 'example.PushedScreen',
-          icon: require('../img/one.png')
-        },
-        {
-          screenId: 'example.ListScreen',
-          icon: require('../img/list.png')
-        }
-      ],
-    })
+    // tabs.push({
+    //   title: 'TopTabs',
+    //   screen: 'example.TopTabsScreen',
+    //   icon: require('../img/list.png'),
+    //   topTabs: [
+    //     {
+    //       screenId: 'example.PushedScreen',
+    //       icon: require('../img/list.png')
+    //     },
+    //     {
+    //       screenId: 'example.PushedScreen',
+    //       icon: require('../img/one.png')
+    //     },
+    //     {
+    //       screenId: 'example.ListScreen',
+    //       icon: require('../img/list.png')
+    //     },
+    //     {
+    //       screenId: 'example.PushedScreen',
+    //       icon: require('../img/list.png')
+    //     },
+    //     {
+    //       screenId: 'example.PushedScreen',
+    //       icon: require('../img/one.png')
+    //     },
+    //     {
+    //       screenId: 'example.ListScreen',
+    //       icon: require('../img/list.png')
+    //     },
+    //     {
+    //       screenId: 'example.PushedScreen',
+    //       icon: require('../img/list.png')
+    //     },
+    //     {
+    //       screenId: 'example.PushedScreen',
+    //       icon: require('../img/one.png')
+    //     },
+    //     {
+    //       screenId: 'example.ListScreen',
+    //       icon: require('../img/list.png')
+    //     },
+    //     {
+    //       screenId: 'example.PushedScreen',
+    //       icon: require('../img/list.png')
+    //     },
+    //     {
+    //       screenId: 'example.PushedScreen',
+    //       icon: require('../img/one.png')
+    //     },
+    //     {
+    //       screenId: 'example.ListScreen',
+    //       icon: require('../img/list.png')
+    //     }
+    //   ],
+    // })
   }
   return tabs;
 };

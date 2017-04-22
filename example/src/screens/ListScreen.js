@@ -55,8 +55,23 @@ export default class ListScreen extends Component {
     ],
     fab: {
       collapsedId: 'share',
-      collapsedIcon: require('../../img/navicon_add.png'),
-      backgroundColor: '#607D8B'
+      collapsedIcon: require('../../img/ic_share.png'),
+      expendedId: 'clear',
+      expendedIcon: require('../../img/ic_clear.png'),
+      backgroundColor: '#3F51B5',
+      actions: [
+        {
+          id: 'mail',
+          icon: require('../../img/ic_email.png'),
+          backgroundColor: 'red'
+        },
+        {
+          id: 'android',
+          icon: require('../../img/ic_android.png'),
+          backgroundColor: '#4CAF50'
+        }
+      ]
+
     }
   };
 
