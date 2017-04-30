@@ -22,7 +22,7 @@ export default class FirstTabScreen extends Component {
     navBarTextColor: '#ffff00',
     navBarSubtitleTextColor: '#ff0000',
     navBarSubtitleColor: '#ff0000',
-    navBarButtonColor: '#ffffff',
+    navBarButtonColor: 'red',
     statusBarTextColorScheme: 'light',
     tabBarBackgroundColor: '#4dbce9',
     tabBarButtonColor: '#ffffff',
@@ -33,6 +33,7 @@ export default class FirstTabScreen extends Component {
 
   constructor(props) {
     super(props);
+    this.buttonsCounter = 0;
     // if you want to listen on navigator events, set this up
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
   }
@@ -58,7 +59,14 @@ export default class FirstTabScreen extends Component {
   }
 
   onNavigatorEvent(event) {
-    console.log('event.id: ', JSON.stringify(event.id));
+    console.log('style', JSON.stringify(event));
+    if (event.type === 'DeepLink') {
+      const parts = event.link.split('/');
+      console.log('style: ', JSON.stringify(parts));
+      if (parts[1] == 'updateStyle') {
+        this.onSetStylePress();
+      }
+    }
     if (event.id === 'sideMenu') {
       this.props.navigator.toggleDrawer({
         side: 'left',
@@ -76,6 +84,14 @@ export default class FirstTabScreen extends Component {
   render() {
     return (
       <View style={{flex: 1, padding: 20}}>
+        <TouchableOpacity onPress={ this.onSetStylePress.bind(this) }>
+          <Text style={styles.button}>Set Style</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={ this.onChangeButtonsPress.bind(this) }>
+          <Text style={styles.button}>Change Buttons</Text>
+        </TouchableOpacity>
+
         <TouchableOpacity onPress={ this.onLightBoxPress.bind(this) }>
           <Text style={styles.button}>Show LightBox</Text>
         </TouchableOpacity>
@@ -217,6 +233,48 @@ export default class FirstTabScreen extends Component {
     });
   }
 
+  onSetStylePress() {
+    this.props.navigator.setStyle({
+      navBarBackgroundColor: 'green',
+      navBarButtonColor: 'purple',
+      screenBackgroundColor: 'purple',
+      statusBarColor: 'purple',
+      navBarTextColor: 'blue',
+      navBarSubtitleColor: 'white'
+    })
+  }
+
+  onChangeButtonsPress() {
+    let buttons;
+    if (this.buttonsCounter % 3 === 0) {
+      buttons = [
+        {
+          title: 'Edit',
+          id: 'edit',
+          disabled: true
+        },
+        {
+          icon: require('../../img/navicon_add.png'),
+          id: 'add'
+        }
+      ];
+    } else if (this.buttonsCounter % 3 === 1) {
+      buttons = [{
+        title: 'Save',
+        id: 'save'
+      }];
+    } else {
+      buttons = [];
+    }
+    this.buttonsCounter++;
+
+    this.props.navigator.setButtons({
+      rightButtons: buttons,
+      animated: true
+    });
+  }
+
+
   onInAppNotificationPress() {
     this.props.navigator.showInAppNotification({
       screen: "example.NotificationScreen"
@@ -232,7 +290,6 @@ export default class FirstTabScreen extends Component {
   setMenuButton() {
     this.props.navigator.setButtons({
       leftButtons: [{
-        icon: require('../../img/navicon_menu.png'),
         id: 'sideMenu'
       }]
     });

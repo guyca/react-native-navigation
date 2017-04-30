@@ -41,6 +41,10 @@ export default class PushedScreen extends Component {
     return (
       <ScrollView style={[styles.container, {backgroundColor: 'green'}]}>
         <View style={{flex: 1}}>
+          <TouchableOpacity onPress={ this.updateFirstTabScreenStyle.bind(this) }>
+            <Text style={styles.button}>Update first tab screen style</Text>
+          </TouchableOpacity>
+
           <TouchableOpacity onPress={ this.onPushPress.bind(this) }>
             <Text style={styles.button}>Push Plain Screen</Text>
           </TouchableOpacity>
@@ -67,6 +71,12 @@ export default class PushedScreen extends Component {
         </View>
       </ScrollView>
     );
+  }
+  updateFirstTabScreenStyle() {
+    console.log('style', 'updateFirstTabScreenStyle');
+    this.props.navigator.handleDeepLink({
+      link: "firstTabScreen/updateStyle"
+    });
   }
   onPushPress() {
     this.props.navigator.push({

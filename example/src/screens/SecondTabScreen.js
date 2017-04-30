@@ -31,6 +31,9 @@ export default class SecondTabScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <TouchableOpacity onPress={ this.onSetStylePress.bind(this) }>
+          <Text style={styles.button}>Set Style</Text>
+        </TouchableOpacity>
 
         <TouchableOpacity onPress={ this.onChangeButtonsPress.bind(this) }>
           <Text style={styles.button}>Change Buttons</Text>
@@ -118,6 +121,17 @@ export default class SecondTabScreen extends Component {
       animated: true
     });
   }
+  onSetStylePress() {
+    this.props.navigator.setStyle({
+      navBarBackgroundColor: 'yellow',
+      navBarButtonColor: 'purple',
+      screenBackgroundColor: 'yellow',
+      statusBarColor: 'purple',
+      navBarTextColor: 'blue',
+      navBarSubtitleColor: 'white'
+    })
+  }
+
   onSwitchTabPress() {
     this.props.navigator.switchToTab({
       tabIndex: 0

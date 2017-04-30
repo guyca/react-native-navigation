@@ -46,7 +46,7 @@ export default class ModalScreen extends Component {
     );
   }
   onNavigatorEvent(event) {
-    if (event.id == 'close') {
+    if (event.id ==='close') {
       this.props.navigator.dismissModal();
     }
   }
