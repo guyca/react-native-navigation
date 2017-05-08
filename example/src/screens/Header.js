@@ -28,7 +28,7 @@ export default class Header extends Component {
           resizeMode={'cover'}
         />
         <View style={styles.content}>
-          <Text style={styles.title}>React view w00t ^^</Text>
+          <Text style={styles.title}></Text>
 
           <TouchableHighlight style={styles.buttonContainer} underlayColor={'transparent'} onPress={this.onPress.bind(this)}>
             <View style={styles.buttonWrapper}>

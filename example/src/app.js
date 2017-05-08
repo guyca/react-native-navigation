@@ -96,18 +96,19 @@ const createTabs = () => {
   //   collapsingReactTopTabsScreen
   // ];
   let tabs = [
+    collapsingReactTopTabsScreen,
     firstTabScreen,
     secondTabScreen
   ];
   // let tabs = [
   // ];
   if (Platform.OS === 'android') {
-    tabs.push({
-      label: 'List',
-      screen: 'example.ListScreen',
-      icon: require('../img/list.png'),
-      title: 'List'
-    });
+    // tabs.push({
+    //   label: 'List',
+    //   screen: 'example.ListScreen',
+    //   icon: require('../img/list.png'),
+    //   title: 'List'
+    // });
     // tabs.push({
     //   label: 'Collapsing',
     //   screen: 'example.CollapsingTopBarScreen',

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {
   Text,
-  View,
+  ScrollView,
   TouchableOpacity,
   StyleSheet,
   Alert,
@@ -13,7 +13,7 @@ import {iconsMap} from '../icons/icons';
 export default class FirstTabScreen extends Component {
   // static navigatorButtons = {
   //   leftButtons: [{
-  //     icon: require('../../img/navicon_menu.png'),
+  //     icon: require('../../img/navicon_add@2x.android.png'),
   //     id: 'sideMenu'
   //   }]
   // };
@@ -39,6 +39,10 @@ export default class FirstTabScreen extends Component {
   }
 
   componentDidMount() {
+    // this.setCustomButtons();
+  }
+
+  setCustomButtons() {
     this.props.navigator.setButtons({
       rightButtons: [
         {
@@ -54,8 +58,25 @@ export default class FirstTabScreen extends Component {
           icon: require('../../img/navicon_add.png'),
           id: 'add'
         }
+      ],
+      leftButtons: [
+        {
+          icon: iconsMap['face'],
+          id: 'face'
+        }
       ]
     })
+  }
+
+  setCustomLeftButton() {
+    this.props.navigator.setButtons({
+      leftButtons: [
+        {
+          icon: iconsMap['flight'],
+          id: 'flight'
+        }
+      ]
+    });
   }
 
   onNavigatorEvent(event) {
@@ -83,7 +104,15 @@ export default class FirstTabScreen extends Component {
 
   render() {
     return (
-      <View style={{flex: 1, padding: 20}}>
+      <ScrollView style={{flex: 1, padding: 20}}>
+        <TouchableOpacity onPress={ this.onSetButtonsPress.bind(this) }>
+          <Text style={styles.button}>Set Buttons</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={ this.setCustomLeftButton.bind(this) }>
+          <Text style={styles.button}>Set Custom Left Button</Text>
+        </TouchableOpacity>
+
         <TouchableOpacity onPress={ this.onSetStylePress.bind(this) }>
           <Text style={styles.button}>Set Style</Text>
         </TouchableOpacity>
@@ -157,7 +186,7 @@ export default class FirstTabScreen extends Component {
               <Text style={styles.button}>Dismiss Snackbar</Text>
             </TouchableOpacity> : false
         }
-      </View>
+      </ScrollView>
     );
   }
 
@@ -231,6 +260,10 @@ export default class FirstTabScreen extends Component {
         greeting: 'hey there'
       },
     });
+  }
+
+  onSetButtonsPress() {
+    this.setCustomButtons();
   }
 
   onSetStylePress() {
