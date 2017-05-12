@@ -22,6 +22,14 @@ export default class ModalScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <TouchableOpacity onPress={ this.onShowLandscapeModalPress.bind(this) }>
+          <Text style={styles.button}>Show Horizontal Modal</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={ this.onShowPortraitModalPress.bind(this) }>
+          <Text style={styles.button}>Show Portrait Modal</Text>
+        </TouchableOpacity>
+
         <TouchableOpacity onPress={ this.onLightBoxPress.bind(this) }>
           <Text style={styles.button}>Show LightBox</Text>
         </TouchableOpacity>
@@ -49,6 +57,22 @@ export default class ModalScreen extends Component {
     if (event.id ==='close') {
       this.props.navigator.dismissModal();
     }
+  }
+  onShowLandscapeModalPress() {
+    this.props.navigator.showModal({
+      screen: 'example.ModalScreen',
+      navigatorStyle: {
+        orientation: 'landscape'
+      }
+    });
+  }
+  onShowPortraitModalPress() {
+    this.props.navigator.showModal({
+      screen: 'example.ModalScreen',
+      navigatorStyle: {
+        orientation: 'portrait'
+      }
+    });
   }
   onLightBoxPress() {
     this.props.navigator.showLightBox({

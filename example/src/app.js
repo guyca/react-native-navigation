@@ -96,8 +96,8 @@ const createTabs = () => {
   //   collapsingReactTopTabsScreen
   // ];
   let tabs = [
-    collapsingReactTopTabsScreen,
     firstTabScreen,
+    collapsingReactTopTabsScreen,
     secondTabScreen
   ];
   // let tabs = [

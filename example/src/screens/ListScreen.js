@@ -127,7 +127,7 @@ export default class ListScreen extends Component {
 
   _genRows() {
     var dataBlob = [];
-    for (var ii = 0; ii < 10; ii++) {
+    for (var ii = 0; ii < 20; ii++) {
       dataBlob.push('Row ' + ii + ' ');
     }
     return dataBlob;

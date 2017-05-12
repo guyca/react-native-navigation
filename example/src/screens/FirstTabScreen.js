@@ -13,7 +13,6 @@ import {iconsMap} from '../icons/icons';
 export default class FirstTabScreen extends Component {
   // static navigatorButtons = {
   //   leftButtons: [{
-  //     icon: require('../../img/navicon_add@2x.android.png'),
   //     id: 'sideMenu'
   //   }]
   // };
@@ -22,7 +21,7 @@ export default class FirstTabScreen extends Component {
     navBarTextColor: '#ffff00',
     navBarSubtitleTextColor: '#ff0000',
     navBarSubtitleColor: '#ff0000',
-    navBarButtonColor: 'red',
+    navBarButtonColor: 'green',
     statusBarTextColorScheme: 'light',
     tabBarBackgroundColor: '#4dbce9',
     tabBarButtonColor: '#ffffff',
@@ -36,6 +35,7 @@ export default class FirstTabScreen extends Component {
     this.buttonsCounter = 0;
     // if you want to listen on navigator events, set this up
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+    this.setCustomButtons();
   }
 
   componentDidMount() {
