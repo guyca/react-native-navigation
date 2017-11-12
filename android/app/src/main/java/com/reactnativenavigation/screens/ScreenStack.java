@@ -86,7 +86,7 @@ public class ScreenStack {
         screen.setOnDisplayListener(new Screen.OnDisplayListener() {
             @Override
             public void onDisplay() {
-                screen.show(initialScreenParams.animateScreenTransitions, NavigationType.ShowModal);
+                screen.showInitialScreen(initialScreenParams.animateScreenTransitions, NavigationType.ShowModal);
                 screen.setStyle();
             }
         });
@@ -128,6 +128,7 @@ public class ScreenStack {
         nextScreen.setOnDisplayListener(new Screen.OnDisplayListener() {
             @Override
             public void onDisplay() {
+                previousScreen.animateExit();
                 nextScreen.show(nextScreen.screenParams.animateScreenTransitions, new Runnable() {
                     @Override
                     public void run() {
@@ -230,6 +231,7 @@ public class ScreenStack {
             }
         };
         if (animated) {
+            previous.animateEnter();
             toRemove.animateHide(previous.sharedElements.getToElements(), onAnimationEnd, NavigationType.Pop);
         } else {
             toRemove.hide(previous.sharedElements.getToElements(), onAnimationEnd, NavigationType.Pop);

@@ -252,12 +252,30 @@ public abstract class Screen extends RelativeLayout implements Subscriber {
         }
     }
 
+    public void animateExit() {
+        screenAnimator.animateExit();
+    }
+
+    public void animateEnter() {
+        screenAnimator.animateExit();
+    }
+
     public abstract void setOnDisplayListener(OnDisplayListener onContentViewDisplayedListener);
 
     public void show(NavigationType type) {
         NavigationApplication.instance.getEventEmitter().sendWillAppearEvent(getScreenParams(), type);
         NavigationApplication.instance.getEventEmitter().sendDidAppearEvent(getScreenParams(), type);
         screenAnimator.show(screenParams.animateScreenTransitions);
+    }
+
+    public void showInitialScreen(boolean animated, final NavigationType type) {
+        NavigationApplication.instance.getEventEmitter().sendWillAppearEvent(getScreenParams(), type);
+        screenAnimator.showInitialScreen(animated, new Runnable() {
+            @Override
+            public void run() {
+                NavigationApplication.instance.getEventEmitter().sendDidAppearEvent(getScreenParams(), type);
+            }
+        });
     }
 
     public void show(boolean animated, final NavigationType type) {

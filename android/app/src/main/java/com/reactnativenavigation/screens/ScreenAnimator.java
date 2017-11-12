@@ -25,6 +25,8 @@ class ScreenAnimator {
     private static final DecelerateInterpolator DECELERATE_INTERPOLATOR_1x5 = new DecelerateInterpolator(1.5f);
     private static final AccelerateDecelerateInterpolator ACCELERATE_DECELERATE_INTERPOLATOR = new AccelerateDecelerateInterpolator();
     private static final AccelerateInterpolator ACCELERATE_INTERPOLATOR = new AccelerateInterpolator();
+    private static final float ENTER_EXIT_ALPHA = 0.95f;
+    private static final float ENTER_EXIT_SCALE = 0.95f;
     private final float translationY;
     private final float translationX;
     private Screen screen;
@@ -33,6 +35,10 @@ class ScreenAnimator {
         this.screen = screen;
         translationY = 0.05f * ViewUtils.getWindowHeight(screen.activity);
         translationX = ViewUtils.getWindowWidth(screen.activity);
+    }
+
+    void showInitialScreen(boolean animate, final Runnable onAnimationEnd) {
+        show(animate, onAnimationEnd);
     }
 
     public void show(boolean animate, final Runnable onAnimationEnd) {
@@ -177,6 +183,40 @@ class ScreenAnimator {
         AnimatorSet set = new AnimatorSet();
         set.playTogether(animators);
         set.setDuration(duration);
+        set.start();
+    }
+
+    void animateEnter() {
+        List<Animator> animators = new ArrayList<>();
+
+        animators.add(ObjectAnimator.ofFloat(screen, View.ALPHA, ENTER_EXIT_ALPHA, 1));
+        animators.add(ObjectAnimator.ofFloat(screen, View.SCALE_X, ENTER_EXIT_SCALE, 1));
+        animators.add(ObjectAnimator.ofFloat(screen, View.SCALE_Y, ENTER_EXIT_SCALE, 1));
+
+        AnimatorSet set = new AnimatorSet();
+        set.playTogether(animators);
+        set.setDuration(DURATION);
+        set.start();
+    }
+
+    void animateExit() {
+        List<Animator> animators = new ArrayList<>();
+
+        animators.add(ObjectAnimator.ofFloat(screen, View.ALPHA, ENTER_EXIT_ALPHA));
+        animators.add(ObjectAnimator.ofFloat(screen, View.SCALE_X, ENTER_EXIT_SCALE));
+        animators.add(ObjectAnimator.ofFloat(screen, View.SCALE_Y, ENTER_EXIT_SCALE));
+
+        AnimatorSet set = new AnimatorSet();
+        set.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                screen.setAlpha(1);
+                screen.setScaleX(1);
+                screen.setScaleY(1);
+            }
+        });
+        set.playTogether(animators);
+        set.setDuration(DURATION);
         set.start();
     }
 }
