@@ -61,8 +61,27 @@ android {
     }
 }
 
+// doesn't seem to work
+configurations.all {
+    exclude group: 'com.facebook.react', module: 'react-native'
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.facebook.react:react-native:+'
-    compile project(':react-native-navigation')
+    compile project(':ReactAndroid')
+    compile (project(':react-native-navigation')) {
+        exclude group: 'com.facebook.react', module: 'react-native' // doesn't seem to work
+    }
+}
+
+configurations.all {
+    exclude group: 'com.facebook.react', module: 'react-native' // doesn't seem to work
+    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+        def requested = details.requested
+        if (requested.group == 'com.android.support') {
+            if (!requested.name.startsWith("multidex")) {
+                details.useVersion "25.3.1"
+            }
+        }
+    }
 }
