@@ -1,14 +1,18 @@
-![npm](https://img.shields.io/npm/dw/react-native-navigation.svg)
-[![npm (tag)](https://img.shields.io/npm/v/react-native-navigation/latest.svg)](https://github.com/wix/react-native-navigation/tree/master)
-[![npm (tag)](https://img.shields.io/npm/v/react-native-navigation/snapshot.svg)](https://github.com/wix/react-native-navigation/tree/master)
-[![Build Status](https://img.shields.io/jenkins/s/http/jenkins-oss.wixpress.com:8080/job/multi-react-native-navigation-master.svg)](https://jenkins-oss.wixpress.com/job/multi-react-native-navigation-master/)
-[![Join us on Discord](https://img.shields.io/badge/discord-react--native--navigation-738bd7.svg?style=flat)](https://discord.gg/DhkZjq2)
-[![StackExchange](https://img.shields.io/stackexchange/stackoverflow/t/react-native-navigation.svg)](https://stackoverflow.com/questions/tagged/wix-react-native-navigation)
-
 <h1 align="center">
   <img src=".logo.png"/><br/>
   React Native Navigation
 </h1>
+
+<p align="center">
+  ![npm](https://img.shields.io/npm/dw/react-native-navigation.svg)
+[![npm (tag)](https://img.shields.io/npm/v/react-native-navigation/latest.svg)](https://github.com/wix/react-native-navigation/tree/master)
+[![npm (tag)](https://img.shields.io/npm/v/react-native-navigation/snapshot.svg)](https://github.com/wix/react-native-navigation/tree/master)
+[![Build Status](https://img.shields.io/jenkins/s/http/jenkins-oss.wixpress.com:8080/job/multi-react-native-navigation-master.svg)](https://jenkins-oss.wixpress.com/job/multi-react-native-navigation-master/)
+</p>
+<p align="center">
+  [![Join us on Discord](https://img.shields.io/badge/discord-react--native--navigation-738bd7.svg?style=flat)](https://discord.gg/DhkZjq2)
+[![StackExchange](https://img.shields.io/stackexchange/stackoverflow/t/react-native-navigation.svg)](https://stackoverflow.com/questions/tagged/wix-react-native-navigation)
+</p>
 
 React Native Navigation provides 100% native platform navigation on both iOS and Android for React Native apps. The JavaScript API is simple and cross-platform - just install it in your app and give your users the native feel they deserve. Ready to get started? Check out the [docs](https://wix.github.io/react-native-navigation/).
 
