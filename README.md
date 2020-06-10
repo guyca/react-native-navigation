@@ -10,8 +10,8 @@
   <a href="https://jenkins-oss.wixpress.com/job/multi-react-native-navigation-master/"><img src="https://img.shields.io/jenkins/s/http/jenkins-oss.wixpress.com:8080/job/multi-react-native-navigation-master.svg?style=flat-square" alt="NPM snapshot version"></a>
 </p>
 <p align="center">
-  <a href="https://twitter.com/reactnativenav"><img src="https://img.shields.io/twitter/follow/reactnativenav.svg?style=flat-square&colorA=1da1f2&colorB=&label=Follow%20us%20on%20Twitter" alt="Follow us on Twitter"></a>
-  <a href="https://discord.gg/DhkZjq2"><img src="https://img.shields.io/badge/discord-react--native--navigation-738bd7.svg?style=flat-square" alt="Join us on Discord"></a>
+  <a href="https://twitter.com/reactnativenav"><img src="https://img.shields.io/twitter/follow/reactnativenav.svg?style=flat-square&colorA=1da1f2&colorB=&label=Follow%20us%20on%20Twitter" alt="Follow on Twitter"></a>
+  <a href="https://discord.gg/DhkZjq2"><img src="https://img.shields.io/badge/discord-react--native--navigation-738bd7.svg?style=flat-square" alt="Chat on Discord"></a>
   <a href="https://stackoverflow.com/questions/tagged/wix-react-native-navigation"><img src="https://img.shields.io/stackexchange/stackoverflow/t/wix-react-native-navigation.svg?style=flat-square" alt="StackExchange"></a>
 </p>
 
