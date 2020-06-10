@@ -4,11 +4,10 @@
 </h1>
 
 <p align="center">
-  
-  ![npm](https://img.shields.io/npm/dw/react-native-navigation.svg)
-[![npm (tag)](https://img.shields.io/npm/v/react-native-navigation/latest.svg)](https://github.com/wix/react-native-navigation/tree/master)
-[![npm (tag)](https://img.shields.io/npm/v/react-native-navigation/snapshot.svg)](https://github.com/wix/react-native-navigation/tree/master)
-[![Build Status](https://img.shields.io/jenkins/s/http/jenkins-oss.wixpress.com:8080/job/multi-react-native-navigation-master.svg)](https://jenkins-oss.wixpress.com/job/multi-react-native-navigation-master/)
+  <a href="https://www.npmjs.com/package/react-native-navigation"><img src="https://img.shields.io/npm/dw/react-native-navigation.svg?style=flat-square" alt="NPM downloads"></a>
+  <a href="https://www.npmjs.com/package/react-native-navigation"><img src="https://img.shields.io/npm/v/react-native-navigation/latest.svg?style=flat-square" alt="NPM latest version"></a>
+  <a href="https://www.npmjs.com/package/react-native-navigation"><img src="https://img.shields.io/npm/v/react-native-navigation/snapshot.svg?style=flat-square" alt="NPM snapshot version"></a>
+  <a href="https://jenkins-oss.wixpress.com/job/multi-react-native-navigation-master/"><img src="https://img.shields.io/jenkins/s/http/jenkins-oss.wixpress.com:8080/job/multi-react-native-navigation-master.svg?style=flat-square" alt="NPM snapshot version"></a>
 </p>
 <p align="center">
   
