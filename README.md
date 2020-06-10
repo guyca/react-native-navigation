@@ -4,7 +4,6 @@
 </h1>
 
 <p align="center">
-  <a href="https://www.npmjs.com/package/react-native-navigation"><img src="https://img.shields.io/npm/dw/react-native-navigation.svg" alt="NPM downloads"></a>
   
   ![npm](https://img.shields.io/npm/dw/react-native-navigation.svg)
 [![npm (tag)](https://img.shields.io/npm/v/react-native-navigation/latest.svg)](https://github.com/wix/react-native-navigation/tree/master)
