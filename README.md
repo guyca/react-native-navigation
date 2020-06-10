@@ -12,6 +12,7 @@
 [![Build Status](https://img.shields.io/jenkins/s/http/jenkins-oss.wixpress.com:8080/job/multi-react-native-navigation-master.svg)](https://jenkins-oss.wixpress.com/job/multi-react-native-navigation-master/)
 </p>
 <p align="center">
+  
   [![Join us on Discord](https://img.shields.io/badge/discord-react--native--navigation-738bd7.svg?style=flat)](https://discord.gg/DhkZjq2)
 [![StackExchange](https://img.shields.io/stackexchange/stackoverflow/t/react-native-navigation.svg)](https://stackoverflow.com/questions/tagged/wix-react-native-navigation)
 </p>
