@@ -11,9 +11,11 @@
 </p>
 <p align="center">
   <a href="https://twitter.com/reactnativenav"><img src="https://img.shields.io/twitter/follow/reactnativenav.svg?style=flat-square&colorA=1da1f2&colorB=&label=Follow%20us%20on%20Twitter" alt="Follow on Twitter"></a>
-  <a href="https://discord.gg/DhkZjq2"><img src="<img src="https://img.shields.io/discord/242515947020222464?color=%237289da&label=Chat%20on%20Discrd&style=flat-square" alt="Chat on Discord"></a>
+  <a href="https://discord.gg/DhkZjq2"><img src="https://img.shields.io/discord/242515947020222464.svg?color=%237289da&label=Chat%20on%20Discrd&style=flat-square" alt="Chat on Discord"></a>
   <a href="https://stackoverflow.com/questions/tagged/wix-react-native-navigation"><img src="https://img.shields.io/stackexchange/stackoverflow/t/wix-react-native-navigation.svg?style=flat-square" alt="StackExchange"></a>
 </p>
+    
+
 
 React Native Navigation provides 100% native platform navigation on both iOS and Android for React Native apps. The JavaScript API is simple and cross-platform - just install it in your app and give your users the native feel they deserve. Ready to get started? Check out the [docs](https://wix.github.io/react-native-navigation/).
 
